@@ -1,0 +1,95 @@
+:root {
+    --color1: white;    /*textcolor for header and footer*/
+    --color2: #026aa7;   /*background-color for header and footer*/
+    font-size: 14px;
+}
+
+/*----- body disposition with 3 elements (header, main, footer) ------*/
+html, body {
+    padding: 0;
+    margin: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+header, main, footer {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+main {
+    flex-grow: 1;
+}
+
+/*----- header disposition -----*/
+.app-header-wrapper {
+    background-color: var(--color2);
+    color: var(--color1);
+}
+
+/*----- responsive navbar -----*/
+nav a {
+    color: inherit;
+    text-decoration: none;
+    padding: 1rem;
+    cursor: pointer;
+}
+nav a:hover:not(:first-child) {
+    background-color: var(--color1);
+    color: var(--color2);
+}
+/* home link always displayed*/
+nav a:first-child {
+    display: block;
+    position: relative;
+    font-size: 2rem;
+    padding: 0.5rem 2rem;
+}
+/*others links, visible on large screens, or expanded with menu button on small screens*/
+nav a:not(:first-child, :last-child) {
+    display: none;
+}
+/*menu button, visible on small screens*/
+nav a:last-child {
+    display: block;
+    height: 3rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+nav.vertical-expanded a:not(:first-child, :last-child) {
+    display: block;
+}
+
+@media screen and (min-width: 600px) {
+    nav {
+        display: flex;
+    }
+    nav a:first-child {
+        flex-grow: 1;
+    }
+    nav a:not(:first-child, :last-child) {
+        display: block;
+    }
+    nav a:last-child {
+        display: none;
+    }
+}
+
+/*----- footer disposition -----*/
+footer {
+    text-align: center;
+    color: var(--color1);
+    padding: 1rem;
+}
+.app-footer-wrapper {
+    background-color: var(--color2);
+}
+
+/*----- desktop screen -----*/
+@media screen and (min-width: 768px) {
+    :root {
+        font-size: 16px;
+    }
+}
