@@ -12,7 +12,6 @@ class ParticipantController extends AbstractController
      */
     public function gestionProfil()
     {
-        echo "test branche";
-        die();
+        return $this->render('participant/profil.html.twig');
     }
 }
