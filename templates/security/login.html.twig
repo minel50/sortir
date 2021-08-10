@@ -8,7 +8,7 @@
 
 
     {% if error %}
-        <p class="app-message-error">Les informations saisies sont incorrectes</p>
+        <p class="app-flash-error">Les informations saisies sont incorrectes</p>
     {% endif %}
 
     {% if app.user %}
@@ -19,25 +19,20 @@
         <h3>Connectez-vous :</h3>
         <form method="post">
             <label for="inputEmail">Email ou pseudo</label>
-            <input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus><br>
+            <input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
 
             <label for="inputPassword">Mot de passe</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required><br>
+            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
-
-            <div class="checkbox mb-3">
+            <div class="app-form-checkbox">
                 <label>
                     <input type="checkbox" name="_remember_me"> Remember me
                 </label>
             </div>
-            #}
 
-            <button class="btn btn-lg btn-primary" type="submit">
+            <button type="submit">
                 Se connecter
             </button>
         </form>

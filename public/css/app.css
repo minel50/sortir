@@ -89,13 +89,74 @@ footer {
 }
 
 /*----- color for message (error, success, etc...) -----*/
-.app-message-error {
+.app-flash-error {
     color: red;
 }
+.app-flash-success {
+    color: green;
+}
 
-/*----- desktop screen -----*/
+/*----- forms -----*/
+form {
+    display: grid;
+    grid-gap: 1rem;
+    align-items: center;
+    justify-items: start;
+}
+form ul {
+    color: red;
+    list-style-type: none;
+    margin-top: 0.1rem;
+    margin-bottom: 1rem;
+    padding-inline-start: 0;
+}
+
+/*----- desktop screens -----*/
+@media screen and (min-width: 576px) and (max-width: 767px) {
+    /*----- forms -----*/
+    form {
+        grid-template-columns: repeat(2, max-content);
+    }
+    form label {
+        grid-column: 1;
+    }
+    form input, form select {
+        grid-column: 2;
+    }
+    form ul {
+        grid-column: 1 / 3;
+        margin: 0;
+    }
+    form button {
+        grid-column: 2;
+    }
+    form .app-form-checkbox {
+        grid-column: 2;
+    }
+}
 @media screen and (min-width: 768px) {
     :root {
         font-size: 16px;
+    }
+
+    /*----- forms -----*/
+    form {
+        grid-template-columns: repeat(3, max-content);
+    }
+    form label {
+        grid-column: 1;
+    }
+    form input, form select {
+        grid-column: 2;
+    }
+    form ul {
+        grid-column: 3;
+        margin: 0;
+    }
+    form button {
+        grid-column: 2;
+    }
+    form .app-form-checkbox {
+        grid-column: 2;
     }
 }

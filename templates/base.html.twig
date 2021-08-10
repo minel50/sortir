@@ -16,7 +16,9 @@
                     <a href="">Sortir.com</a>
                     <a href="">Lien 1</a>
                     <a href="">Lien 2</a>
-                    <a href="">Lien 3</a>
+                    {% if app.user %}
+                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    {% endif %}
                     <a onclick="toggleMenu()"><i class="fa fa-bars"></i></a>
                 </nav>
             </header>
