@@ -28,10 +28,7 @@ class ProfilType extends AbstractType
             ->add('email', TextType::class, [
                 'label' => 'Téléphone'
             ])
-            //->add('password')
-            //->add('roles')
-            //->add('admin')
-            //->add('actif')
+
             ->add('campus', TextType::class, [
                 'label' => 'Téléphone'
             ])
@@ -39,7 +36,6 @@ class ProfilType extends AbstractType
                 'label' => 'Téléphone',
                 'required' => 'false'
             ])
-            //->add('sortiesParticipees')
         ;
     }
 
