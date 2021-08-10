@@ -7,6 +7,7 @@ use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,8 +35,8 @@ class SortieType extends AbstractType
                     'placeholder'=>'Durée de la sortie'
                 ]])
             ->add('dateLimiteInscription',DateType::class,['label'=>'Date limite inscription'])
-            ->add('nbInscriptionsMax',IntegerType::class,['label '=>false,'attr'=>[
-                'placeholder'=>'Nombre max participants'
+            ->add('nbInscriptionsMax',IntegerType::class,['label'=>false,'attr'=>[
+                'placeholder'=>'Nb max participants'
             ]])
             ->add('infosSortie',TextareaType::class,['label'=>false,'attr'=>[
                 'placeholder'=>'Description et infos'
@@ -53,7 +54,7 @@ class SortieType extends AbstractType
                 'choice_label'=>'libelle'
             ])
             ->add('organisateur', EntityType::class,[
-                'class'=>Particant::class,
+                'class'=>Participant::class,
                 'choice_label'=>'organisateur-id'
             ])
             ->add('participants', EntityType::class,[
