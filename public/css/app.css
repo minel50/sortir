@@ -20,6 +20,7 @@ header, main, footer {
 }
 main {
     flex-grow: 1;
+    padding: 1vw;
 }
 
 /*----- header disposition -----*/
@@ -85,6 +86,11 @@ footer {
 }
 .app-footer-wrapper {
     background-color: var(--color2);
+}
+
+/*----- color for message (error, success, etc...) -----*/
+.app-message-error {
+    color: red;
 }
 
 /*----- desktop screen -----*/
