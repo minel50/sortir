@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Participant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method Participant[]    findAll()
  * @method Participant[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ParticipantRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class ParticipantRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -64,4 +65,14 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
         ;
     }
     */
+
+    /* method mandatory to implement UserLoaderInterface, allow getting Participant by pseudo or email */
+    public function loadUserByUsername(string $pseudoOrEmail): ?Participant {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.email = :pseudoOrEmail')
+            ->orWhere('p.pseudo = :pseudoOrEmail')
+            ->setParameter('pseudoOrEmail', $pseudoOrEmail)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

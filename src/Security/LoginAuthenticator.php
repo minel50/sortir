@@ -67,10 +67,11 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(Participant::class)->findOneBy(['email' => $credentials['email']]);
+        //use Repository method to get User by email or pseudo
+        $user = $this->entityManager->getRepository(Participant::class)->loadUserByUsername($credentials['email']);
 
         if (!$user) {
-            throw new UsernameNotFoundException('Email could not be found.');
+            throw new UsernameNotFoundException('Email or Pseudo could not be found.');
         }
 
         return $user;
