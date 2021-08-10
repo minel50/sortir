@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une sortie!{% endblock %}
+
+{% block body %}
+
+
+<div class="example-wrapper" style ="margin-top :50px;">
+
+
+
+    <div class="card text-white bg-primary mb-3" style="max-width: 30rem; margin :auto;text-align :center">
+        <h1 style ="color:#ffffff;">Créer une sortie</h1>
+        <div class="card-body">
+            <div class ='list-group' style="text-align:center;">
+
+                {{form_start(sortieForm)}}
+                <p style="margin: auto;">{{form_row(sortieForm.nom) }}<p>
+                <p style="margin: auto;">{{form_row(sortieForm.dateHeureDebut) }}<p>
+                <p style="margin: auto;">{{form_row(sortieForm.duree) }}<p>
+                <p style="margin: auto;">{{form_row(sortieForm.dateLimiteInscription) }}<p>
+                <p style="margin: auto;">{{form_row(sortieForm.nbInscriptionsMax) }}<p>
+                <p style="margin: auto;">{{form_row(sortieForm.infosSortie) }}<p>
+                <p style="margin: auto;">{{form_row(sortieForm.lieu) }}<p>
+                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; margin: 20px auto auto;">Enregistrer</button>
+                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; margin: 20px auto auto;">Publier</button>
+                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; margin: 20px auto auto;">Annuler</button>
+
+
+                {{form_end(sortieForm)}}
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
