@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
+use App\Form\ProfilType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,7 +14,11 @@ class ParticipantController extends AbstractController
      */
     public function gestionProfil()
     {
-        echo "test branche";
-        die();
+        $participant = new Participant();
+        $participantForm = $this->createForm(ProfilType::class, $participant);
+
+        return $this->render('participant/profil.html.twig', [
+            'participantForm' => $participantForm->createView()
+        ]);
     }
 }

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} {% endblock %}
+{% block stylesheets %}{% endblock %}
+
+ {% block body %}
+     <p>Mon profil</p>
+
+     {{ form_start(participantForm) }}
+
+     {{ form_widget(participantForm) }}
+     <button>Enregistrer</button>
+     {{ form_end(participantForm) }}
+
+     <button>Annuler</button>
+ {% endblock %}
+
+ {% block javascripts %}{% endblock %}
