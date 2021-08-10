@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
 use App\Entity\Participant;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,21 +21,26 @@ class ProfilType extends AbstractType
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom'
             ])
+
             ->add('nom', TextType::class, [
                 'label' => 'Nom'
             ])
+
             ->add('telephone', TextType::class, [
                 'label' => 'Téléphone'
             ])
+
             ->add('email', TextType::class, [
-                'label' => 'Téléphone'
+                'label' => 'Email'
             ])
 
-            ->add('campus', TextType::class, [
-                'label' => 'Téléphone'
+            ->add('Campus', EntityType::class, [
+                'class' => Campus::class,
+                'choice_label' => 'nom'
             ])
-            ->add('photo', TextType::class, [
-                'label' => 'Téléphone',
+
+            ->add('Photo', TextType::class, [
+                'label' => 'photo',
                 'required' => 'false'
             ])
         ;
