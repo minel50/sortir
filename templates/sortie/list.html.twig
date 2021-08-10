@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}the list of sorties{% endblock %}
+
+{% block body %}
+    <h1>Liste</h1>
+    {% for sortie in sorties %}
+      <ul>
+          <li>Nom de la sortie : {{sortie.nom | upper}}</li>
+          <li>Date de la sortie : {{sortie.dateHeureDebut | format_datetime('medium') }}</li>
+          <li>Date Limite d'inscription : {{sortie.dateLimiteinscription | date('d/m/Y') }}</li>
+          {#  <a href="{{ path('') }}" title="page profil">#}
+              <li> Organisateur : {{sortie.organisateur.nom}} {{ sortie.organisateur.prenom }}</li>
+          {#  </a>#}
+          <li>Inscrits/places :    /{{ sortie.nbInscriptionsMax }}</li>
+          <li>Etat : {{sortie.etat.libelle  }}</li>
+          <li>Actions</li>
+
+      </ul>
+
+    {% endfor %}
+        {% if (app.user.username == sortie.organisateur.email) OR (app.user.username == sortie.organisateur.pseudo) %}
+        <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
+        <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
+        </a>
+        {% endif %}
+{% endblock %}
