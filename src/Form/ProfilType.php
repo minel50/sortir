@@ -34,13 +34,13 @@ class ProfilType extends AbstractType
                 'label' => 'Email'
             ])
 
-            ->add('Campus', EntityType::class, [
+            ->add('campus', EntityType::class, [
                 'class' => Campus::class,
-                'choice_label' => 'nom'
+                'choice_label' => 'Nom'
             ])
 
-            ->add('Photo', TextType::class, [
-                'label' => 'photo',
+            ->add('photo', TextType::class, [
+                'label' => 'Photo',
                 'required' => 'false'
             ])
         ;

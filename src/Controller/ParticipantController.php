@@ -18,10 +18,9 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/participant", name="participant_gestionProfil")
      */
-    public function gestionProfil(Request $request, EntityManagerInterface $entityManager, UserInterface $user)
+    public function gestionProfil(Request $request, EntityManagerInterface $entityManager)
     {
-        $participant = $user;
-
+        $participant = $this->getUser();
         $participantForm = $this->createForm(ProfilType::class, $participant);
 
         $participantForm->handleRequest($request);
