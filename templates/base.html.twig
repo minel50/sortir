@@ -6,17 +6,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Sortir.com{% endblock %}</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel='stylesheet' href="https://bootswatch.com/5/lux/bootstrap.min.css">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        {% endblock %}
     </head>
     <body>
         <div class="app-header-wrapper">
             <header>
                 <nav id="navbar">
-                    <a href="">Sortir.com</a>
+                    <a href="{{ path('sortie_list') }}">Sortir.com</a>
                     <a href="">Lien 1</a>
-                    <a href="{{ path('participant_gestionProfil')}}">Profil</a>
                     {% if app.user %}
+                        <a href="{{ path('participant_gestionProfil')}}">Profil</a>
                         <a href="{{ path('app_logout') }}">Se déconnecter</a>
                     {% endif %}
                     <a onclick="toggleMenu()"><i class="fa fa-bars"></i></a>
@@ -37,6 +41,8 @@
         </div>
 
         <script type="text/javascript" src="{{ asset('js/navbar.js') }}"></script>
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script src="bootstrap/js/bootstrap.min.js"></script>
+        {% endblock %}
     </body>
 </html>
