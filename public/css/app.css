@@ -30,19 +30,21 @@ main {
 }
 
 /*----- responsive navbar -----*/
-nav a {
+nav > a {
     color: inherit;
     text-decoration: none;
     height: 1rem;
     padding: 1rem;
     cursor: pointer;
+    line-height: 1rem;
+    box-sizing: initial;
 }
-nav a:hover:not(:first-child) {
+nav > a:hover:not(:first-child) {
     background-color: var(--color1);
     color: var(--color2);
 }
 /* home link always displayed*/
-nav a:first-child {
+nav > a:first-child {
     display: block;
     position: relative;
     font-size: 2rem;
@@ -50,17 +52,17 @@ nav a:first-child {
     padding: 0.5rem 2rem;
 }
 /*others links, visible on large screens, or expanded with menu button on small screens*/
-nav a:not(:first-child, :last-child) {
+nav > a:not(:first-child, :last-child) {
     display: none;
 }
 /*menu button, visible on small screens*/
-nav a:last-child {
+nav > a:last-child {
     display: block;
     position: absolute;
     top: 0;
     right: 0;
 }
-nav.vertical-expanded a:not(:first-child, :last-child) {
+nav.vertical-expanded > a:not(:first-child, :last-child) {
     display: block;
 }
 
@@ -68,13 +70,13 @@ nav.vertical-expanded a:not(:first-child, :last-child) {
     nav {
         display: flex;
     }
-    nav a:first-child {
+    nav > a:first-child {
         flex-grow: 1;
     }
-    nav a:not(:first-child, :last-child) {
+    nav > a:not(:first-child, :last-child) {
         display: block;
     }
-    nav a:last-child {
+    nav > a:last-child {
         display: none;
     }
 }
