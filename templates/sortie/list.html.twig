@@ -12,7 +12,7 @@
           {#  <a href="{{ path('') }}" title="page profil">#}
               <li> Organisateur : {{sortie.organisateur.nom}} {{ sortie.organisateur.prenom }}</li>
           {#  </a>#}
-          <li>Inscrits/places :    /{{ sortie.nbInscriptionsMax }}</li>
+          <li>Inscrits/places :   {{ sortie.participants.count }} / {{ sortie.nbInscriptionsMax }}</li>
           <li>Etat : {{sortie.etat.libelle  }}</li>
           <li>
               Actions :
@@ -20,7 +20,9 @@
                   {% if app.user in sortie.participants %}
                       <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
                   {% else %}
-                      <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
+                      {% if sortie.etat.libelle == "Ouverte" %}
+                        <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
+                      {% endif %}
                   {% endif %}
               {% endif %}
           </li>

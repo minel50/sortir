@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Sortie;
 use App\Form\SortieType;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,25 +53,44 @@ class SortieController extends AbstractController
     #[Route('/sortie/{idSortie}/inscription', name: 'sortie_register', methods: ["GET"])]
     public function register(int $idSortie,
                             SortieRepository $sortieRepository,
+                            EtatRepository $etatRepository,
                             EntityManagerInterface $entityManager
     ): Response {
         $sortie = $sortieRepository->find($idSortie);
-        $sortie->addParticipant($this->getUser());
 
-        $entityManager->persist($sortie);
-        $entityManager->flush();
+        //check if register possible (sortie.etat = Ouverte)
+        if ($sortie->getEtat()->getLibelle() == "Ouverte") {
+            $sortie->addParticipant($this->getUser());
 
-        $this->addFlash('success', 'Inscription effectuée à la sortie ' . $sortie->getNom());
+            //if limit of participants reached, registering closure
+            if (count($sortie->getParticipants()) >= $sortie->getNbInscriptionsMax()) {
+                $etatCloturee = $etatRepository->findOneBy(['libelle' => 'Clôturée']);
+                $sortie->setEtat($etatCloturee);
+            }
+
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Inscription effectuée à la sortie ' . $sortie->getNom());
+        } else {
+            $this->addFlash('error', 'Désolé, les inscriptions sont maintenant clôturées pour la sortie ' . $sortie->getNom());
+        }
         return $this->redirectToRoute('sortie_list');
     }
 
     #[Route('/sortie/{idSortie}/desinscription', name: 'sortie_unregister', methods: ["GET"])]
     public function unregister(int $idSortie,
                                 SortieRepository $sortieRepository,
+                                EtatRepository $etatRepository,
                                 EntityManagerInterface $entityManager
     ): Response {
         $sortie = $sortieRepository->find($idSortie);
         $sortie->removeParticipant($this->getUser());
+
+        if (count($sortie->getParticipants()) < $sortie->getNbInscriptionsMax()) {
+            $etatOuverte = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
+            $sortie->setEtat($etatOuverte);
+        }
 
         $entityManager->persist($sortie);
         $entityManager->flush();
