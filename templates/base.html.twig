@@ -25,6 +25,15 @@
         </div>
 
         <main>
+            {# read and display all flash messages #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <p class="app-flash-{{ label }}">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+            {% endfor %}
+
             {% block body %}
                 <p>Ceci est le template base.html.twig</p>
             {% endblock %}
