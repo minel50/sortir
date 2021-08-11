@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Créer lieu
+{% endblock %}
+
+{% block body %}
+    <h2>Créer un lieu</h2>
+
+    {{ form_start(lieuForm) }}
+        {{ form_label(lieuForm.nom) }}
+        {{ form_widget(lieuForm.nom) }}
+        {{ form_errors(lieuForm.nom) }}
+
+        {{ form_label(lieuForm.rue) }}
+        {{ form_widget(lieuForm.rue) }}
+        {{ form_errors(lieuForm.rue) }}
+
+        {{ form_label(lieuForm.latitude) }}
+        {{ form_widget(lieuForm.latitude) }}
+        {{ form_errors(lieuForm.latitude) }}
+
+        {{ form_label(lieuForm.longitude) }}
+        {{ form_widget(lieuForm.longitude) }}
+        {{ form_errors(lieuForm.longitude) }}
+
+        {{ form_label(lieuForm.ville) }}
+        {{ form_widget(lieuForm.ville) }}
+        {{ form_errors(lieuForm.ville) }}
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+        <button>Créer le lieu</button>
+    {{ form_end(lieuForm) }}
+{% endblock %}
