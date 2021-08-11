@@ -49,5 +49,19 @@ class SortieController extends AbstractController
 
     }
 
+    #[Route('/sortie/{idSortie}/inscription', name: 'sortie_register', methods: ["GET"])]
+    public function register(int $idSortie,
+                            SortieRepository $sortieRepository,
+                            EntityManagerInterface $entityManager
+    ): Response {
+        $sortie = $sortieRepository->find($idSortie);
+        $sortie->addParticipant($this->getUser());
+
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Inscription effectuée à la sortie ' . $sortie->getNom());
+        return $this->redirectToRoute('sortie_list');
+    }
 
 }

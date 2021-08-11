@@ -14,13 +14,22 @@
           {#  </a>#}
           <li>Inscrits/places :    /{{ sortie.nbInscriptionsMax }}</li>
           <li>Etat : {{sortie.etat.libelle  }}</li>
-          <li>Actions</li>
+          <li>
+              Actions :
+              {% if app.user %}
+                  {% if app.user in sortie.participants %}
+                      <a href="">Se désister</a>
+                  {% else %}
+                      <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
+                  {% endif %}
+              {% endif %}
+          </li>
 
       </ul>
 
     {% endfor %}
 
-        <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
+        <a href ="" title=" Créer une liste" >
         <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
         </a>
 
