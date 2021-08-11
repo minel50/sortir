@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
@@ -24,32 +25,44 @@ class Participant implements UserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank(message="La saisie de l'email est obligatoire")
+     * @Assert\Email(message="Ceci n'est pas un format d'email valide")
+     * @Assert\Length(max=180, min=6, maxMessage="Votre email doit contenir au maximum 180 caractères", minMessage="Votre email doit contenir au minimum 6 caractères")
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
     /**
+     * @Assert\Length(max=255)
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
+     * @Assert\Length(max=30, maxMessage="Votre nom doit contenir au maximum 30 caractères")
+     * @Assert\NotBlank(message="La saisie du nom est obligatoire")
      * @ORM\Column(type="string", length=30)
      */
     private $nom;
 
     /**
+     * @Assert\Length(max=30, maxMessage="Votre prénom doit contenir au maximum 30 caractères")
+     * @Assert\NotBlank(message="La saisie du prénom est obligatoire")
      * @ORM\Column(type="string", length=30)
      */
     private $prenom;
 
     /**
+     * @Assert\Length(max=15, maxMessage="Votre téléphone doit contenir au maximum 15 caractères")
+     * @Assert\NotBlank(message="La saisie d'un numéro est obligatoire")
      * @ORM\Column(type="string", length=15)
      */
     private $telephone;
 
     /**
+     * @Assert\NotBlank(message="La saisie d'un pseudo est obligatoire")
+     * @Assert\Length(max=30, min=3, maxMessage="Votre pseudo doit contenir au maximum 30 caractères", minMessage="Votre pseudo doit contenir au minimum 3 caractères")
      * @ORM\Column(type="string", length=30)
      */
     private $pseudo;
@@ -71,6 +84,7 @@ class Participant implements UserInterface
     private $campus;
 
     /**
+     * @Assert\NotBlank(message="Vous devez sélectionner un campus de rattachement")
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
     private $sortiesOrganisees;
@@ -81,6 +95,7 @@ class Participant implements UserInterface
     private $sortiesParticipees;
 
     /**
+     * @Assert\Length(max=150, maxMessage="Votre fichier photo doit comporter au maximum 150 caractères")
      * @ORM\Column(type="string", length=150, nullable=true)
      */
     private $photo;
