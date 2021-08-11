@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Espace administrateur
+{% endblock %}
+
+{% block body %}
+    <h2>Bienvenue sur l'espace administrateur</h2>
+    <p>
+        Voici les fonctionnalités réservées aux administrateurs :
+    </p>
+    <p>
+        <a href="{{ path('admin_createParticipant') }}">Créer un participant</a>
+    </p>
+{% endblock %}
+
