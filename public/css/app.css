@@ -39,6 +39,9 @@ nav > a {
     line-height: 1rem;
     box-sizing: initial;
 }
+nav > a:hover:first-child {
+    color: inherit;
+}
 nav > a:hover:not(:first-child) {
     background-color: var(--color1);
     color: var(--color2);
