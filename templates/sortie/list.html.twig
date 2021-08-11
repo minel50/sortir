@@ -18,7 +18,7 @@
               Actions :
               {% if app.user %}
                   {% if app.user in sortie.participants %}
-                      <a href="">Se désister</a>
+                      <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
                   {% else %}
                       <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
                   {% endif %}

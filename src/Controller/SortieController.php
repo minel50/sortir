@@ -64,4 +64,18 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('sortie_list');
     }
 
+    #[Route('/sortie/{idSortie}/desinscription', name: 'sortie_unregister', methods: ["GET"])]
+    public function unregister(int $idSortie,
+                                SortieRepository $sortieRepository,
+                                EntityManagerInterface $entityManager
+    ): Response {
+        $sortie = $sortieRepository->find($idSortie);
+        $sortie->removeParticipant($this->getUser());
+
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Vous n\'êtes plus inscrit à la sortie ' . $sortie->getNom());
+        return$this->redirectToRoute('sortie_list');
+    }
 }
