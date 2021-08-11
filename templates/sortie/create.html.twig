@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer une sortie!{% endblock %}
+{% block title %}{{ parent()}} | Créer une sortie {% endblock %}
 
 {% block body %}
 
@@ -15,24 +15,37 @@
             <div class ='list-group' style="text-align:center;">
 
                 {{form_start(sortieForm)}}
-                <p style="margin: auto;">{{form_row(sortieForm.nom) }}<p>
-                <p style="margin: auto;">{{form_row(sortieForm.dateHeureDebut) }}<p>
-                <p style="margin: auto;">{{form_row(sortieForm.duree) }}<p>
-                <p style="margin: auto;">{{form_row(sortieForm.dateLimiteInscription) }}<p>
-                <p style="margin: auto;">{{form_row(sortieForm.nbInscriptionsMax) }}<p>
-                <p style="margin: auto;">{{form_row(sortieForm.infosSortie) }}<p>
-                <p style="margin: auto;">{{form_row(sortieForm.lieu) }}<p>
-                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; margin: 20px auto auto;">Enregistrer</button>
-                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; margin: 20px auto auto;">Publier</button>
-                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; margin: 20px auto auto;">Annuler</button>
+                <p style="margin: auto;">{{form_row(sortieForm.nom) }}</p>
+                <p style="margin: auto;">{{form_row(sortieForm.dateHeureDebut) }}</p>
+                <p style="margin: auto;">{{form_row(sortieForm.duree) }}</p>
+                <p style="margin: auto;">{{form_row(sortieForm.dateLimiteInscription) }}</p>
+                <p style="margin: auto;">{{form_row(sortieForm.nbInscriptionsMax) }}</p>
+                <p style="margin: auto;">{{form_row(sortieForm.infosSortie) }}</p>
 
+                <p style="margin: auto;">{{form_row(sortieForm.lieu) }}<a href = "#" title="signe"><img src="{{ asset('img/signe plus.png') }}"></a>
+                </p>
+
+            </div>
+
+
+
+                <p style="margin: auto;">{{form_row(sortieForm.latitude) }}</p>
+                <p style="margin: auto;">{{form_row(sortieForm.longitude) }}</p>
+
+            <div style ="margin-top : 20px;margin-bottom: 20px">
+                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; ">Enregistrer</button>
+                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; ">Publier</button>
+                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; ">Annuler</button>
+            </div>
 
                 {{form_end(sortieForm)}}
 
-            </div>
-        </div>
+
+
+
     </div>
 
 
+</div>
 </div>
 {% endblock %}

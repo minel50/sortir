@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}the list of sorties{% endblock %}
+{% block title %}{{ parent()}} | main{% endblock %}
 
 {% block body %}
     <h1>Liste</h1>
@@ -19,9 +19,9 @@
       </ul>
 
     {% endfor %}
-        {% if (app.user.username == sortie.organisateur.email) OR (app.user.username == sortie.organisateur.pseudo) %}
+
         <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
         <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
         </a>
-        {% endif %}
+
 {% endblock %}
