@@ -33,6 +33,7 @@ main {
 nav a {
     color: inherit;
     text-decoration: none;
+    height: 1rem;
     padding: 1rem;
     cursor: pointer;
 }
@@ -45,6 +46,7 @@ nav a:first-child {
     display: block;
     position: relative;
     font-size: 2rem;
+    height: 2rem;
     padding: 0.5rem 2rem;
 }
 /*others links, visible on large screens, or expanded with menu button on small screens*/
@@ -54,7 +56,6 @@ nav a:not(:first-child, :last-child) {
 /*menu button, visible on small screens*/
 nav a:last-child {
     display: block;
-    height: 3rem;
     position: absolute;
     top: 0;
     right: 0;
