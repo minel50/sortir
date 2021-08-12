@@ -25,17 +25,25 @@
                 <p style="margin: auto;">{{form_row(sortieForm.lieu) }}<a href = "{{ path('lieu_create') }}" title="signe"><img src="{{ asset('img/signe plus.png') }}"></a>
                 </p>
 
+
             </div>
 
 
+                <p style="margin: auto;">{{form_row(sortieForm.ville) }}</p>
 
                 <p style="margin: auto;">{{form_row(sortieForm.latitude) }}</p>
                 <p style="margin: auto;">{{form_row(sortieForm.longitude) }}</p>
 
             <div style ="margin-top : 20px;margin-bottom: 20px">
+                <a href ="{{ path('sortie_list') }}" title ="Créer une liste">
                     <button type="submit" class="btn btn-light" style ="border-radius: 5px; ">Enregistrer</button>
+                </a>
+                    <a href ="{{ path('sortie_list') }}" title ="Publier une liste">
                     <button type="submit" class="btn btn-light" style ="border-radius: 5px; ">Publier</button>
+                    </a>
+                <a href ="{{ path('sortie_list') }}" title ="Annuler une liste">
                     <button type="submit" class="btn btn-light" style ="border-radius: 5px; ">Annuler</button>
+                </a>
             </div>
 
                 {{form_end(sortieForm)}}
