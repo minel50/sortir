@@ -10,8 +10,14 @@
      {{ form_widget(participantForm) }}
      <button>Enregistrer</button>
      {{ form_end(participantForm) }}
+     <a href="{{ path('sortie_list') }}">
+         <button>Annuler</button>
+     </a>
+     <br>
+     <a href="{{ path('participant_gestionMDP') }}">
+         <button>Modifier le mot de passe</button>
+     </a>
 
-     <button>Annuler</button>
 
      {# A replacer dans app.css  #}
      <style>

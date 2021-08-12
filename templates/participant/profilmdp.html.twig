@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h2>Modifier le mot de passe</h2>
+
+    {{ form_start(participantForm) }}
+    {{ form_row(participantForm.oldpassword) }}
+    {{ form_row(participantForm.password) }}
+    {{ form_row(participantForm.confirmpassword) }}
+
+    <button>Envoyer</button>
+    {{ form_end(participantForm) }}
+
+
+    <a href="{{ path('participant_gestionProfil') }}">
+        <button>Annuler</button>
+    </a>
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

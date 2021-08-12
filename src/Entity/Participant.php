@@ -35,6 +35,7 @@ class Participant implements UserInterface
     /**
      * @Assert\Length(max=255)
      * @var string The hashed password
+     * @Assert\NotBlank(message="La saisie du mot de passe est obligatoire")
      * @ORM\Column(type="string")
      */
     private $password;

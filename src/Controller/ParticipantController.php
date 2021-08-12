@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Form\MdpType;
 use App\Form\ProfilType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ParticipantController extends AbstractController
@@ -52,6 +54,8 @@ class ParticipantController extends AbstractController
             //MAJ BDD
             $entityManager->persist($participant);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Modifications effectuées sur votre profil');
         }
 
         return $this->render('participant/profil.html.twig', [
@@ -60,5 +64,65 @@ class ParticipantController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/participant/password", name="participant_gestionMDP")
+     */
+    public function gestionMDP(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder)
+    {
+
+        $participant = $this->getUser();
+        $participantForm = $this->createForm(MdpType::class, $participant);
+        $participantForm->handleRequest($request);
+
+        if($participantForm->isSubmitted() && $participantForm->isValid())
+        {
+            $mdp = $participantForm["password"]->getData();
+            $confirmmdp = $participantForm["confirmpassword"]->getData();
+            $oldmdp = $participantForm["oldpassword"]->getData();
+
+            //Check si ancien password valid
+            $validOldMdp = $encoder->isPasswordValid(
+                $this->getUser(),
+                $oldmdp
+            );
+
+            //Check si ancien password valid
+            if($mdp == $confirmmdp)
+            {
+                if($validOldMdp)
+                {
+
+                    //encoder le nouveau mdp enregistré
+                    $participant->setPassword(
+                        $encoder->encodePassword(
+                            $participant,
+                            $mdp
+                        )
+                    );
+
+                    //MAJ BDD
+                    $entityManager->persist($participant);
+                    $entityManager->flush();
+
+                    $this->addFlash('success', 'Le mot de passe a été modifié.');
+                    return $this->redirectToRoute('participant_gestionProfil');
+
+                }else{
+                    $this->addFlash("error", "Mot de passe actuel incorrect.");
+                    return $this->redirectToRoute('participant_gestionProfil');
+                }
+            }else{
+                $this->addFlash("error", "La confirmation du mot de passe est obligatoire et doit être valide.");
+                return $this->redirectToRoute('participant_gestionProfil');
+            }
+
+        }
+
+        return$this->render('participant/profilmdp.html.twig', [
+            'participantForm' => $participantForm->createView(),
+            'participant' => $participant
+        ]);
+    }
 
 }
