@@ -71,18 +71,20 @@ class SortieController extends AbstractController
 
                 $sorties=$sortieRepository->search($listeForm->get('mots')->getData());
         }
-        $sortie = new Sortie();
-        $dateForm = $this->createForm(SearchDateType::class,$sortie);
+
+        $dateForm = $this->createForm(SearchDateType::class);
         $dateForm->handleRequest($request);
         if($dateForm->isSubmitted() && $dateForm->isValid()) {
+            $from = $dateForm['from']->getData();
+            $to = $dateForm['to']->getData();
+            $sorties = $sortieRepository->searchSortieByDate($from,$to);
 
-            //$sorties=$sortieRepository->searchSortieByDate($dateForm->get('date')->getData());
         }
 
         return $this->render('sortie/list.html.twig', [
             'controller_name' => 'SortieController',
             'sorties'=>$sorties,
-            'sortie'=>$sortie,
+            //'sortie'=>$sortie,
             'listeForm'=>$listeForm->createView(),
             'dateForm'=>$dateForm->createView()
 
