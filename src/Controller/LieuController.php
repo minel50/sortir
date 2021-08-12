@@ -32,7 +32,7 @@ class LieuController extends AbstractController
 
                 $this->addFlash('success', 'Le lieu ' . $lieu->getNom() . ' a été créé avec succès');
 
-                return $this->redirectToRoute('app_login');
+                return $this->redirectToRoute('sortie_create');
             }
         }
 
