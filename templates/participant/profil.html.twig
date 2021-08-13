@@ -5,7 +5,7 @@
 
  {% block body %}
      <h2>Mon profil</h2>
-     <img class="app-photo-profil" src="{{ asset('img/photos/'~participant.photo) }}" alt="">
+     <img class="app-photo-profil" src="{{ asset('img/photos/'~participant.photo) }}" alt="photo du participant">
      {{ form_start(participantForm) }}
      {{ form_widget(participantForm) }}
      <button>Enregistrer</button>

@@ -126,14 +126,15 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("participant/liste", name="participant_liste")
+     * @Route("participant/display/{id}", name="participant_display")
      */
-    public function liste(ParticipantRepository $participantRepository)
+    public function liste(int $id, ParticipantRepository $participantRepository)
     {
-        $participants = $participantRepository->findAll();
+        $participant = $participantRepository->findOneBy(array('id' => $id));
 
-        return $this->render('participant/liste.html.twig', [
-            "participants" => $participants
+        return $this->render('participant/display.html.twig', [
+            'id' => $id,
+            'participant' => $participant
         ]);
     }
 
