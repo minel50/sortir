@@ -43,7 +43,9 @@
                         <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
                     {% endif %}
                       {% if app.user in sortie.participants %}
-                          <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
+                          {% if sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
+                              <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
+                          {% endif %}
                       {% else %}
                           {% if sortie.etat.libelle == "Ouverte" %}
                               <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
