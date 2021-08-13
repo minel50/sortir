@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}{{ parent()}} | main{% endblock %}
 
 {% block body %}
@@ -33,16 +32,23 @@
           <li>Nom de la sortie : {{sortie.nom | upper}}</li>
           <li>Date de la sortie : {{sortie.dateHeureDebut | format_datetime('medium') }}</li>
           <li>Date Limite d'inscription : {{sortie.dateLimiteinscription | date('d/m/Y') }}</li>
-           <a href="{{ path('participant_gestionProfil') }}" title="page profil">
+           <a href="{{ path('participant_display', {'id': sortie.organisateur.id}) }}" title="page profil">
               <li> Organisateur : {{sortie.organisateur.nom}} {{ sortie.organisateur.prenom }}</li>
-           </a>
-          <li>Inscrits/places :   0/{{ sortie.nbInscriptionsMax }}</li>
+          </a>
+          <li>Inscrits/places :   {{ sortie.participants.count }}  / {{ sortie.nbInscriptionsMax }}</li>
           <li>Etat : {{sortie.etat.libelle  }}</li>
           <li>Actions :
               {%  if app.user %}
                     {% if app.user.id == sortie.organisateur.id %}
-              <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
+                        <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
                     {% endif %}
+                      {% if app.user in sortie.participants %}
+                          <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
+                      {% else %}
+                          {% if sortie.etat.libelle == "Ouverte" %}
+                              <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
+                          {% endif %}
+                      {% endif %}
               {% endif %}
           </li>
 
@@ -55,8 +61,5 @@
         <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
         <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
         </a>
-
-{% endblock %}
-{% block javascripts %}
 
 {% endblock %}
