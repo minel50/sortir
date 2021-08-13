@@ -7,7 +7,9 @@ use App\Entity\Sortie;
 use App\Form\SearchDateType;
 use App\Form\SearchSortieType;
 use App\Form\SortieType;
+use App\Form\UpdateSortieType;
 use App\Repository\EtatRepository;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -71,23 +73,58 @@ class SortieController extends AbstractController
 
                 $sorties=$sortieRepository->search($listeForm->get('mots')->getData());
         }
-        $sortie = new Sortie();
-        $dateForm = $this->createForm(SearchDateType::class,$sortie);
+
+        $dateForm = $this->createForm(SearchDateType::class);
         $dateForm->handleRequest($request);
         if($dateForm->isSubmitted() && $dateForm->isValid()) {
+            $from = $dateForm['from']->getData();
+            $to = $dateForm['to']->getData();
+            $sorties = $sortieRepository->searchSortieByDate($from,$to);
 
-            //$sorties=$sortieRepository->searchSortieByDate($dateForm->get('date')->getData());
         }
 
         return $this->render('sortie/list.html.twig', [
             'controller_name' => 'SortieController',
             'sorties'=>$sorties,
-            'sortie'=>$sortie,
+            //'sortie'=>$sortie,
             'listeForm'=>$listeForm->createView(),
             'dateForm'=>$dateForm->createView()
 
 
         ]);
+
+    }
+
+
+    #[Route('/sortie/update/{id}', name: 'sortie_update')]
+    public function update(Request $request,SortieRepository $sortieRepository, int $id,EntityManagerInterface $entityManager,LieuRepository $lieuRepository): Response
+    {
+
+
+        $latitude = $lieuRepository->find(1);
+        $sortie=$sortieRepository->find($id);
+        $updateForm = $this->createForm(UpdateSortieType::class,$sortie,['latitude'=>$latitude]);
+
+        $updateForm->handleRequest($request);
+        if($updateForm->isSubmitted() && $updateForm->isValid()) {
+
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+
+
+            return $this->redirectToRoute('sortie_list');
+
+        }
+
+
+        return $this->render('sortie/update.html.twig', [
+            'controller_name' => 'SortieController',
+            'sortie'=>$sortie,
+            'updateForm'=>$updateForm->createView()
+
+
+        ]);
+
 
     }
 

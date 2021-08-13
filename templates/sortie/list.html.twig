@@ -8,7 +8,7 @@
     <p>Participant : {{ app.user.prenom }} {{ app.user.nom | slice(0,1) | upper}}.</p>
 
  {{form_start(listeForm)}}
-      <div>{{form_row(listeForm.campus) }}</div>
+      <div id="selectCampus">{{form_row(listeForm.campus) }}</div>
 
     <div style = "display :flex">
         {{form_row(listeForm.mots) }}
@@ -38,7 +38,14 @@
            </a>
           <li>Inscrits/places :   0/{{ sortie.nbInscriptionsMax }}</li>
           <li>Etat : {{sortie.etat.libelle  }}</li>
-          <li>Actions</li>
+          <li>Actions :
+              {%  if app.user %}
+                    {% if app.user.id == sortie.organisateur.id %}
+              <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
+                    {% endif %}
+              {% endif %}
+          </li>
+
 
       </ul>
         </div>
@@ -48,5 +55,8 @@
         <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
         <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
         </a>
+
+{% endblock %}
+{% block javascripts %}
 
 {% endblock %}

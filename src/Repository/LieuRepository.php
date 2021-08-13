@@ -18,7 +18,25 @@ class LieuRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Lieu::class);
     }
+    public function getQueryLieuxParVille($ville) {
+        return $this->createQueryBuilder('l')
+            ->andWhere('l.ville = :ville')
+            ->setParameter('ville', $ville);
+    }
 
+    public function getLatitude($latitude){
+        $queryBuilder = $this->createQueryBuilder('sortie')
+
+           ->addselect('latitude')
+            ->from('lieu','l')
+            ->innerJoin('l.sortie','sort')
+            ->where('l.latitude = :latitude')
+            ->setParameter('latitude',$latitude)
+                ->getQuery()
+                    ->getResult();
+
+
+    }
     // /**
     //  * @return Lieu[] Returns an array of Lieu objects
     //  */
