@@ -125,4 +125,16 @@ class ParticipantController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("participant/liste", name="participant_liste")
+     */
+    public function liste(ParticipantRepository $participantRepository)
+    {
+        $participants = $participantRepository->findAll();
+
+        return $this->render('participant/liste.html.twig', [
+            "participants" => $participants
+        ]);
+    }
+
 }
