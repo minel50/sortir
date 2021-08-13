@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <h2>{{ participant.pseudo }}</h2>
+
+    <img class="app-photo-profil" src="{{ asset('img/photos/'~participant.photo) }}" alt="photo du participant">
+
+    <p>{{ participant.prenom }}</p>
+    <p>{{ participant.nom }}</p>
+    <p>{{ participant.telephone }}</p>
+    <p>{{ participant.email }}</p>
+    <p>{{ participant.campus.nom }}</p>
+
+    <a href="#">
+        <button class="btn btn-primary">Retour</button>
+    </a>
+
+
+    {# A replacer dans app.css  #}
+    <style>
+        .app-photo-profil {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+
+
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
