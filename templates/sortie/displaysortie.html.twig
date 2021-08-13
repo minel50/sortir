@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Afficher une sortie</h2>
+
+    <label for="">Nom de la sortie : </label><output>{{ sortie.nom }}</output>
+    <br>
+    <label for="">Date et heure de la sortie : </label><output{{ sortie.dateHeureDebut|date('d-m-Y') }}></output>
+    <br>
+    <label for="">Date limite d'inscription : </label><output>{{ sortie.dateLimiteInscription|date('d-m-Y') }}</output>
+    <br>
+    <label for="">Nombre de places : </label><output>{{ sortie.nbInscriptionsMax }}</output>
+    <br>
+    <label for="">Durée : </label><output>{{ sortie.duree }} minutes</output>
+    <br>
+    <label for="">Description et infos : </label><output>{{ sortie.infosSortie }}</output>
+    <br>
+    <label for="">Campus : </label><output>{{ sortie.campus.nom }}</output>
+    <br>
+    <label for="">Lieu : </label><output>{{ sortie.lieu.nom }}</output>
+    <br>
+    <label for="">Rue : </label><output>{{ sortie.lieu.rue }}</output>
+    <br>
+    <label for="">Code postal : </label><output>{{ sortie.lieu.ville.codePostal }}</output>
+    <br>
+    <label for="">Latitude : </label><output>{{ sortie.lieu.latitude }}</output>
+    <br>
+    <label for="">Longitude : </label><output>{{ sortie.lieu.longitude }}</output>
+
+
+    <br><br>
+    <h4>Liste des participants inscrits : </h4>
+
+        <div id="table-wrapper">
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>Nom</th>
+                    </tr>
+                    </thead>
+                    <div >
+                        <tbody>
+                        {% for p in sortie.participants %}
+                            <tr>
+                                <td>{{ p.pseudo }}</td>
+                                <td>{{ p.prenom~' '}}{{ p.nom }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </div>
+                </table>
+
+        </div>
+
+
+
+    {# A transfrer dans app.css #}
+    <style>
+
+        #table-wrapper {
+            position:relative;
+            width: 400px;
+            height: 150px;
+        }
+
+        table {
+            display: flex;
+            flex-flow: column;
+            height: 100%;
+            width: 100%;
+        }
+        table thead {
+            /* head takes the height it requires,
+            and it's not scaled when table is resized */
+            flex: 0 0 auto;
+            width: calc(100% - 0.9em);
+        }
+        table tbody {
+            /* body takes all the remaining available space */
+            flex: 1 1 auto;
+            display: block;
+            overflow-y: scroll;
+        }
+        table tbody tr {
+            width: 100%;
+        }
+        table thead, table tbody tr {
+            display: table;
+            table-layout: fixed;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
