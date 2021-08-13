@@ -39,6 +39,9 @@
           <li>Etat : {{sortie.etat.libelle  }}</li>
           <li>Actions :
               {%  if app.user %}
+
+                      <a href="{{ path('sortie_display', {'id': sortie.id}) }}">Afficher</a>
+
                     {% if app.user.id == sortie.organisateur.id %}
                         <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
                     {% endif %}
