@@ -175,4 +175,14 @@ class SortieController extends AbstractController
         $this->addFlash('success', 'Vous n\'êtes plus inscrit à la sortie ' . $sortie->getNom());
         return$this->redirectToRoute('sortie_list');
     }
+
+    #[Route('/sortie/display/{id}', name: 'sortie_display', methods: ["GET"])]
+    public function displaySortie(int $id, SortieRepository $sortieRepository) : Response
+    {
+        $sortie = $sortieRepository->findOneBy(array('id' => $id));
+        return $this->render('sortie/displaysortie.html.twig', [
+            'sortie'=>$sortie
+        ]);
+    }
+
 }
