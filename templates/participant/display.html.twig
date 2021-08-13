@@ -13,7 +13,7 @@
     <p>{{ participant.email }}</p>
     <p>{{ participant.campus.nom }}</p>
 
-    <a href="#">
+    <a href="{{path('sortie_list')}}">
         <button class="btn btn-primary">Retour</button>
     </a>
 
@@ -21,7 +21,7 @@
     {# A replacer dans app.css  #}
     <style>
         .app-photo-profil {
-            width: 300px;
+            width: auto;
             height: 300px;
         }
     </style>
