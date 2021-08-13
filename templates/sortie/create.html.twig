@@ -9,10 +9,7 @@
 
 
 
-    <div class="card text-white bg-primary mb-3" style="max-width: 30rem; margin :auto;text-align :center">
-        <h1 style ="color:#ffffff;">Créer une sortie</h1>
-        <div class="card-body">
-            <div class ='list-group' style="text-align:center;">
+
 
                 {{form_start(sortieForm)}}
                 <p style="margin: auto;">{{form_row(sortieForm.nom) }}</p>
@@ -36,13 +33,13 @@
 
             <div style ="margin-top : 20px;margin-bottom: 20px">
                 <a href ="{{ path('sortie_list') }}" title ="Créer une liste">
-                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; ">Enregistrer</button>
+                    <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Enregistrer</button>
                 </a>
                     <a href ="{{ path('sortie_list') }}" title ="Publier une liste">
-                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; ">Publier</button>
+                    <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Publier</button>
                     </a>
                 <a href ="{{ path('sortie_list') }}" title ="Annuler une liste">
-                    <button type="submit" class="btn btn-light" style ="border-radius: 5px; ">Annuler</button>
+                    <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Annuler</button>
                 </a>
             </div>
 
@@ -51,9 +48,8 @@
 
 
 
-    </div>
 
 
-</div>
+
 </div>
 {% endblock %}
