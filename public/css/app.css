@@ -165,4 +165,9 @@ form ul {
     form .app-form-checkbox {
         grid-column: 2;
     }
+
+    .app-photo-profil {
+        width: auto;
+        height: 300px;
+    }
 }
