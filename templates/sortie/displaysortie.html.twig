@@ -29,9 +29,69 @@
 
 
     <br><br>
-    <h3>Liste des participants inscrits : </h3>
+    <h4>Liste des participants inscrits : </h4>
+
+        <div id="table-wrapper">
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>Nom</th>
+                    </tr>
+                    </thead>
+                    <div >
+                        <tbody>
+                        {% for p in sortie.participants %}
+                            <tr>
+                                <td>{{ p.pseudo }}</td>
+                                <td>{{ p.prenom~' '}}{{ p.nom }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </div>
+                </table>
+
+        </div>
 
 
+
+    {# A transfrer dans app.css #}
+    <style>
+
+        #table-wrapper {
+            position:relative;
+            width: 400px;
+            height: 150px;
+        }
+
+        table {
+            display: flex;
+            flex-flow: column;
+            height: 100%;
+            width: 100%;
+        }
+        table thead {
+            /* head takes the height it requires,
+            and it's not scaled when table is resized */
+            flex: 0 0 auto;
+            width: calc(100% - 0.9em);
+        }
+        table tbody {
+            /* body takes all the remaining available space */
+            flex: 1 1 auto;
+            display: block;
+            overflow-y: scroll;
+        }
+        table tbody tr {
+            width: 100%;
+        }
+        table thead, table tbody tr {
+            display: table;
+            table-layout: fixed;
+        }
+
+    </style>
 
 {% endblock %}
 
