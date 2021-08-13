@@ -12,6 +12,7 @@ use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
+use App\Service\SortieStateUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,10 +62,15 @@ class SortieController extends AbstractController
         ]);
     }
     #[Route('/sortie/list', name: 'sortie_list')]
-    public function list(SortieRepository $sortieRepository, Request $request): Response
+    public function list(SortieRepository $sortieRepository,
+                         Request $request,
+                        SortieStateUpdater $sortieStateUpdater
+    ): Response
     {    //$sorties = $sortieRepository->findSorties();
 
         $sorties = $sortieRepository->findAll();
+        //Service to update state (for now only switch between 'Ouverte' and 'Clôturée' developed).
+        $sortieStateUpdater->updateState($sorties);
 
         $listeForm = $this->createForm(SearchSortieType::class);
         $listeForm->handleRequest($request);
