@@ -4,8 +4,18 @@
     {{ parent() }} | Créer lieu
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+{% endblock %}
+
 {% block body %}
     <h2>Créer un lieu</h2>
+
+    <div id="maCarte"></div>
+    <br>
 
     {{ form_start(lieuForm) }}
         {{ form_label(lieuForm.nom) }}
@@ -36,9 +46,28 @@
 
     {% block javascripts %}
             {{ parent() }}
+        <style>
+            #maCarte{
+                height: 400px;
+                width: 400px;
+            }
+        </style>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+                integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+                crossorigin=""></script>
+
         <script>
 
+            const carte = L.map('maCarte').setView([48.35773192579703, -1.5149019937904162], 13);
 
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 18
+            }).addTo(carte);
+
+            L.marker([48.35773192579703, -1.5149019937904162]).addTo(carte)
+                .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+                .openPopup();
 
 
 
