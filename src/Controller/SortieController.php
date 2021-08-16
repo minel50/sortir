@@ -62,40 +62,54 @@ class SortieController extends AbstractController
 
         ]);
     }
+
     #[Route('/sortie/list', name: 'sortie_list')]
     public function list(SortieRepository $sortieRepository,
                          Request $request,
                         SortieStateUpdater $sortieStateUpdater
     ): Response
-    {    //$sorties = $sortieRepository->findSorties();
-
-        $sorties = $sortieRepository->findAll();
-        //Service to update state (for now only switch between 'Ouverte' and 'Clôturée' developed).
-        $sortieStateUpdater->updateState($sorties);
-
+    {
         $listeForm = $this->createForm(SearchSortieType::class);
         $listeForm->handleRequest($request);
+
         if($listeForm->isSubmitted() && $listeForm->isValid()) {
 
             $nom = $listeForm['nom']->getData();
             $campus=$listeForm['campus']->getData();
             $from = $listeForm['from']->getData();
             $to = $listeForm['to']->getData();
+            $isOrganisateur = $listeForm['isOrganisateur']->getData();
+            $isInscrit = $listeForm['isInscrit']->getData();
+            $isNotInscrit = $listeForm['isNotInscrit']->getData();
+            $isDone = $listeForm['isDone']->getData();
 
-            $sorties=$sortieRepository->getByCampus($nom,$campus,$from,$to);
 
-
+        } else {    //default values if first loading of the page
+            $nom = null;
+            $campus = null;     //to change with campus of the logged participant
+            $from = null;
+            $to = null;
+            $isOrganisateur = true;
+            $isInscrit = true;
+            $isNotInscrit = true;
+            $isDone = false;
         }
-            return $this->render('sortie/list.html.twig', [
+
+        $participant = $this->getUser();
+        $sorties=$sortieRepository->getByCampus($nom,$campus,$from,$to, $isOrganisateur, $isInscrit, $isNotInscrit,
+            $isDone, $participant);
+
+        //Service to update state (for now only switch between 'Ouverte' and 'Clôturée' developed).
+        $sortieStateUpdater->updateState($sorties);
+
+        return $this->render('sortie/list.html.twig', [
             'controller_name' => 'SortieController',
             'sorties'=>$sorties,
-
             'listeForm'=>$listeForm->createView(),
-
-
-
+            'isOrganisateur' => $isOrganisateur,
+            'isInscrit' => $isInscrit,
+            'isNotInscrit' => $isNotInscrit
         ]);
-
     }
 
 

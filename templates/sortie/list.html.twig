@@ -16,13 +16,42 @@
         <div style = "display :flex">
             {{form_row(listeForm.nom) }}
         </div >
-    <div style ="display :flex; margin-top: 20px;margin-bottom: 20px;">
+        <div style ="display :flex; margin-top: 20px;margin-bottom: 20px;">
 
-        {{form_row(listeForm.from) }}
-        {{form_row(listeForm.to) }}
+            {{form_row(listeForm.from) }}
+            {{form_row(listeForm.to) }}
 
-    </div>
-            <button type="submit" class="btn btn-light" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
+        </div>
+
+        {{ form_label(listeForm.isOrganisateur) }}
+        {% if isOrganisateur %}
+            {{ form_widget(listeForm.isOrganisateur, {'attr': {'checked': 'checked'}}) }}
+        {% else %}
+            {{ form_widget(listeForm.isOrganisateur)}}
+        {% endif %}
+        {{ form_errors(listeForm.isOrganisateur) }}
+
+        {{ form_label(listeForm.isInscrit) }}
+        {% if isInscrit %}
+            {{ form_widget(listeForm.isInscrit, {'attr': {'checked': 'checked'}}) }}
+        {% else %}
+            {{ form_widget(listeForm.isInscrit) }}
+        {% endif %}
+        {{ form_errors(listeForm.isInscrit) }}
+
+        {{ form_label(listeForm.isNotInscrit) }}
+        {% if isNotInscrit %}
+            {{ form_widget(listeForm.isNotInscrit, {'attr': {'checked': 'checked'}}) }}
+        {% else %}
+            {{ form_widget(listeForm.isNotInscrit) }}
+        {% endif %}
+        {{ form_errors(listeForm.isNotInscrit) }}
+
+        {{ form_label(listeForm.isDone) }}
+        {{ form_widget(listeForm.isDone) }}
+        {{ form_errors(listeForm.isDone) }}
+
+        <button type="submit" class="btn btn-dark" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
     {{form_end(listeForm)}}
 
 
