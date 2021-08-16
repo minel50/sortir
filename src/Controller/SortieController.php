@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class SortieController extends AbstractController
 {
@@ -198,6 +199,14 @@ class SortieController extends AbstractController
     public function displaySortie(int $id, SortieRepository $sortieRepository) : Response
     {
         $sortie = $sortieRepository->findOneBy(array('id' => $id));
+
+        //Events can be displayed only one month after their beginning datetime
+        $now = new \DateTime();
+        if ($sortie->getDateHeureDebut()->modify('+1 month') < $now ) {
+            $this->addFlash('error', 'Cette sortie n\'est plus visible car elle date de plus d\'un mois');
+            return $this->redirectToRoute('sortie_list');
+        }
+
         return $this->render('sortie/displaysortie.html.twig', [
             'sortie'=>$sortie
         ]);

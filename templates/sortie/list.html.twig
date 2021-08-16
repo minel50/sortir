@@ -6,11 +6,7 @@
     <p>Date du jour : {{"now"|date('d')}}/{{"now"|date('m')}}/{{"now"|date('Y')}}</p>
     <p>Participant : {{ app.user.prenom }} {{ app.user.nom | slice(0,1) | upper}}.</p>
 
-
-
-
-
- {{form_start(listeForm)}}
+    {{form_start(listeForm)}}
         <div>{{form_row(listeForm.campus) }}</div>
 
         <div style = "display :flex">
@@ -54,55 +50,48 @@
         <button type="submit" class="btn btn-dark" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
     {{form_end(listeForm)}}
 
-
-
-
-
-
      <div>
+        {% for sortie in sorties %}
+            <ul>
+                  <li>Nom de la sortie : {{sortie.nom | upper}}</li>
+                  <li>Date de la sortie : {{sortie.dateHeureDebut | format_datetime('medium') }}</li>
+                  <li>Date Limite d'inscription : {{sortie.dateLimiteinscription | date('d/m/Y') }}</li>
+                   <a href="{{ path('participant_display', {'id': sortie.organisateur.id}) }}" title="page profil">
+                      <li> Organisateur : {{sortie.organisateur.nom}} {{ sortie.organisateur.prenom }}</li>
+                  </a>
+                  <li>Inscrits/places :   {{ sortie.participants.count }}  / {{ sortie.nbInscriptionsMax }}</li>
+                  <li>Etat : {{sortie.etat.libelle  }}</li>
+                  <li>Actions :
+                        {%  if app.user %}
+
+                            {# Events can be displayed only one month after their beginning datetime #}
+                            {% if sortie.dateHeureDebut | date_modify('+ 1 month') < 'now' %}
+                                <a href="{{ path('sortie_display', {'id': sortie.id}) }}">Afficher</a>
+                            {% endif %}
+
+                            {% if app.user.id == sortie.organisateur.id %}
+                                <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
+                            {% endif %}
+
+                            {% if app.user in sortie.participants %}
+                                {% if sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
+                                    <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
+                                {% endif %}
+                            {% else %}
+                                {% if sortie.etat.libelle == "Ouverte" %}
+                                    <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
+                                {% endif %}
+                            {% endif %}
+
+                        {% endif %}
+                  </li>
+            </ul>
+        {% endfor %}
+    </div>
 
 
-
-            {% for sortie in sorties %}
-      <ul>
-          <li>Nom de la sortie : {{sortie.nom | upper}}</li>
-          <li>Date de la sortie : {{sortie.dateHeureDebut | format_datetime('medium') }}</li>
-          <li>Date Limite d'inscription : {{sortie.dateLimiteinscription | date('d/m/Y') }}</li>
-           <a href="{{ path('participant_display', {'id': sortie.organisateur.id}) }}" title="page profil">
-              <li> Organisateur : {{sortie.organisateur.nom}} {{ sortie.organisateur.prenom }}</li>
-          </a>
-          <li>Inscrits/places :   {{ sortie.participants.count }}  / {{ sortie.nbInscriptionsMax }}</li>
-          <li>Etat : {{sortie.etat.libelle  }}</li>
-          <li>Actions :
-              {%  if app.user %}
-
-                      <a href="{{ path('sortie_display', {'id': sortie.id}) }}">Afficher</a>
-
-                    {% if app.user.id == sortie.organisateur.id %}
-                        <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
-                    {% endif %}
-                      {% if app.user in sortie.participants %}
-                          {% if sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
-                              <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
-                          {% endif %}
-                      {% else %}
-                          {% if sortie.etat.libelle == "Ouverte" %}
-                              <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
-                          {% endif %}
-                      {% endif %}
-              {% endif %}
-          </li>
-
-
-      </ul>
-        </div>
-
-    {% endfor %}
-
-
-
-        <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
+    <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
         <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
-        </a>
+    </a>
 
 {% endblock %}
