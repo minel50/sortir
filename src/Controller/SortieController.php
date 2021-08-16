@@ -212,16 +212,35 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/{id}/annuler', name: 'sortie_cancel', methods: ["GET"])]
-    public function cancelSortie(int $id, SortieRepository $sortieRepository, SortieStateUpdater $sortieStateUpdater) : Response {
+    #[Route('/sortie/{id}/annuler', name: 'sortie_cancel', methods: ["GET", "POST"])]
+    public function cancelSortie(int $id,
+                                 SortieRepository $sortieRepository,
+                                 SortieStateUpdater $sortieStateUpdater,
+                                 Request $request
+    ) : Response {
         $sortie = $sortieRepository->find($id);
+        $cancelForm = $this->createForm('App\Form\CancelSortieType');
+        $cancelForm->handleRequest($request);
 
-        if ($sortieStateUpdater->cancel($sortie)) {
-            $this->addFlash('success', 'Cette sortie a été annulée');
-        } else {
-            $this->addFlash('error', 'Seules les sorties publiées et pas encore débutées peuvent être annulées');
+        if ($cancelForm->isSubmitted() && $cancelForm->isValid()) {
+            $cancelReason = $cancelForm['cancel']->getData();
+            $sortie->setInfosSortie(
+                $sortie->getInfosSortie() . ' Sortie annulée pour le motif suivant : ' . $cancelReason
+            );
+
+            if ($sortieStateUpdater->cancel($sortie)) {
+                $this->addFlash('success', 'Cette sortie a été annulée');
+            } else {
+                $this->addFlash('error', 'Cette sortie ne peut pas être annulée');
+            }
+
+            return $this->redirectToRoute('sortie_update', ['id' => $id]);
         }
 
-        return $this->redirectToRoute('sortie_update', ['id' => $id]);
+        return $this->render('sortie/cancelSortie.html.twig', [
+            'cancelForm' => $cancelForm->createView(),
+            'sortie' => $sortie
+        ]);
+
     }
 }

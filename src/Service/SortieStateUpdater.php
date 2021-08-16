@@ -5,12 +5,19 @@ namespace App\Service;
 use App\Entity\Sortie;
 use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Security;
 
 class SortieStateUpdater {
+    private $security;
     private $etatRepository;
     private $entityManager;
 
-    public function __construct(EtatRepository $etatRepository, EntityManagerInterface $entityManager) {
+    public function __construct(
+        Security $security,
+        EtatRepository $etatRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->security = $security;
         $this->etatRepository = $etatRepository;
         $this->entityManager = $entityManager;
     }
@@ -43,14 +50,20 @@ class SortieStateUpdater {
     public function cancel(Sortie $sortie):bool {
         $etatAnnulee = $this->etatRepository->findOneBy(['libelle' => 'Annulée']);
 
-        //setting state to 'Annulée' only possible for state 'Ouverte' or 'Clôturée'
-        if ($sortie->getEtat()->getLibelle() == 'Ouverte' || $sortie->getEtat()->getLibelle() == 'Clôturée') {
-            $sortie->setEtat($etatAnnulee);
-            $this->entityManager->persist($sortie);
-            $this->entityManager->flush();
-            return true;
+        //check if user is also organisator...
+        if ($sortie->getOrganisateur() == $this->security->getUser()) {
+            //setting state to 'Annulée' only possible for state 'Ouverte' or 'Clôturée'
+            if ($sortie->getEtat()->getLibelle() == 'Ouverte' || $sortie->getEtat()->getLibelle() == 'Clôturée') {
+                $sortie->setEtat($etatAnnulee);
+                $this->entityManager->persist($sortie);
+                $this->entityManager->flush();
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
+
     }
 }
