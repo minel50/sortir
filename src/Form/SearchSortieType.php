@@ -17,12 +17,16 @@ class SearchSortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
 
+
+        $builder
             ->add('campus',EntityType::class,[
                 'class' => Campus::class,
                 'choice_label' => 'Nom',
-                'required'=>false
+                'required'=>false,
+
+
+
 
             ])
            ->add('nom',TextType::class,[
@@ -61,9 +65,14 @@ class SearchSortieType extends AbstractType
         $resolver->setDefaults([
             //'data_class' => Sortie::class,
             'data_class' => null,
+         
 
 
 
         ]);
+    }
+
+    private function getUser()
+    {
     }
 }

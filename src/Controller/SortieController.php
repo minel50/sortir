@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\SearchDateType;
@@ -63,6 +64,10 @@ class SortieController extends AbstractController
     #[Route('/sortie/list', name: 'sortie_list')]
     public function list(SortieRepository $sortieRepository, Request $request): Response
     {
+
+            $user = $this->getUser();
+            $camp = $user->getCampus()->getId();
+            dump($camp);
             $sorties = $sortieRepository->findAll();
             $listeForm = $this->createForm(SearchSortieType::class,$sorties);
             $listeForm->handleRequest($request);
@@ -80,8 +85,9 @@ class SortieController extends AbstractController
             return $this->render('sortie/list.html.twig', [
             'controller_name' => 'SortieController',
             'sorties'=>$sorties,
-            'listeForm'=>$listeForm->createView(),
 
+            'listeForm'=>$listeForm->createView(),
+            'camp'=>$camp,
 
         ]);
 
