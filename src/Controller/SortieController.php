@@ -203,4 +203,16 @@ class SortieController extends AbstractController
         ]);
     }
 
+    #[Route('/sortie/{id}/annuler', name: 'sortie_cancel', methods: ["GET"])]
+    public function cancelSortie(int $id, SortieRepository $sortieRepository, SortieStateUpdater $sortieStateUpdater) : Response {
+        $sortie = $sortieRepository->find($id);
+
+        if ($sortieStateUpdater->cancel($sortie)) {
+            $this->addFlash('success', 'Cette sortie a été annulée');
+        } else {
+            $this->addFlash('error', 'Seules les sorties publiées et pas encore débutées peuvent être annulées');
+        }
+
+        return $this->redirectToRoute('sortie_update', ['id' => $id]);
+    }
 }

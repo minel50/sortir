@@ -32,17 +32,17 @@
         <p style="margin: auto;">{{form_row(updateForm.longitude) }}</p>
 
         <div style ="margin-top : 20px;margin-bottom: 20px">
-            <a href ="{{ path('sortie_list') }}" title ="Créer une liste">
+            <a href ="{{ path('sortie_list') }}" title ="Enregistrer les modifications">
                 <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Enregistrer</button>
             </a>
-            <a href ="{{ path('sortie_list') }}" title ="Publier une liste">
+            <a href ="{{ path('sortie_list') }}" title ="Publier la sortie">
                 <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Publier</button>
             </a>
-            <a href ="{{ path('sortie_list') }}" title ="Publier une liste">
+            <a href ="{{ path('sortie_list') }}" title ="Supprimer la sortie">
                 <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Supprimer</button>
             </a>
-            <a href ="{{ path('sortie_list') }}" title ="Annuler une liste">
-                <button type="reset" class="btn btn-dark" style ="border-radius: 5px; ">Annuler</button>
+            <a href ="{{ path('sortie_cancel', {'id': sortie.id}) }}" title ="Annuler la sortie">
+                <span class="btn btn-dark" style ="border-radius: 5px; ">Annuler</span>
             </a>
         </div>
 

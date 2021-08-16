@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Sortie;
 use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -37,5 +38,19 @@ class SortieStateUpdater {
             }
         }
         $this->entityManager->flush();
+    }
+
+    public function cancel(Sortie $sortie):bool {
+        $etatAnnulee = $this->etatRepository->findOneBy(['libelle' => 'Annulée']);
+
+        //setting state to 'Annulée' only possible for state 'Ouverte' or 'Clôturée'
+        if ($sortie->getEtat()->getLibelle() == 'Ouverte' || $sortie->getEtat()->getLibelle() == 'Clôturée') {
+            $sortie->setEtat($etatAnnulee);
+            $this->entityManager->persist($sortie);
+            $this->entityManager->flush();
+            return true;
+        } else {
+            return false;
+        }
     }
 }
