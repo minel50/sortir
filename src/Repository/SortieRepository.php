@@ -21,29 +21,52 @@ class SortieRepository extends ServiceEntityRepository
 
 
     public function search($nom){
-        $queryBuilder = $this->createQueryBuilder('s');
-        if($nom!=null){
-            $queryBuilder
-                ->andWhere('s.nom = :nom')
-                ->setParameter('nom',$nom);
-        }
-        return $queryBuilder->getQuery()->getResult();
-
-
+    $queryBuilder = $this->createQueryBuilder('s');
+    if($nom!=null){
+        $queryBuilder
+            ->andWhere('s.nom  LIKE  :nom')
+            ->setParameter('nom',$nom);
     }
+    return $queryBuilder->getQuery()->getResult();
 
-    public function searchSortieByDate($from,$to){
+
+}
+    public function getByCampus($nom,$campus,$from,$to)
+    {
         $queryBuilder = $this->createQueryBuilder('s');
+        if ($nom != '') {
+
+        $queryBuilder
+            ->where('s.nom LIKE :nom')
+            ->setParameter('nom', "%{$nom}%");
+                    }
+
+        if($campus !=''){
+            $queryBuilder
+
+              ->andWhere('s.campus = :campus')
+                ->setParameter('campus', $campus);
+
+        }
         if($from!=null && $to!=null){
             $queryBuilder
-            ->andWhere('s.dateHeureDebut BETWEEN :from AND :to')
-            ->setparameter('from',$from)
-            ->setParameter('to',$to)   ;
+                ->andWhere('s.dateHeureDebut BETWEEN :from AND :to')
+                ->setparameter('from',$from)
+                ->setParameter('to',$to)   ;
         }
+
         return $queryBuilder->getQuery()->getResult();
 
 
     }
+
+
+
+
+
+
+
+
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects
     //  */

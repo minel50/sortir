@@ -52,9 +52,9 @@ class UpdateSortieType extends AbstractType
             ->add('lieu', EntityType::class, [
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
-                "query_builder"=> function(LieuRepository $lieuRepository) use($options) {
+                /*"query_builder"=> function(LieuRepository $lieuRepository) use($options) {
                     return $lieuRepository->getLatitude($options['latitude']);
-                },
+                },*/
 
 
             ])

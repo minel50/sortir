@@ -62,32 +62,25 @@ class SortieController extends AbstractController
     }
     #[Route('/sortie/list', name: 'sortie_list')]
     public function list(SortieRepository $sortieRepository, Request $request): Response
-    {    //$sorties = $sortieRepository->findSorties();
+    {
+            $sorties = $sortieRepository->findAll();
+            $listeForm = $this->createForm(SearchSortieType::class,$sorties);
+            $listeForm->handleRequest($request);
+            if($listeForm->isSubmitted() && $listeForm->isValid()) {
 
-        $sorties = $sortieRepository->findAll();
+            $nom = $listeForm['nom']->getData();
+            $campus=$listeForm['campus']->getData();
+            $from = $listeForm['from']->getData();
+            $to = $listeForm['to']->getData();
 
-        $listeForm = $this->createForm(SearchSortieType::class);
-        $listeForm->handleRequest($request);
-        if($listeForm->isSubmitted() && $listeForm->isValid()) {
+            $sorties=$sortieRepository->getByCampus($nom,$campus,$from,$to);
 
-                $sorties=$sortieRepository->search($listeForm->get('mots')->getData());
-        }
-
-        $dateForm = $this->createForm(SearchDateType::class);
-        $dateForm->handleRequest($request);
-        if($dateForm->isSubmitted() && $dateForm->isValid()) {
-            $from = $dateForm['from']->getData();
-            $to = $dateForm['to']->getData();
-            $sorties = $sortieRepository->searchSortieByDate($from,$to);
 
         }
-
-        return $this->render('sortie/list.html.twig', [
+            return $this->render('sortie/list.html.twig', [
             'controller_name' => 'SortieController',
             'sorties'=>$sorties,
-            //'sortie'=>$sortie,
             'listeForm'=>$listeForm->createView(),
-            'dateForm'=>$dateForm->createView()
 
 
         ]);

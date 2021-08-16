@@ -6,28 +6,34 @@
     <p>Date du jour : {{"now"|date('d')}}/{{"now"|date('m')}}/{{"now"|date('Y')}}</p>
     <p>Participant : {{ app.user.prenom }} {{ app.user.nom | slice(0,1) | upper}}.</p>
 
- {{form_start(listeForm)}}
-      <div id="selectCampus">{{form_row(listeForm.campus) }}</div>
 
-    <div style = "display :flex">
-        {{form_row(listeForm.mots) }}
-        <button type="submit" class="btn btn-light" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
-    </div >
+
+
+ {{form_start(listeForm)}}
+        <div id="selectCampus">{{form_row(listeForm.campus) }}</div>
+
+        <div style = "display :flex">
+            {{form_row(listeForm.nom) }}
+        </div >
+    <div style ="display :flex; margin-top: 20px;margin-bottom: 20px;">
+
+        {{form_row(listeForm.from) }}
+        {{form_row(listeForm.to) }}
+
+    </div>
+            <button type="submit" class="btn btn-light" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
     {{form_end(listeForm)}}
 
 
-    {{form_start(dateForm)}}
-    <div style ="display :flex; margin-top: 20px;margin-bottom: 20px;">
-
-        {{form_row(dateForm.from) }}
-        {{form_row(dateForm.to) }}
-        <button type="submit" class="btn btn-light" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
-    </div>
-    {{form_end(dateForm)}}
 
 
-    <div>
-    {% for sortie in sorties %}
+
+
+     <div>
+
+
+
+            {% for sortie in sorties %}
       <ul>
           <li>Nom de la sortie : {{sortie.nom | upper}}</li>
           <li>Date de la sortie : {{sortie.dateHeureDebut | format_datetime('medium') }}</li>
@@ -57,6 +63,8 @@
         </div>
 
     {% endfor %}
+
+
 
         <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
         <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
