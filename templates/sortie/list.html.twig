@@ -5,7 +5,7 @@
 {% block body %}
     <p>Date du jour : {{"now"|date('d')}}/{{"now"|date('m')}}/{{"now"|date('Y')}}</p>
     <p>Participant : {{ app.user.prenom }} {{ app.user.nom | slice(0,1) | upper}}.</p>
-    <p>{{ camp }}</p>
+
 
 
 
