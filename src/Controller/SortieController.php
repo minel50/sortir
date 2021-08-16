@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\SearchDateType;
@@ -76,24 +77,21 @@ class SortieController extends AbstractController
         $listeForm->handleRequest($request);
         if($listeForm->isSubmitted() && $listeForm->isValid()) {
 
-                $sorties=$sortieRepository->search($listeForm->get('mots')->getData());
-        }
+            $nom = $listeForm['nom']->getData();
+            $campus=$listeForm['campus']->getData();
+            $from = $listeForm['from']->getData();
+            $to = $listeForm['to']->getData();
 
-        $dateForm = $this->createForm(SearchDateType::class);
-        $dateForm->handleRequest($request);
-        if($dateForm->isSubmitted() && $dateForm->isValid()) {
-            $from = $dateForm['from']->getData();
-            $to = $dateForm['to']->getData();
-            $sorties = $sortieRepository->searchSortieByDate($from,$to);
+            $sorties=$sortieRepository->getByCampus($nom,$campus,$from,$to);
+
 
         }
-
-        return $this->render('sortie/list.html.twig', [
+            return $this->render('sortie/list.html.twig', [
             'controller_name' => 'SortieController',
             'sorties'=>$sorties,
-            //'sortie'=>$sortie,
+
             'listeForm'=>$listeForm->createView(),
-            'dateForm'=>$dateForm->createView()
+
 
 
         ]);
@@ -106,9 +104,9 @@ class SortieController extends AbstractController
     {
 
 
-        $latitude = $lieuRepository->find(1);
+
         $sortie=$sortieRepository->find($id);
-        $updateForm = $this->createForm(UpdateSortieType::class,$sortie,['latitude'=>$latitude]);
+        $updateForm = $this->createForm(UpdateSortieType::class,$sortie);
 
         $updateForm->handleRequest($request);
         if($updateForm->isSubmitted() && $updateForm->isValid()) {
