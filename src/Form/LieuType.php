@@ -7,6 +7,7 @@ use App\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,8 +18,11 @@ class LieuType extends AbstractType
         $builder
             ->add('nom')
             ->add('rue')
-            ->add('latitude')
-            ->add('longitude')
+            ->add('latitude',NumberType::class
+
+            )
+            ->add('longitude',NumberType::class)
+
             ->add('ville', EntityType::class, [
                 'class' => Ville::class,
                 'choice_label' => 'nom',
