@@ -22,7 +22,7 @@ class UpdateSortieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $latitude = $options['latitude'];
+
 
         $builder
             ->add('nom', TextType::class, ['label' => false, 'attr' => [
@@ -52,9 +52,7 @@ class UpdateSortieType extends AbstractType
             ->add('lieu', EntityType::class, [
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
-                /*"query_builder"=> function(LieuRepository $lieuRepository) use($options) {
-                    return $lieuRepository->getLatitude($options['latitude']);
-                },*/
+
 
 
             ])

@@ -93,9 +93,9 @@ class SortieController extends AbstractController
     {
 
 
-        $latitude = $lieuRepository->find(1);
+
         $sortie=$sortieRepository->find($id);
-        $updateForm = $this->createForm(UpdateSortieType::class,$sortie,['latitude'=>$latitude]);
+        $updateForm = $this->createForm(UpdateSortieType::class,$sortie);
 
         $updateForm->handleRequest($request);
         if($updateForm->isSubmitted() && $updateForm->isValid()) {
