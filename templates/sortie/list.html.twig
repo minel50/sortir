@@ -72,6 +72,7 @@
                             {# Events can be modified only by organisator and if state is "Créée" #}
                             {% if app.user.id == sortie.organisateur.id and sortie.etat.libelle == "Créée" %}
                                 <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
+                                <a href ="{{ path('sortie_publish',{'id':sortie.id}) }}">Publier</a>
                             {% endif %}
 
                             {% if app.user in sortie.participants %}
