@@ -66,7 +66,7 @@ class ParticipantController extends AbstractController
 
 
     /**
-     * @Route("/participant/password", name="participant_gestionMDP")
+     * @Route("/participant/mdp", name="participant_gestionMDP")
      */
     public function gestionMDP(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder)
     {
@@ -126,7 +126,7 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("participant/display/{id}", name="participant_display")
+     * @Route("participant/afficher/{id}", name="participant_display")
      */
     public function liste(int $id, ParticipantRepository $participantRepository)
     {

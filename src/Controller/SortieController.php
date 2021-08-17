@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints\Date;
 
 class SortieController extends AbstractController
 {
-    #[Route('/sortie/create', name: 'sortie_create')]
+    #[Route('/sortie/creer', name: 'sortie_create')]
     public function create(Request $request, EntityManagerInterface $entityManager,EtatRepository $etatRepository,VilleRepository $villeRepository,SortieRepository $sortieRepository): Response
     {
         $sortie = new Sortie();
@@ -64,7 +64,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/list', name: 'sortie_list')]
+    #[Route('', name: 'sortie_list')]
     public function list(SortieRepository $sortieRepository,
                          Request $request,
                         SortieStateUpdater $sortieStateUpdater
@@ -117,7 +117,7 @@ class SortieController extends AbstractController
     }
 
 
-    #[Route('/sortie/update/{id}', name: 'sortie_update')]
+    #[Route('/sortie/modifier/{id}', name: 'sortie_update')]
     public function update(Request $request,SortieRepository $sortieRepository, int $id,EntityManagerInterface $entityManager,LieuRepository $lieuRepository): Response
     {
         $sortie=$sortieRepository->find($id);
@@ -154,7 +154,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/{idSortie}/inscription', name: 'sortie_register', methods: ["GET"])]
+    #[Route('/sortie/inscription/{idSortie}', name: 'sortie_register', methods: ["GET"])]
     public function register(int $idSortie,
                             SortieRepository $sortieRepository,
                             EtatRepository $etatRepository,
@@ -182,7 +182,7 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('sortie_list');
     }
 
-    #[Route('/sortie/{idSortie}/desinscription', name: 'sortie_unregister', methods: ["GET"])]
+    #[Route('/sortie/desinscription/{idSortie}', name: 'sortie_unregister', methods: ["GET"])]
     public function unregister(int $idSortie,
                                 SortieRepository $sortieRepository,
                                 EtatRepository $etatRepository,
@@ -203,7 +203,7 @@ class SortieController extends AbstractController
         return$this->redirectToRoute('sortie_list');
     }
 
-    #[Route('/sortie/display/{id}', name: 'sortie_display', methods: ["GET"])]
+    #[Route('/sortie/afficher/{id}', name: 'sortie_display', methods: ["GET"])]
     public function displaySortie(int $id, SortieRepository $sortieRepository) : Response
     {
         $sortie = $sortieRepository->findOneBy(array('id' => $id));
@@ -220,7 +220,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/{id}/annuler', name: 'sortie_cancel', methods: ["GET", "POST"])]
+    #[Route('/sortie/annuler/{id}', name: 'sortie_cancel', methods: ["GET", "POST"])]
     public function cancelSortie(int $id,
                                  SortieRepository $sortieRepository,
                                  SortieStateUpdater $sortieStateUpdater,
@@ -251,7 +251,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/{id}/publier', name: 'sortie_publish', methods: ["GET"])]
+    #[Route('/sortie/publier/{id}', name: 'sortie_publish', methods: ["GET"])]
     public function publishSortie(int $id,
                                     SortieRepository $sortieRepository,
                                     SortieStateUpdater $sortieStateUpdater
@@ -268,7 +268,7 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('sortie_list');
     }
 
-    #[Route('/sortie/{id}/supprimer', name: 'sortie_delete', methods: ["GET"])]
+    #[Route('/sortie/supprimer/{id}', name: 'sortie_delete', methods: ["GET"])]
     public function deleteSortie(int $id,
                                 SortieRepository $sortieRepository,
                                 EntityManagerInterface $entityManager
