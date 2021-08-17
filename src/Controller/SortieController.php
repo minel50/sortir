@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class SortieController extends AbstractController
 {
@@ -198,21 +199,48 @@ class SortieController extends AbstractController
     public function displaySortie(int $id, SortieRepository $sortieRepository) : Response
     {
         $sortie = $sortieRepository->findOneBy(array('id' => $id));
+
+        //Events can be displayed only one month after their beginning datetime
+        $now = new \DateTime();
+        if ($sortie->getDateHeureDebut()->modify('+1 month') < $now ) {
+            $this->addFlash('error', 'Cette sortie n\'est plus visible car elle date de plus d\'un mois');
+            return $this->redirectToRoute('sortie_list');
+        }
+
         return $this->render('sortie/displaysortie.html.twig', [
             'sortie'=>$sortie
         ]);
     }
 
-    #[Route('/sortie/{id}/annuler', name: 'sortie_cancel', methods: ["GET"])]
-    public function cancelSortie(int $id, SortieRepository $sortieRepository, SortieStateUpdater $sortieStateUpdater) : Response {
+    #[Route('/sortie/{id}/annuler', name: 'sortie_cancel', methods: ["GET", "POST"])]
+    public function cancelSortie(int $id,
+                                 SortieRepository $sortieRepository,
+                                 SortieStateUpdater $sortieStateUpdater,
+                                 Request $request
+    ) : Response {
         $sortie = $sortieRepository->find($id);
+        $cancelForm = $this->createForm('App\Form\CancelSortieType');
+        $cancelForm->handleRequest($request);
 
-        if ($sortieStateUpdater->cancel($sortie)) {
-            $this->addFlash('success', 'Cette sortie a été annulée');
-        } else {
-            $this->addFlash('error', 'Seules les sorties publiées et pas encore débutées peuvent être annulées');
+        if ($cancelForm->isSubmitted() && $cancelForm->isValid()) {
+            $cancelReason = $cancelForm['cancel']->getData();
+            $sortie->setInfosSortie(
+                $sortie->getInfosSortie() . ' Sortie annulée pour le motif suivant : ' . $cancelReason
+            );
+
+            if ($sortieStateUpdater->cancel($sortie)) {
+                $this->addFlash('success', 'Cette sortie a été annulée');
+            } else {
+                $this->addFlash('error', 'Cette sortie ne peut pas être annulée');
+            }
+
+            return $this->redirectToRoute('sortie_update', ['id' => $id]);
         }
 
-        return $this->redirectToRoute('sortie_update', ['id' => $id]);
+        return $this->render('sortie/cancelSortie.html.twig', [
+            'cancelForm' => $cancelForm->createView(),
+            'sortie' => $sortie
+        ]);
+
     }
 }

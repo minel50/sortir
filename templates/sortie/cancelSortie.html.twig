@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | annuler une sortie
+{% endblock %}
+
+{% block body %}
+    <h3>Annuler une sortie</h3>
+
+    <p>Vous êtes sur le point d'annuler la sortie {{ sortie.nom }}. Il faut préciser un motif d'annulation :</p>
+
+    {{ form_start(cancelForm) }}
+
+        {{ form_label(cancelForm.cancel) }}
+        {{ form_widget(cancelForm.cancel) }}
+        {{ form_errors(cancelForm.cancel) }}
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+        <button class="btn btn-dark">Confirmer l'annulation</button>
+
+    {{ form_end(cancelForm) }}
+{% endblock %}
