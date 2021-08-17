@@ -51,6 +51,10 @@
     {{form_end(listeForm)}}
 
      <div>
+         {# Events starting before this limitDate cannot be displayed #}
+         {# this limitDate is used in each loop below #}
+        {% set limitDate = 'now' | date_modify('- 1 month') %}
+
         {% for sortie in sorties %}
             <ul>
                   <li>Nom de la sortie : {{sortie.nom | upper}}</li>
@@ -65,7 +69,7 @@
                         {%  if app.user %}
 
                             {# Events can be displayed only one month after their beginning datetime #}
-                            {% if sortie.dateHeureDebut | date_modify('+ 1 month') < 'now' %}
+                            {% if sortie.dateHeureDebut > limitDate %}
                                 <a href="{{ path('sortie_display', {'id': sortie.id}) }}">Afficher</a>
                             {% endif %}
 
