@@ -35,8 +35,8 @@
             <a href ="{{ path('sortie_list') }}" title ="Enregistrer les modifications">
                 <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Enregistrer</button>
             </a>
-            <a href ="{{ path('sortie_list') }}" title ="Publier la sortie">
-                <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Publier</button>
+            <a href ="{{ path('sortie_publish', {'id': sortie.id}) }}" title ="Publier la sortie">
+                <span type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Publier</span>
             </a>
             <a href ="{{ path('sortie_list') }}" title ="Supprimer la sortie">
                 <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Supprimer</button>

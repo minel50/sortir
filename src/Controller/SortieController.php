@@ -246,6 +246,22 @@ class SortieController extends AbstractController
             'cancelForm' => $cancelForm->createView(),
             'sortie' => $sortie
         ]);
+    }
 
+    #[Route('/sortie/{id}/publier', name: 'sortie_publish', methods: ["GET"])]
+    public function publishSortie(int $id,
+                                    SortieRepository $sortieRepository,
+                                    SortieStateUpdater $sortieStateUpdater
+    ) : Response {
+        $sortie = $sortieRepository->find($id);
+
+        if ($sortieStateUpdater->publish($sortie)) {
+            $this->addFlash('success', 'La sortie ' . $sortie->getNom() . ' a été publiée');
+        } else {
+            $this->addFlash('error', 'La sortie n\'a pas pu être publiée');
+            $this->addFlash('error', 'Seul l\'organisateur de la sortie peut réaliser cette opération sur une sortie créée');
+        }
+
+        return $this->redirectToRoute('sortie_list');
     }
 }

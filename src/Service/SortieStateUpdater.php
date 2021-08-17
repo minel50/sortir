@@ -64,6 +64,22 @@ class SortieStateUpdater {
         } else {
             return false;
         }
+    }
 
+    public function publish(Sortie $sortie):bool {
+        $etatOuverte = $this->etatRepository->findOneBy(['libelle' => 'Ouverte']);
+
+        //check if user is also organisator...
+        if ($sortie->getOrganisateur() === $this->security->getUser()) {
+            //setting state to 'Ouverte' while publishing only possible for state 'Créée'
+            if ($sortie->getEtat()->getLibelle() == 'Créée') {
+                $sortie->setEtat($etatOuverte);
+                $this->entityManager->persist($sortie);
+                $this->entityManager->flush();
+                return true;
+            }
+        }
+
+        return false;
     }
 }
