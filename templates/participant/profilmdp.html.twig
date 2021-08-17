@@ -2,20 +2,30 @@
 
 {% block body %}
 
-    <h2>Modifier le mot de passe</h2>
+    <h3>Modifier le mot de passe</h3>
 
     {{ form_start(participantForm) }}
-    {{ form_row(participantForm.oldpassword) }}
-    {{ form_row(participantForm.password) }}
-    {{ form_row(participantForm.confirmpassword) }}
 
-    <button>Envoyer</button>
+        {{ form_label(participantForm.oldpassword) }}
+        {{ form_widget(participantForm.oldpassword) }}
+        {{ form_errors(participantForm.oldpassword) }}
+
+        {{ form_label(participantForm.password) }}
+        {{ form_widget(participantForm.password) }}
+        {{ form_errors(participantForm.password) }}
+
+        {{ form_label(participantForm.confirmpassword) }}
+        {{ form_widget(participantForm.confirmpassword) }}
+        {{ form_errors(participantForm.confirmpassword) }}
+
+        <div class="app-form-buttons">
+            <button class="btn btn-dark">Envoyer</button>
+            <a href="{{ path('participant_gestionProfil') }}">
+                <span class="btn btn-dark">Annuler</span>
+            </a>
+        </div>
+
     {{ form_end(participantForm) }}
-
-
-    <a href="{{ path('participant_gestionProfil') }}">
-        <button>Annuler</button>
-    </a>
 
 {% endblock %}
 

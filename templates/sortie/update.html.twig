@@ -4,34 +4,54 @@
 {% block title %}{{ parent()}} | Modifier une sortie{% endblock %}
 
 {% block body %}
-    <div class="example-wrapper" style ="margin-top :50px;">
+    {{form_start(updateForm)}}
 
+        {{form_label(updateForm.nom) }}
+        {{form_widget(updateForm.nom) }}
+        {{form_errors(updateForm.nom) }}
 
+        {{form_label(updateForm.dateHeureDebut) }}
+        {{form_widget(updateForm.dateHeureDebut) }}
+        {{form_errors(updateForm.dateHeureDebut) }}
 
+        {{form_label(updateForm.dateLimiteInscription) }}
+        {{form_widget(updateForm.dateLimiteInscription) }}
+        {{form_errors(updateForm.dateLimiteInscription) }}
 
+        {{form_label(updateForm.nbInscriptionsMax) }}
+        {{form_widget(updateForm.nbInscriptionsMax) }}
+        {{form_errors(updateForm.nbInscriptionsMax) }}
 
-            {{form_start(updateForm)}}
-            <p style="margin: auto;">{{form_row(updateForm.nom) }}</p>
-            <p style="margin: auto;">{{form_row(updateForm.dateHeureDebut) }}</p>
-            <p style="margin: auto;">{{form_row(updateForm.duree) }}</p>
-            <p style="margin: auto;">{{form_row(updateForm.dateLimiteInscription) }}</p>
-            <p style="margin: auto;">{{form_row(updateForm.nbInscriptionsMax) }}</p>
-            <p style="margin: auto;">{{form_row(updateForm.infosSortie) }}</p>
-            <p style="margin: auto;">{{form_row(updateForm.lieu) }}</p>
-            <p style="margin: auto;">{{form_row(updateForm.campus) }}</p>
-
-
-
-
-
+        {{form_label(updateForm.duree) }}
+        <div>
+            {{form_widget(updateForm.duree) }} minutes
         </div>
+        {{form_errors(updateForm.duree) }}
 
+        {{form_label(updateForm.infosSortie) }}
+        {{form_widget(updateForm.infosSortie) }}
+        {{form_errors(updateForm.infosSortie) }}
 
+        {{form_label(updateForm.campus) }}
+        {{form_widget(updateForm.campus) }}
+        {{form_errors(updateForm.campus) }}
 
-        <p style="margin: auto;">{{form_row(updateForm.latitude) }}</p>
-        <p style="margin: auto;">{{form_row(updateForm.longitude) }}</p>
+        {{form_label(updateForm.lieu) }}
+        <div>
+            {{form_widget(updateForm.lieu) }}
+            <a href = "{{ path('lieu_create') }}" title="signe"><img src="{{ asset('img/signe plus.png') }}"></a>
+        </div>
+        {{form_errors(updateForm.lieu) }}
 
-        <div style ="margin-top : 20px;margin-bottom: 20px">
+        {{form_label(updateForm.latitude) }}
+        {{form_widget(updateForm.latitude) }}
+        {{form_errors(updateForm.latitude) }}
+
+        {{form_label(updateForm.longitude) }}
+        {{form_widget(updateForm.longitude) }}
+        {{form_errors(updateForm.longitude) }}
+
+        <div class="app-form-buttons">
             <a href ="{{ path('sortie_list') }}" title ="Enregistrer les modifications">
                 <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Enregistrer</button>
             </a>
@@ -46,12 +66,6 @@
             </a>
         </div>
 
-        {{form_end(updateForm)}}
-
-
-
-
-    </div>
-
+    {{form_end(updateForm)}}
 
 {% endblock %}

@@ -26,12 +26,12 @@ class SearchSortieType extends AbstractType
                     'mapped' => false,
                 ])
                ->add('nom',TextType::class,[
-                    'label'=>false,
+                    'label'=> 'Le nom de la sortie contient',
                     'mapped'=>false,
                     'required'=>false,
                     'attr'=>[
                         'class'=>'form-control',
-                        'placeholder'=>'Entrez un nom'
+                        'placeholder'=>'Rechercher'
                     ]
                 ])
                 ->add('from',DateType::class,   [
@@ -50,19 +50,31 @@ class SearchSortieType extends AbstractType
                 ])
                 ->add('isOrganisateur', CheckboxType::class, [
                     'label' => 'Sorties dont je suis l\'organisateur/trice',
-                    'required' => false
+                    'required' => false,
+                    'label_attr' => [
+                        'class' => 'app-form-label-cb'
+                    ]
                 ])
                 ->add('isInscrit', CheckboxType::class, [
                     'label' => 'Sorties auxquelles je suis inscrit/e',
-                    'required' => false
+                    'required' => false,
+                    'label_attr' => [
+                        'class' => 'app-form-label-cb'
+                    ]
                 ])
                 ->add('isNotInscrit', CheckboxType::class, [
                     'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
-                    'required' => false
+                    'required' => false,
+                    'label_attr' => [
+                        'class' => 'app-form-label-cb'
+                    ]
                 ])
                 ->add('isDone', CheckboxType::class, [
                     'label' => 'Sorties passées',
-                    'required' => false
+                    'required' => false,
+                    'label_attr' => [
+                        'class' => 'app-form-label-cb'
+                    ]
                 ])
             ;
     }

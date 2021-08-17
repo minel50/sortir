@@ -41,14 +41,12 @@
         {{ form_widget(lieuForm.longitude, { 'attr': {'id': 'lon'} }) }}
         {{ form_errors(lieuForm.longitude) }}
 
-
-
         {{ form_label(lieuForm.ville) }}
         {{ form_widget(lieuForm.ville, { 'attr': {'id': 'ville'} }) }}
         {{ form_errors(lieuForm.ville) }}
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-        <button>Créer le lieu</button>
+        <button class="btn btn-dark">Créer le lieu</button>
 
     {{ form_end(lieuForm) }}
 

@@ -103,11 +103,13 @@ footer {
 }
 
 /*----- forms -----*/
-form {
+form, .app-form {
     display: grid;
-    grid-gap: 1rem;
+    grid-column-gap: 2rem;
+    grid-row-gap: 0.5rem;
     align-items: center;
     justify-items: start;
+    padding-bottom: 1.5rem;
 }
 form ul {
     color: red;
@@ -117,27 +119,49 @@ form ul {
     padding-inline-start: 0;
 }
 
+form .app-form-buttons {
+    justify-self: center;
+}
+.btn {
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+/*----- Others and specific elements -----*/
+.app-photo-profil {
+    width: auto;
+    height: 300px;
+}
+.app-text-align-right {
+    text-align: right;
+}
+
 /*----- desktop screens -----*/
-@media screen and (min-width: 576px) and (max-width: 767px) {
-    /*----- forms -----*/
-    form {
-        grid-template-columns: repeat(2, max-content);
-    }
+@media screen and (min-width: 576px) {
     form label {
         grid-column: 1;
     }
     form input, form select {
         grid-column: 2;
     }
-    form ul {
-        grid-column: 1 / 3;
-        margin: 0;
-    }
     form button {
         grid-column: 2;
     }
     form .app-form-checkbox {
         grid-column: 2;
+    }
+}
+@media screen and (min-width: 576px) and (max-width: 767px) {
+    /*----- forms -----*/
+    form{
+        grid-template-columns: repeat(2, max-content);
+    }
+    form ul {
+        grid-column: 1 / 3;
+        margin: 0;
+    }
+    form .app-form-buttons {
+        grid-column: 1 / 3;
     }
 }
 @media screen and (min-width: 768px) {
@@ -146,28 +170,22 @@ form ul {
     }
 
     /*----- forms -----*/
-    form {
+    form{
         grid-template-columns: repeat(3, max-content);
-    }
-    form label {
-        grid-column: 1;
-    }
-    form input, form select {
-        grid-column: 2;
     }
     form ul {
         grid-column: 3;
         margin: 0;
     }
-    form button {
-        grid-column: 2;
-    }
-    form .app-form-checkbox {
-        grid-column: 2;
-    }
-
-    .app-photo-profil {
-        width: auto;
-        height: 300px;
+    form .app-form-buttons {
+        grid-column: 1 / 4;
     }
 }
+
+/*----- specific form for filter main page -----*/
+form.app-specific-filterform {
+    font-size: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+

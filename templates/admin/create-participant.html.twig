@@ -5,31 +5,31 @@
 {% endblock %}
 
 {% block body %}
-    <h2>Admin : créer un participant</h2>
+    <h3>Admin : créer un participant</h3>
 
     {{ form_start(participantForm) }}
 
-    {{ form_label(participantForm.nom) }}
-    {{ form_widget(participantForm.nom) }}
-    {{ form_errors(participantForm.nom) }}
+        {{ form_label(participantForm.nom) }}
+        {{ form_widget(participantForm.nom) }}
+        {{ form_errors(participantForm.nom) }}
 
-    {{ form_label(participantForm.prenom) }}
-    {{ form_widget(participantForm.prenom) }}
-    {{ form_errors(participantForm.prenom) }}
+        {{ form_label(participantForm.prenom) }}
+        {{ form_widget(participantForm.prenom) }}
+        {{ form_errors(participantForm.prenom) }}
 
-    {{ form_label(participantForm.pseudo) }}
-    {{ form_widget(participantForm.pseudo) }}
-    {{ form_errors(participantForm.pseudo) }}
+        {{ form_label(participantForm.pseudo) }}
+        {{ form_widget(participantForm.pseudo) }}
+        {{ form_errors(participantForm.pseudo) }}
 
-    {{ form_label(participantForm.email) }}
-    {{ form_widget(participantForm.email) }}
-    {{ form_errors(participantForm.email) }}
+        {{ form_label(participantForm.email) }}
+        {{ form_widget(participantForm.email) }}
+        {{ form_errors(participantForm.email) }}
 
-    {{ form_label(participantForm.campus) }}
-    {{ form_widget(participantForm.campus) }}
-    {{ form_errors(participantForm.campus) }}
+        {{ form_label(participantForm.campus) }}
+        {{ form_widget(participantForm.campus) }}
+        {{ form_errors(participantForm.campus) }}
 
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-    <button type="submit" class="btn btn-dark">Créer un participant</button>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <button type="submit" class="btn btn-dark">Créer un participant</button>
     {{ form_end(participantForm) }}
 {% endblock %}

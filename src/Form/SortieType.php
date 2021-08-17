@@ -26,31 +26,33 @@ class SortieType extends AbstractType
     {
         $ville = $options['ville'];
         $builder
-            ->add('nom', TextType::class, ['label' => false, 'attr' => [
-                'placeholder' => 'Nom de la sortie'
-            ]])
+            ->add('nom', TextType::class, [
+                'label' => 'Nom de la sortie',
+            ])
+
             ->add('dateHeureDebut', DateTimeType::class, ['label' => 'Date et heure de la sortie',
 
                     'date_widget' => 'single_text',
                     'html5' => true,
                     'view_timezone' => 'Europe/Paris'
-
             ])
-            ->add('duree', IntegerType::class
-                , ['label' => false, 'attr' => [
-                    'placeholder' => 'Durée de la sortie'
-                ]])
+
+            ->add('duree', IntegerType::class, [
+                'label' => 'Durée'
+            ])
+
             ->add('dateLimiteInscription', DateType::class, ['label' => 'Date limite inscription',
                 'widget' => 'single_text',
                 'html5' => true,
-
             ])
-            ->add('nbInscriptionsMax', IntegerType::class, ['label' => false, 'attr' => [
-                'placeholder' => 'Nb max participants'
-            ]])
-            ->add('infosSortie', TextareaType::class, ['label' => false, 'attr' => [
-                'placeholder' => 'Description et infos'
-            ]])
+
+            ->add('nbInscriptionsMax', IntegerType::class, [
+                'label' => 'Nombre de places',
+                ])
+
+            ->add('infosSortie', TextareaType::class, [
+                'label' => 'Description et infos'])
+
             ->add('lieu', EntityType::class, [
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
@@ -66,17 +68,14 @@ class SortieType extends AbstractType
 
             ])
 
-            ->add('latitude', NumberType::class,
-             ['label' => false, 'mapped'=>false,'attr' => [
-                'placeholder' => 'Latitude',
+            ->add('latitude', NumberType::class, [
+                'label' => 'Latitude',
+                'mapped'=>false,
+            ])
 
-            ]
-             ])
-            ->add('longitude', NumberType::class,
-            ['label' => false, 'mapped'=>false,'attr' => [
-                'placeholder' => 'Longitude',
-
-            ]
+            ->add('longitude', NumberType::class, [
+                'label' => 'Longitude',
+                'mapped'=>false,
             ])
 
             ;
