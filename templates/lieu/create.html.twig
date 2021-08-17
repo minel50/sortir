@@ -15,6 +15,19 @@
             height: 400px;
             width: 400px;
         }
+
+        .container{
+            margin-top: 30px;
+            display: flex;
+        }
+
+        #lieu_latitude{
+            border: none;
+        }
+
+        #lieu_longitude{
+            border: none;
+        }
     </style>
 {% endblock %}
 
@@ -22,35 +35,60 @@
     <h2>Créer un lieu</h2>
 
     <div id="maCarte"></div>
-    <br>
 
-    {{ form_start(lieuForm) }}
-        {{ form_label(lieuForm.nom) }}
-        {{ form_widget(lieuForm.nom ) }}
-        {{ form_errors(lieuForm.nom) }}
+    <div class="container">
+        <div class="col1">
 
-        {{ form_label(lieuForm.rue) }}
-        {{ form_widget(lieuForm.rue, { 'attr': {'id': 'rue'} }) }}
-        {{ form_errors(lieuForm.rue) }}
+            {{ form_start(lieuForm) }}
+            {{ form_label(lieuForm.nom) }}
+            {{ form_widget(lieuForm.nom ) }}
+            {{ form_errors(lieuForm.nom) }}
 
-        {{ form_label(lieuForm.latitude) }}
-        {{ form_widget(lieuForm.latitude, { 'attr': {'id': 'lat'} }) }}
-        {{ form_errors(lieuForm.latitude) }}
+            {{ form_label(lieuForm.rue) }}
+            {{ form_widget(lieuForm.rue) }}
+            {{ form_errors(lieuForm.rue) }}
 
-        {{ form_label(lieuForm.longitude) }}
-        {{ form_widget(lieuForm.longitude, { 'attr': {'id': 'lon'} }) }}
-        {{ form_errors(lieuForm.longitude) }}
+            {{ form_label(lieuForm.cp) }}
+            {{ form_widget(lieuForm.cp) }}
+            {{ form_errors(lieuForm.cp) }}
+
+            {{ form_label(lieuForm.ville) }}
+            {{ form_widget(lieuForm.ville) }}
+            {{ form_errors(lieuForm.ville) }}
+
+            {{ form_label(lieuForm.latitude) }}
+            {{ form_widget(lieuForm.latitude, { 'attr': {
+                'id': 'lat',
+                'tabindex' : "-1"
+            } }) }}
+            {{ form_errors(lieuForm.latitude) }}
+
+            {{ form_label(lieuForm.longitude) }}
+            {{ form_widget(lieuForm.longitude, { 'attr': {
+                'id': 'lon',
+                'tabindex' : "-1"
+            } }) }}
+            {{ form_errors(lieuForm.longitude) }}
 
 
 
-        {{ form_label(lieuForm.ville) }}
-        {{ form_widget(lieuForm.ville, { 'attr': {'id': 'ville'} }) }}
-        {{ form_errors(lieuForm.ville) }}
+            <button id="create">Créer le lieu</button>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-        <button>Créer le lieu</button>
+            {{ form_end(lieuForm) }}
 
-    {{ form_end(lieuForm) }}
+        </div>
+
+        <div class="col2">
+
+            <button id="selection">Rechercher un lieu</button>
+            <div id="cancel">
+                <button>Annuler</button>
+            </div>
+        </div>
+    </div>
+
+
+
 
 
 
@@ -64,15 +102,77 @@
 
         <script>
 
-            //Initialisation de a carte
+            //Initialisation de la carte
+            let marqueur
             const carte = L.map('maCarte').setView([48.29519691115483, -1.4338308817447634], 13);
 
             //Chargement des tuiles
             //alternative : https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 18
+                maxZoom: 20
             }).addTo(carte);
+
+
+            document.querySelector("#selection").addEventListener("click", getCity);
+
+            function addMarker(pos){
+                //Check si marqueur existe
+                if(marqueur != undefined){
+                    carte.removeLayer(marqueur)
+                }
+                marqueur = L.marker(pos, {icon: icone})
+                marqueur.addTo(carte)
+            }
+
+            function getCity(){
+                // on fabrique l'adresse
+                let adresse = document.querySelector("#lieu_nom").value + " " +
+                    document.querySelector("#lieu_rue").value + " " + document.
+                querySelector("#lieu_cp").value + " " + document.querySelector("#lieu_ville").value
+
+                // on initialise une requête ajax
+                const xmlhttp = new XMLHttpRequest
+
+                xmlhttp.onreadystatechange = () => {
+                    // si requete terminée
+                    if(xmlhttp.readyState == 4){
+                        // check si réponse
+                        if(xmlhttp.status == 200){
+                            // on récupère la réponse
+                            let response = JSON.parse(xmlhttp.response)
+
+                            let lat = response[0]["lat"]
+                            let lon = response[0]["lon"]
+
+                            document.querySelector("#lieu_latitude").value = lat
+                            document.querySelector("#lieu_longitude").value = lon
+
+                            let pos  = [lat, lon]
+                            addMarker(pos)
+
+                            // hydrater les champs avec les attributs de l'objet response retourné par l'API
+                            carte.setView(pos, 12)
+
+                            document.querySelector("#lieu_cp").value = response[0]["address"]["postcode"];
+                            document.querySelector("#lieu_rue").value = response[0]["address"]["road"];
+                            if(response[0]["address"]["village"] != null){
+                                document.querySelector("#lieu_ville").value = response[0]["address"]["village"];
+                            }else if(response[0]["address"]["town"] != null) {
+                                document.querySelector("#lieu_ville").value = response[0]["address"]["town"];
+                            }else{
+                                document.querySelector("#lieu_ville").value = response[0]["address"]["municipality"];
+                            }
+
+                        }
+                    }
+                }
+
+                // on ouvre la requete
+                xmlhttp.open("get", `https://nominatim.openstreetmap.org/search?q=${adresse}&format=json&addressdetails=1&limit=1&polygon_svg=1`)
+
+                xmlhttp.send()
+            }
 
             //Personnalisation du marqueur
             let icone = L.icon({
@@ -87,13 +187,6 @@
                 .bindPopup('<p>Sélectionnez un lieu<p>')
                 .openPopup();
 
-
-
-
-
-            window.onload = () => {
-                //document.querySelector("#ville").addEventListener("blur",getCity);}
-            }
         </script>
         {% endblock %}
 {% endblock %}

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Lieu;
+use App\Entity\Ville;
 use App\Form\LieuType;
 use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,17 +18,59 @@ class LieuController extends AbstractController
     #[Route('/lieu/creer', name: 'lieu_create')]
     public function create(Request $request,
                             EntityManagerInterface $entityManager,
+                            VilleRepository $villeRepository,
                             LieuRepository $lieuRepository
     ):Response {
-        $lieu = new Lieu();
-        $lieuForm = $this->createForm(LieuType::class, $lieu);
+
+        $lieuForm = $this->createForm(LieuType::class, null);
         $lieuForm->handleRequest($request);
 
         if ($lieuForm->isSubmitted() && $lieuForm->isValid()) {
-            //check if lieu name already used in database
-            if ($lieuRepository->findOneByName($lieu->getNom())) {
-                $this->addFlash('error', 'Ce nom est déjà utilisé par un autre lieu');
+
+            //save field values in variables
+            $nom = $lieuForm["nom"]->getData();
+            $rue = $lieuForm["rue"]->getData();
+            $latitude = $lieuForm["latitude"]->getData();
+            $longitude = $lieuForm["longitude"]->getData();
+            $nomVille = $lieuForm["ville"]->getData();
+            $cp = $lieuForm["cp"]->getData();
+
+            $ville = new Ville();
+            $ville->setNom($nomVille);
+            $ville->setCodePostal($cp);
+
+            $lieu = new Lieu();
+            $lieu->setNom($nom);
+            $lieu->setRue($rue);
+            $lieu->setLatitude($latitude);
+            $lieu->setLongitude($longitude);
+
+
+            //check si ville existe dans BDD
+            if (!$villeRepository->findOneBy([
+                'nom' => $nomVille,
+                'codePostal' => $cp
+            ])) {
+                $entityManager->persist($ville);
+                $entityManager->flush();
+            }
+
+            //check si lieu existe dans BDD
+            if ($lieuRepository->findOneBy([
+                'nom' => $nom,
+            ])) {
+                $this->addFlash('error', 'Ce lieu est déjà enregistré');
             } else {
+
+                //récupérer ville dans BDD
+                $ville = $villeRepository->findOneBy([
+                    'nom' => $nomVille,
+                    'codePostal' => $cp
+                ]);
+
+                //lier la ville au lieu
+                $lieu->setVille($ville);
+
                 $entityManager->persist($lieu);
                 $entityManager->flush();
 

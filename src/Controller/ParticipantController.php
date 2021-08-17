@@ -81,7 +81,7 @@ class ParticipantController extends AbstractController
             $confirmmdp = $participantForm["confirmpassword"]->getData();
             $oldmdp = $participantForm["oldpassword"]->getData();
 
-            //Check si ancien password valid
+            //Encoder la valeur du champ de l'ancien password valid
             $validOldMdp = $encoder->isPasswordValid(
                 $this->getUser(),
                 $oldmdp
