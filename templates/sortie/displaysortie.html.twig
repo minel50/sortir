@@ -5,9 +5,9 @@
 
     <label for="">Nom de la sortie : </label><output>{{ sortie.nom }}</output>
     <br>
-    <label for="">Date et heure de la sortie : </label><output{{ sortie.dateHeureDebut|date('d-m-Y') }}></output>
+    <label for="">Date et heure de la sortie : </label><output>{{ sortie.dateHeureDebut|date('d-m-Y H:i', 'Europe/Paris') }}</output>
     <br>
-    <label for="">Date limite d'inscription : </label><output>{{ sortie.dateLimiteInscription|date('d-m-Y') }}</output>
+    <label for="">Date limite d'inscription : </label><output>{{ sortie.dateLimiteInscription|date('d-m-Y', 'Europe/Paris') }}</output>
     <br>
     <label for="">Nombre de places : </label><output>{{ sortie.nbInscriptionsMax }}</output>
     <br>

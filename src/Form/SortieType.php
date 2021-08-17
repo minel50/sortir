@@ -33,6 +33,7 @@ class SortieType extends AbstractType
 
                     'date_widget' => 'single_text',
                     'html5' => true,
+                    'view_timezone' => 'Europe/Paris'
 
             ])
             ->add('duree', IntegerType::class

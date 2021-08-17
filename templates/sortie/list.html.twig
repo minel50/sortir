@@ -3,7 +3,7 @@
 {% block title %}{{ parent()}} | main{% endblock %}
 
 {% block body %}
-    <p>Date du jour : {{"now"|date('d')}}/{{"now"|date('m')}}/{{"now"|date('Y')}}</p>
+    <p>Date du jour : {{ "now" |date('d/m/Y', 'Europe/Paris') }}</p>
     <p>Participant : {{ app.user.prenom }} {{ app.user.nom | slice(0,1) | upper}}.</p>
 
     {{form_start(listeForm)}}
@@ -58,8 +58,8 @@
         {% for sortie in sorties %}
             <ul>
                   <li>Nom de la sortie : {{sortie.nom | upper}}</li>
-                  <li>Date de la sortie : {{sortie.dateHeureDebut | format_datetime('medium') }}</li>
-                  <li>Date Limite d'inscription : {{sortie.dateLimiteinscription | date('d/m/Y') }}</li>
+                  <li>Date de la sortie : {{sortie.dateHeureDebut | date('d/m/Y H:i', 'Europe/Paris') }}</li>
+                  <li>Date Limite d'inscription : {{sortie.dateLimiteinscription | date('d/m/Y', 'Europe/Paris') }}</li>
                    <a href="{{ path('participant_display', {'id': sortie.organisateur.id}) }}" title="page profil">
                       <li> Organisateur : {{sortie.organisateur.nom}} {{ sortie.organisateur.prenom }}</li>
                   </a>
