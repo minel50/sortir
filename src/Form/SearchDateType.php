@@ -18,7 +18,7 @@ class SearchDateType extends AbstractType
                 'widget' => 'single_text',
                 'html5'=>true,
                 'mapped'=>false,
-                'required'=>false
+                'required'=>false,
 
 
             ])

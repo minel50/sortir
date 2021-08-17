@@ -9,6 +9,7 @@ use App\Form\SearchDateType;
 use App\Form\SearchSortieType;
 use App\Form\SortieType;
 use App\Form\UpdateSortieType;
+use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
@@ -28,7 +29,7 @@ class SortieController extends AbstractController
     {
         $sortie = new Sortie();
 
-       // $sortie = $sortieRepository->find(1);
+
         $ville = $villeRepository->find(1);
 
 
@@ -66,9 +67,17 @@ class SortieController extends AbstractController
     #[Route('/sortie/list', name: 'sortie_list')]
     public function list(SortieRepository $sortieRepository,
                          Request $request,
-                        SortieStateUpdater $sortieStateUpdater
+                        SortieStateUpdater $sortieStateUpdater,
+
     ): Response
     {
+
+
+
+
+
+
+
         $listeForm = $this->createForm(SearchSortieType::class);
         $listeForm->handleRequest($request);
 
@@ -86,7 +95,7 @@ class SortieController extends AbstractController
 
         } else {    //default values if first loading of the page
             $nom = null;
-            $campus = null;     //to change with campus of the logged participant
+            $campus = $listeForm['campus']->getData();     //to change with campus of the logged participant
             $from = null;
             $to = null;
             $isOrganisateur = true;
@@ -108,7 +117,8 @@ class SortieController extends AbstractController
             'listeForm'=>$listeForm->createView(),
             'isOrganisateur' => $isOrganisateur,
             'isInscrit' => $isInscrit,
-            'isNotInscrit' => $isNotInscrit
+            'isNotInscrit' => $isNotInscrit,
+
         ]);
     }
 
