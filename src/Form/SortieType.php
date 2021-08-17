@@ -61,7 +61,9 @@ class SortieType extends AbstractType
             ->add('ville', EntityType::class, [
                 'mapped' => false,
                 'class' => Ville::class,
-                'choice_label' => 'nom',
+                'choice_label' => function ($ville) {
+                    return $ville->getCodePostal().' '.$ville->getNom();
+                }
 
             ])
 
