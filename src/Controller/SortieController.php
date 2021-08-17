@@ -117,14 +117,24 @@ class SortieController extends AbstractController
     #[Route('/sortie/update/{id}', name: 'sortie_update')]
     public function update(Request $request,SortieRepository $sortieRepository, int $id,EntityManagerInterface $entityManager,LieuRepository $lieuRepository): Response
     {
-
-
-
         $sortie=$sortieRepository->find($id);
-        $updateForm = $this->createForm(UpdateSortieType::class,$sortie);
 
+        //Only events with state "Créée" can be modified
+        if ($sortie->getEtat()->getLibelle() != "Créée") {
+            $this->addFlash('error', 'Cette sortie ne peut plus être modifiée');
+            return $this->redirectToRoute('sortie_list');
+        }
+
+        //Only organisator can modify an event
+        if ($sortie->getOrganisateur() != $this->getUser()) {
+            $this->addFlash('error', 'Vous ne pouvez pas modifier cette sortie car vous n\'êtes pas l\'organisateur');
+            return $this->redirectToRoute('sortie_list');
+        }
+
+        $updateForm = $this->createForm(UpdateSortieType::class,$sortie);
         $updateForm->handleRequest($request);
-        if($updateForm->isSubmitted() && $updateForm->isValid()) {
+
+        if ($updateForm->isSubmitted() && $updateForm->isValid()) {
 
             $entityManager->persist($sortie);
             $entityManager->flush();
@@ -134,16 +144,11 @@ class SortieController extends AbstractController
 
         }
 
-
         return $this->render('sortie/update.html.twig', [
             'controller_name' => 'SortieController',
             'sortie'=>$sortie,
             'updateForm'=>$updateForm->createView()
-
-
         ]);
-
-
     }
 
     #[Route('/sortie/{idSortie}/inscription', name: 'sortie_register', methods: ["GET"])]

@@ -69,7 +69,8 @@
                                 <a href="{{ path('sortie_display', {'id': sortie.id}) }}">Afficher</a>
                             {% endif %}
 
-                            {% if app.user.id == sortie.organisateur.id %}
+                            {# Events can be modified only by organisator and if state is "Créée" #}
+                            {% if app.user.id == sortie.organisateur.id and sortie.etat.libelle == "Créée" %}
                                 <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
                             {% endif %}
 
