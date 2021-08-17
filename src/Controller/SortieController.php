@@ -267,4 +267,23 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('sortie_list');
     }
+
+    #[Route('/sortie/{id}/supprimer', name: 'sortie_delete', methods: ["GET"])]
+    public function deleteSortie(int $id,
+                                SortieRepository $sortieRepository,
+                                EntityManagerInterface $entityManager
+    ) : Response {
+        $sortie = $sortieRepository->find($id);
+
+        if ($sortie->getOrganisateur() === $this->getUser() && $sortie->getEtat()->getLibelle() === 'Créée') {
+            $entityManager->remove($sortie);
+            $entityManager->flush();
+            $this->addFlash('success', 'La sortie a été supprimée');
+        } else {
+            $this->addFlash('error', 'La sortie n\'a pas pu être supprimée');
+            return $this->redirectToRoute('sortie_update', ['id' => $id]);
+        }
+
+        return $this->redirectToRoute('sortie_list');
+    }
 }
