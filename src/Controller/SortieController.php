@@ -100,7 +100,10 @@ class SortieController extends AbstractController
         $sorties=$sortieRepository->getByCampus($nom,$campus,$from,$to, $isOrganisateur, $isInscrit, $isNotInscrit,
             $isDone, $participant);
 
-        //Service to update state (for now only switch between 'Ouverte' and 'Clôturée' developed).
+        //Service to update state ('Ouverte' <-> 'Clôturée' -> 'Activité en cours' -> 'Passée').
+        //Switch between 'Ouverte' and 'Clôturée', depending of participants number and registering date.
+        //Switch to 'Activité en cours' at the beginning datetime.
+        //Switch to 'Passée' at the beginning datetime + duration.
         $sortieStateUpdater->updateState($sorties);
 
         return $this->render('sortie/list.html.twig', [
@@ -117,14 +120,24 @@ class SortieController extends AbstractController
     #[Route('/sortie/update/{id}', name: 'sortie_update')]
     public function update(Request $request,SortieRepository $sortieRepository, int $id,EntityManagerInterface $entityManager,LieuRepository $lieuRepository): Response
     {
-
-
-
         $sortie=$sortieRepository->find($id);
-        $updateForm = $this->createForm(UpdateSortieType::class,$sortie);
 
+        //Only events with state "Créée" can be modified
+        if ($sortie->getEtat()->getLibelle() != "Créée") {
+            $this->addFlash('error', 'Cette sortie ne peut plus être modifiée');
+            return $this->redirectToRoute('sortie_list');
+        }
+
+        //Only organisator can modify an event
+        if ($sortie->getOrganisateur() != $this->getUser()) {
+            $this->addFlash('error', 'Vous ne pouvez pas modifier cette sortie car vous n\'êtes pas l\'organisateur');
+            return $this->redirectToRoute('sortie_list');
+        }
+
+        $updateForm = $this->createForm(UpdateSortieType::class,$sortie);
         $updateForm->handleRequest($request);
-        if($updateForm->isSubmitted() && $updateForm->isValid()) {
+
+        if ($updateForm->isSubmitted() && $updateForm->isValid()) {
 
             $entityManager->persist($sortie);
             $entityManager->flush();
@@ -134,16 +147,11 @@ class SortieController extends AbstractController
 
         }
 
-
         return $this->render('sortie/update.html.twig', [
             'controller_name' => 'SortieController',
             'sortie'=>$sortie,
             'updateForm'=>$updateForm->createView()
-
-
         ]);
-
-
     }
 
     #[Route('/sortie/{idSortie}/inscription', name: 'sortie_register', methods: ["GET"])]
@@ -241,6 +249,41 @@ class SortieController extends AbstractController
             'cancelForm' => $cancelForm->createView(),
             'sortie' => $sortie
         ]);
+    }
 
+    #[Route('/sortie/{id}/publier', name: 'sortie_publish', methods: ["GET"])]
+    public function publishSortie(int $id,
+                                    SortieRepository $sortieRepository,
+                                    SortieStateUpdater $sortieStateUpdater
+    ) : Response {
+        $sortie = $sortieRepository->find($id);
+
+        if ($sortieStateUpdater->publish($sortie)) {
+            $this->addFlash('success', 'La sortie ' . $sortie->getNom() . ' a été publiée');
+        } else {
+            $this->addFlash('error', 'La sortie n\'a pas pu être publiée');
+            $this->addFlash('error', 'Seul l\'organisateur de la sortie peut réaliser cette opération sur une sortie créée');
+        }
+
+        return $this->redirectToRoute('sortie_list');
+    }
+
+    #[Route('/sortie/{id}/supprimer', name: 'sortie_delete', methods: ["GET"])]
+    public function deleteSortie(int $id,
+                                SortieRepository $sortieRepository,
+                                EntityManagerInterface $entityManager
+    ) : Response {
+        $sortie = $sortieRepository->find($id);
+
+        if ($sortie->getOrganisateur() === $this->getUser() && $sortie->getEtat()->getLibelle() === 'Créée') {
+            $entityManager->remove($sortie);
+            $entityManager->flush();
+            $this->addFlash('success', 'La sortie a été supprimée');
+        } else {
+            $this->addFlash('error', 'La sortie n\'a pas pu être supprimée');
+            return $this->redirectToRoute('sortie_update', ['id' => $id]);
+        }
+
+        return $this->redirectToRoute('sortie_list');
     }
 }
