@@ -9,6 +9,7 @@ use App\Form\SearchDateType;
 use App\Form\SearchSortieType;
 use App\Form\SortieType;
 use App\Form\UpdateSortieType;
+use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
@@ -18,6 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Date;
@@ -66,12 +68,37 @@ class SortieController extends AbstractController
 
     #[Route('/sortie/list', name: 'sortie_list')]
     public function list(SortieRepository $sortieRepository,
-                         Request $request,
-                        SortieStateUpdater $sortieStateUpdater
+                            Request $request,
+                            SortieStateUpdater $sortieStateUpdater,
+                            SessionInterface $session,
+                            CampusRepository $campusRepository
     ): Response
     {
-        $listeForm = $this->createForm(SearchSortieType::class);
+        //if loading the page : default values or user's choice if exists in session
+        $nom = $session->get('nom', null);
+        $campusId = $session->get('campusId', -1);
+
+        if ($campusId == 0) {   //user's choice is all campus
+            $campus = null;
+        } else if ($campusId > 0) {     //user's choice is one campus
+            $campus = $campusRepository->find($campusId);
+        } else if ($campusId == -1) {    //since he is connected, user has not yet submit the form
+            $campus = $this->getUser()->getCampus();
+        }
+
+        $from = $session->get('from', null);
+        $to = $session->get('to', null);
+        $isOrganisateur = $session->get('isOrganisateur', true);
+        $isInscrit = $session->get('isInscrit', true);
+        $isNotInscrit = $session->get('isNotInscrit', true);
+        $isDone = $session->get('isDone', false);
+
+
+        $listeForm = $this->createForm(SearchSortieType::class, null, [
+            'campus' => $campus
+        ]);
         $listeForm->handleRequest($request);
+
 
         if($listeForm->isSubmitted() && $listeForm->isValid()) {
 
@@ -84,16 +111,22 @@ class SortieController extends AbstractController
             $isNotInscrit = $listeForm['isNotInscrit']->getData();
             $isDone = $listeForm['isDone']->getData();
 
+            //save in session user's choice
+            $session->set('nom', $nom);
 
-        } else {    //default values if first loading of the page
-            $nom = null;
-            $campus = null;     //to change with campus of the logged participant
-            $from = null;
-            $to = null;
-            $isOrganisateur = true;
-            $isInscrit = true;
-            $isNotInscrit = true;
-            $isDone = false;
+            if ($campus != null) {
+                $session->set('campusId', $campus->getId());
+            } else {
+                $session->set('campusId', 0);
+            }
+
+            $session->set('from', $from);
+            $session->set('to', $to);
+            $session->set('isOrganisateur', $isOrganisateur);
+            $session->set('isInscrit', $isInscrit);
+            $session->set('isNotInscrit', $isNotInscrit);
+            $session->set('isDone', $isDone);
+
         }
 
         $participant = $this->getUser();
@@ -112,7 +145,8 @@ class SortieController extends AbstractController
             'listeForm'=>$listeForm->createView(),
             'isOrganisateur' => $isOrganisateur,
             'isInscrit' => $isInscrit,
-            'isNotInscrit' => $isNotInscrit
+            'isNotInscrit' => $isNotInscrit,
+            'isDone' => $isDone
         ]);
     }
 

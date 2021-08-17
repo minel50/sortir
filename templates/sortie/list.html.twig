@@ -10,12 +10,28 @@
         <div>{{form_row(listeForm.campus) }}</div>
 
         <div style = "display :flex">
-            {{form_row(listeForm.nom) }}
+            {{ form_label(listeForm.nom) }}
+            {{ form_widget(listeForm.nom, {'attr': {'value': app.session.get('nom')}}) }}
+            {{ form_errors(listeForm.nom) }}
+
         </div >
         <div style ="display :flex; margin-top: 20px;margin-bottom: 20px;">
 
-            {{form_row(listeForm.from) }}
-            {{form_row(listeForm.to) }}
+            {{ form_label(listeForm.from) }}
+            {% if app.session.get('from') != null %}
+                {{ form_widget(listeForm.from, {'attr': {'value': app.session.get('from') | date('Y-m-d')}}) }}
+            {% else %}
+                {{ form_widget(listeForm.from) }}
+            {% endif %}
+            {{ form_errors(listeForm.from) }}
+
+            {{ form_label(listeForm.to) }}
+            {% if app.session.get('to') != null %}
+                {{ form_widget(listeForm.to, {'attr': {'value': app.session.get('to') | date('Y-m-d')}}) }}
+            {% else %}
+                {{ form_widget(listeForm.to) }}
+            {% endif %}
+            {{ form_errors(listeForm.to) }}
 
         </div>
 
@@ -44,7 +60,11 @@
         {{ form_errors(listeForm.isNotInscrit) }}
 
         {{ form_label(listeForm.isDone) }}
-        {{ form_widget(listeForm.isDone) }}
+        {% if isDone %}
+            {{ form_widget(listeForm.isDone, {'attr': {'checked': 'checked'}}) }}
+        {% else %}
+            {{ form_widget(listeForm.isDone) }}
+        {% endif %}
         {{ form_errors(listeForm.isDone) }}
 
         <button type="submit" class="btn btn-dark" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
