@@ -100,7 +100,10 @@ class SortieController extends AbstractController
         $sorties=$sortieRepository->getByCampus($nom,$campus,$from,$to, $isOrganisateur, $isInscrit, $isNotInscrit,
             $isDone, $participant);
 
-        //Service to update state (for now only switch between 'Ouverte' and 'Clôturée' developed).
+        //Service to update state ('Ouverte' <-> 'Clôturée' -> 'Activité en cours' -> 'Passée').
+        //Switch between 'Ouverte' and 'Clôturée', depending of participants number and registering date.
+        //Switch to 'Activité en cours' at the beginning datetime.
+        //Switch to 'Passée' at the beginning datetime + duration.
         $sortieStateUpdater->updateState($sorties);
 
         return $this->render('sortie/list.html.twig', [
