@@ -28,6 +28,10 @@
         #lieu_longitude{
             border: none;
         }
+
+        .container .col2 .btn {
+            padding: 0.25rem 0.5rem;
+        }
     </style>
 {% endblock %}
 
@@ -38,52 +42,47 @@
 
     <div class="container">
         <div class="col1">
-
             {{ form_start(lieuForm) }}
-            {{ form_label(lieuForm.nom) }}
-            {{ form_widget(lieuForm.nom ) }}
-            {{ form_errors(lieuForm.nom) }}
+                {{ form_label(lieuForm.nom) }}
+                {{ form_widget(lieuForm.nom ) }}
+                {{ form_errors(lieuForm.nom) }}
 
-            {{ form_label(lieuForm.rue) }}
-            {{ form_widget(lieuForm.rue) }}
-            {{ form_errors(lieuForm.rue) }}
+                {{ form_label(lieuForm.rue) }}
+                {{ form_widget(lieuForm.rue) }}
+                {{ form_errors(lieuForm.rue) }}
 
-            {{ form_label(lieuForm.cp) }}
-            {{ form_widget(lieuForm.cp) }}
-            {{ form_errors(lieuForm.cp) }}
+                {{ form_label(lieuForm.cp) }}
+                {{ form_widget(lieuForm.cp) }}
+                {{ form_errors(lieuForm.cp) }}
 
-            {{ form_label(lieuForm.ville) }}
-            {{ form_widget(lieuForm.ville) }}
-            {{ form_errors(lieuForm.ville) }}
+                {{ form_label(lieuForm.ville) }}
+                {{ form_widget(lieuForm.ville) }}
+                {{ form_errors(lieuForm.ville) }}
 
-            {{ form_label(lieuForm.latitude) }}
-            {{ form_widget(lieuForm.latitude, { 'attr': {
-                'id': 'lat',
-                'tabindex' : "-1"
-            } }) }}
-            {{ form_errors(lieuForm.latitude) }}
+                {{ form_label(lieuForm.latitude) }}
+                {{ form_widget(lieuForm.latitude, { 'attr': {
+                    'id': 'lat',
+                    'tabindex' : "-1"
+                } }) }}
+                {{ form_errors(lieuForm.latitude) }}
 
-            {{ form_label(lieuForm.longitude) }}
-            {{ form_widget(lieuForm.longitude, { 'attr': {
-                'id': 'lon',
-                'tabindex' : "-1"
-            } }) }}
-            {{ form_errors(lieuForm.longitude) }}
+                {{ form_label(lieuForm.longitude) }}
+                {{ form_widget(lieuForm.longitude, { 'attr': {
+                    'id': 'lon',
+                    'tabindex' : "-1"
+                } }) }}
+                {{ form_errors(lieuForm.longitude) }}
 
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                <button id="create" class="btn btn-dark">Créer le lieu</button>
 
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-        <button id="create">Créer le lieu</button>
-
-    {{ form_end(lieuForm) }}
-
+            {{ form_end(lieuForm) }}
         </div>
 
         <div class="col2">
-
-            <button id="selection">Rechercher un lieu</button>
+            <button id="selection" class="btn btn-dark">Rechercher un lieu</button>
             <div id="cancel">
-                <button>Annuler</button>
+                <button class="btn btn-dark">Annuler</button>
             </div>
         </div>
     </div>
