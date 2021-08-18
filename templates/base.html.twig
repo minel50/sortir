@@ -19,6 +19,7 @@
                 <nav id="navbar">
                     <a href="{{ path('sortie_list') }}">Sortir.com</a>
 
+
                     {% if app.user %}
                         {% if is_granted("ROLE_ADMIN") %}
                         <a href="{{path('ville_liste') }}">Villes</a>
