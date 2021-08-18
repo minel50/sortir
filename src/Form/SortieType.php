@@ -21,7 +21,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SortieType extends AbstractType
+
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $ville = $options['ville'];
@@ -73,6 +75,7 @@ class SortieType extends AbstractType
             ->add('latitude', NumberType::class, [
                 'label' => 'Latitude',
                 'mapped'=>false,
+
             ])
 
             ->add('longitude', NumberType::class, [
