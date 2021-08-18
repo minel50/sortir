@@ -6,7 +6,7 @@ use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
  */
@@ -21,26 +21,34 @@ class Sortie
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="La saisie du nom de la sortie est obligatoire")
+     * @Assert\Length(min=2, max=50, minMessage="Veuillez saisir au moins 2 caractères", maxMessage="50 caractères
+     * maximum")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="La saisie de la date de la sortie est obligatoire")
+     * @Assert\GreaterThanOrEqual(propertyPath = "dateLimiteInscription")
      */
     private $dateHeureDebut;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="La saisie de la durée de la sortie est obligatoire")
      */
     private $duree;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="La saisie de la date limite d'incription est obligatoire")
      */
     private $dateLimiteInscription;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="La saisie du nombre maximum d'inscription est obligatoire")
      */
     private $nbInscriptionsMax;
 
