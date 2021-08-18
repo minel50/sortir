@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent()}} | campus{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .my-custom-scrollbar {
+            position:relative;
+            width: 700px;
+            height: 200px;
+            overflow: auto;
+        }
+        .table-wrapper-scroll-y {
+            display: block;
+        }
+        h3{
+            text-align: center;
+
+        }
+      a{
+          text-decoration: none;
+          color:#000000;
+      }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h3>Gérer les campus </h3>
+
+    <p>Filtrer les sites</p>
+
+
+
+    <div>
+        {{ form_start(campusForm) }}
+     {{form_row(campusForm.search) }}
+    {{form_row(campusForm.rechercher) }}
+
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+            <tr>
+
+                <th scope="col">Campus</th>
+                <th scope="col">Actions</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+                {% for camp in campusListe %}
+            <tr>
+                <td>{{ camp.nom | upper }}</td>
+                <td>
+                <a href="{{ path('campus_update', {'id': camp.id}) }}">Modifier-Supprimer</a>
+
+                </td>
+
+            </tr>
+
+                {% endfor %}
+
+                <tr>
+
+                    <td>  {{form_row(campusForm.nom) }}
+                    </td>
+                    <td> {{form_row(campusForm.ajouter) }} </td>
+                </tr>
+                {{ form_end(campusForm) }}
+
+
+
+
+
+            </tbody>
+        </table>
+
+    </div>
+    </div>
+
+{% endblock %}
