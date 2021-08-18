@@ -138,4 +138,53 @@ class ParticipantController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("admin/participant/afficher", name="participant_all")
+     */
+    public function listeAll(ParticipantRepository $participantRepository)
+    {
+        $participants = $participantRepository->findAll();
+
+
+        return $this->render('participant/listeparticipants.html.twig', [
+            'participants' => $participants
+        ]);
+    }
+
+    /**
+     * @Route("admin/participant/desactiver/{id}", name="participant_desactiver")
+     */
+    public function desactiverParticipant(int $id,
+                                          ParticipantRepository $participantRepository,
+                                          EntityManagerInterface $entityManager
+    )
+    {
+        $participant = $participantRepository->findOneBy(array('id' => $id));
+
+        $participant->setActif(false);
+
+        $entityManager->persist($participant);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('participant_all');
+    }
+
+    /**
+     * @Route("admin/participant/activer/{id}", name="participant_activer")
+     */
+    public function activerParticipant(int $id,
+                                          ParticipantRepository $participantRepository,
+                                          EntityManagerInterface $entityManager
+    )
+    {
+        $participant = $participantRepository->findOneBy(array('id' => $id));
+
+        $participant->setActif(true);
+
+        $entityManager->persist($participant);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('participant_all');
+    }
+
 }

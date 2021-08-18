@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints\Date;
 
 class SortieController extends AbstractController
 {
-    #[Route('/sortie/create', name: 'sortie_create')]
+    #[Route('/sortie/creer', name: 'sortie_create')]
     public function create(Request $request, EntityManagerInterface $entityManager,EtatRepository $etatRepository,VilleRepository $villeRepository,SortieRepository $sortieRepository): Response
     {
         $sortie = new Sortie();
@@ -248,7 +248,7 @@ class SortieController extends AbstractController
         return$this->redirectToRoute('sortie_list');
     }
 
-    #[Route('/sortie/display/{id}', name: 'sortie_display', methods: ["GET"])]
+    #[Route('/sortie/afficher/{id}', name: 'sortie_display', methods: ["GET"])]
     public function displaySortie(int $id, SortieRepository $sortieRepository) : Response
     {
         $sortie = $sortieRepository->findOneBy(array('id' => $id));

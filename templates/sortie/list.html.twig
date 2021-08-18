@@ -113,13 +113,15 @@
                                 <a href ="{{ path('sortie_publish',{'id':sortie.id}) }}">Publier</a>
                             {% endif %}
 
-                            {% if app.user in sortie.participants %}
-                                {% if sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
-                                    <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
-                                {% endif %}
-                            {% else %}
-                                {% if sortie.etat.libelle == "Ouverte" %}
-                                    <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
+                            {%  if app.user.actif == 1 %}
+                                {% if app.user in sortie.participants %}
+                                    {% if sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
+                                        <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
+                                    {% endif %}
+                                {% else %}
+                                    {% if sortie.etat.libelle == "Ouverte" %}
+                                        <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
 
@@ -129,9 +131,10 @@
         {% endfor %}
     </div>
 
-
-    <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
-        <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
-    </a>
+    {%  if app.user.actif == 1 %}
+        <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
+            <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
+        </a>
+    {% endif %}
 
 {% endblock %}

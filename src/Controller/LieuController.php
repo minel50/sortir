@@ -58,6 +58,7 @@ class LieuController extends AbstractController
             //check si lieu existe dans BDD
             if ($lieuRepository->findOneBy([
                 'nom' => $nom,
+                'rue' => $rue
             ])) {
                 $this->addFlash('error', 'Ce lieu est déjà enregistré');
             } else {

@@ -75,15 +75,15 @@
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
                 <button id="create" class="btn btn-dark">Créer le lieu</button>
+            <div id="cancel">
+                <button class="btn btn-dark" type="reset">Annuler</button>
+            </div>
 
             {{ form_end(lieuForm) }}
         </div>
 
         <div class="col2">
             <button id="selection" class="btn btn-dark">Rechercher un lieu</button>
-            <div id="cancel">
-                <button class="btn btn-dark">Annuler</button>
-            </div>
         </div>
     </div>
 
@@ -153,6 +153,8 @@
 
                             // hydrater les champs avec les attributs de l'objet response retourné par l'API
                             carte.setView(pos, 12)
+
+                            console.log(response[0])
 
                             document.querySelector("#lieu_cp").value = response[0]["address"]["postcode"];
                             document.querySelector("#lieu_rue").value = response[0]["address"]["road"];
