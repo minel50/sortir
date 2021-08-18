@@ -20,9 +20,13 @@
             <div>
                 <tbody>
                 {% for p in participants %}
+
                     <tr>
                         <td>{{ p.pseudo }}</td>
                         <td>{{ p.prenom~' '}}{{ p.nom }}</td>
+
+                        {# Désactive les boutons de suppression/modification sur les admin #}
+                        {% if p.admin == 0 %}
                         <td>
                             {% if p.actif == 1 %}
                                 <a href="{{ path('participant_desactiver', {'id': p.id}) }}">actif</a>
@@ -33,7 +37,13 @@
                         <td>
                             <a href="#">Supprimer</a>
                         </td>
+                        {% else %}
+                            <td></td>
+                            <td></td>
+                        {% endif %}
+
                     </tr>
+
                 {% endfor %}
                 </tbody>
             </div>

@@ -22,6 +22,11 @@ class LieuController extends AbstractController
                             LieuRepository $lieuRepository
     ):Response {
 
+        //rediriger vers la page principale si user désactivé
+        if($this->getUser()->getActif() == 0){
+            return $this->redirectToRoute('sortie_list');
+        }
+
         $lieuForm = $this->createForm(LieuType::class, null);
         $lieuForm->handleRequest($request);
 

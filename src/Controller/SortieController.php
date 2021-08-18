@@ -29,6 +29,11 @@ class SortieController extends AbstractController
     #[Route('/sortie/creer', name: 'sortie_create')]
     public function create(Request $request, EntityManagerInterface $entityManager,EtatRepository $etatRepository,VilleRepository $villeRepository,SortieRepository $sortieRepository): Response
     {
+        //rediriger vers la page principale si user désactivé
+        if($this->getUser()->getActif() == 0){
+            return $this->redirectToRoute('sortie_list');
+        }
+
         $sortie = new Sortie();
 
        // $sortie = $sortieRepository->find(1);
@@ -163,7 +168,10 @@ class SortieController extends AbstractController
     public function update(Request $request,SortieRepository $sortieRepository, int $id,EntityManagerInterface $entityManager,LieuRepository $lieuRepository): Response
     {
 
-
+        //rediriger vers la page principale si user désactivé
+        if($this->getUser()->getActif() == 0){
+            return $this->redirectToRoute('sortie_list');
+        }
 
         $sortie=$sortieRepository->find($id);
 
@@ -205,6 +213,12 @@ class SortieController extends AbstractController
                             EtatRepository $etatRepository,
                             EntityManagerInterface $entityManager
     ): Response {
+
+        //rediriger vers la page principale si user désactivé
+        if($this->getUser()->getActif() == 0){
+            return $this->redirectToRoute('sortie_list');
+        }
+
         $sortie = $sortieRepository->find($idSortie);
 
         //check if register possible (sortie.etat = Ouverte)
@@ -233,6 +247,12 @@ class SortieController extends AbstractController
                                 EtatRepository $etatRepository,
                                 EntityManagerInterface $entityManager
     ): Response {
+
+        //rediriger vers la page principale si user désactivé
+        if($this->getUser()->getActif() == 0){
+            return $this->redirectToRoute('sortie_list');
+        }
+
         $sortie = $sortieRepository->find($idSortie);
         $sortie->removeParticipant($this->getUser());
 
@@ -271,6 +291,12 @@ class SortieController extends AbstractController
                                  SortieStateUpdater $sortieStateUpdater,
                                  Request $request
     ) : Response {
+
+        //rediriger vers la page principale si user désactivé
+        if($this->getUser()->getActif() == 0){
+            return $this->redirectToRoute('sortie_list');
+        }
+
         $sortie = $sortieRepository->find($id);
         $cancelForm = $this->createForm('App\Form\CancelSortieType');
         $cancelForm->handleRequest($request);
@@ -301,6 +327,12 @@ class SortieController extends AbstractController
                                     SortieRepository $sortieRepository,
                                     SortieStateUpdater $sortieStateUpdater
     ) : Response {
+
+        //rediriger vers la page principale si user désactivé
+        if($this->getUser()->getActif() == 0){
+            return $this->redirectToRoute('sortie_list');
+        }
+
         $sortie = $sortieRepository->find($id);
 
         if ($sortieStateUpdater->publish($sortie)) {
@@ -318,6 +350,12 @@ class SortieController extends AbstractController
                                 SortieRepository $sortieRepository,
                                 EntityManagerInterface $entityManager
     ) : Response {
+
+        //rediriger vers la page principale si user désactivé
+        if($this->getUser()->getActif() == 0){
+            return $this->redirectToRoute('sortie_list');
+        }
+
         $sortie = $sortieRepository->find($id);
 
         if ($sortie->getOrganisateur() === $this->getUser() && $sortie->getEtat()->getLibelle() === 'Créée') {
