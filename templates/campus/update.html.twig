@@ -3,5 +3,21 @@
 {% block title %}{{ parent()}} | Modifier Campus{% endblock %}
 
 {% block body %}
-{{ 'salut' }}
+
+        {{form_start(updateForm) }}
+            <div>
+            {{  form_row(updateForm.nom)}}
+            </div>
+            <div style ="display :flex">
+
+                {{  form_row(updateForm.modifier)}}
+
+                {{  form_row(updateForm.supprimer)}}
+            <div>
+
+        {{form_end(updateForm) }}
+
+
+
+
 {% endblock %}
