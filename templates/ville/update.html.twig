@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent()}} | Modifier Ville {% endblock %}
+
+{% block body %}
+
+{{form_start(upDateForm) }}
+
+        {{  form_row(upDateForm.nom)}}
+        {{  form_row(upDateForm.codePostal)}}
+
+
+        <div style = 'display: flex'>
+        {{  form_row(upDateForm.modifier)}}
+        {{  form_row(upDateForm.supprimer)}}
+        </div>
+
+
+{{form_end(upDateForm) }}
+
+
+
+        {% endblock %}
