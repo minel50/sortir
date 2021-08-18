@@ -38,7 +38,7 @@ class SearchSortieType extends AbstractType
                     'placeholder' => 'Tous',
                     'mapped' => false,
                 ])
-               ->add('nom',TextType::class,[
+               ->add('nom',SearchType::class,[
                     'label'=> 'Le nom de la sortie contient',
                     'mapped'=>false,
                     'required'=>false,
