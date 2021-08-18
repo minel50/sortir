@@ -72,9 +72,10 @@
 
 
 
-            <button id="create">Créer le lieu</button>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+        <button id="create">Créer le lieu</button>
 
-            {{ form_end(lieuForm) }}
+    {{ form_end(lieuForm) }}
 
         </div>
 

@@ -3,23 +3,56 @@
 {% block title %} {{ parent() }} {% endblock %}
 {% block stylesheets %}{% endblock %}
 
- {% block body %}
-     <h2>Mon profil</h2>
-     <img class="app-photo-profil" src="{{ asset('img/photos/'~participant.photo) }}" alt="photo du participant">
-     {{ form_start(participantForm) }}
-     {{ form_widget(participantForm) }}
-     <button>Enregistrer</button>
-     {{ form_end(participantForm) }}
-     <a href="{{ path('sortie_list') }}">
-         <button>Annuler</button>
-     </a>
-     <br>
-     <a href="{{ path('participant_gestionMDP') }}">
-         <button>Modifier le mot de passe</button>
-     </a>
+{% block body %}
+    <h2>Mon profil</h2>
+    <img class="app-photo-profil" src="{{ asset('img/photos/'~participant.photo) }}" alt="photo du participant">
+
+    {{ form_start(participantForm) }}
+
+        {{ form_label(participantForm.pseudo) }}
+        {{ form_widget(participantForm.pseudo) }}
+        {{ form_errors(participantForm.pseudo) }}
+
+        {{ form_label(participantForm.prenom) }}
+        {{ form_widget(participantForm.prenom) }}
+        {{ form_errors(participantForm.prenom) }}
+
+        {{ form_label(participantForm.nom) }}
+        {{ form_widget(participantForm.nom) }}
+        {{ form_errors(participantForm.nom) }}
+
+        {{ form_label(participantForm.telephone) }}
+        {{ form_widget(participantForm.telephone) }}
+        {{ form_errors(participantForm.telephone) }}
+
+        {{ form_label(participantForm.email) }}
+        {{ form_widget(participantForm.email) }}
+        {{ form_errors(participantForm.email) }}
+
+        {{ form_label(participantForm.campus) }}
+        {{ form_widget(participantForm.campus) }}
+        {{ form_errors(participantForm.campus) }}
+
+        {{ form_label(participantForm.photo) }}
+        {{ form_widget(participantForm.photo) }}
+        {{ form_errors(participantForm.photo) }}
+
+    <div class="app-form-buttons">
+        <button class="btn btn-dark">Enregistrer</button>
+        <a href="{{ path('sortie_list') }}">
+            <span class="btn btn-dark">Annuler</span>
+        </a>
+        <a href="{{ path('participant_gestionMDP') }}">
+            <span class="btn btn-dark">Modifier le mot de passe</span>
+        </a>
+    </div>
+
+    {{ form_end(participantForm) }}
 
 
 
- {% endblock %}
 
- {% block javascripts %}{% endblock %}
+
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

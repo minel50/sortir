@@ -3,19 +3,23 @@
 {% block title %}{{ parent()}} | main{% endblock %}
 
 {% block body %}
-    <p>Date du jour : {{ "now" |date('d/m/Y', 'Europe/Paris') }}</p>
-    <p>Participant : {{ app.user.prenom }} {{ app.user.nom | slice(0,1) | upper}}.</p>
+    <p class="app-text-align-right">
+        Date du jour : {{ "now" |date('d/m/Y', 'Europe/Paris') }}<br>
+        Participant : {{ app.user.prenom }} {{ app.user.nom | slice(0,1) | upper}}.
+    </p>
 
-    {{form_start(listeForm)}}
-        <div>{{form_row(listeForm.campus) }}</div>
+    <h4>Filtrer les sorties</h4>
+    {{form_start(listeForm, {'attr': {'class': 'app-specific-filterform'}})}}
 
-        <div style = "display :flex">
+        <div class="app-form">
+            {{form_label(listeForm.campus) }}
+            {{form_widget(listeForm.campus) }}
+            {{form_errors(listeForm.campus) }}
+
             {{ form_label(listeForm.nom) }}
             {{ form_widget(listeForm.nom, {'attr': {'value': app.session.get('nom')}}) }}
             {{ form_errors(listeForm.nom) }}
 
-        </div >
-        <div style ="display :flex; margin-top: 20px;margin-bottom: 20px;">
 
             {{ form_label(listeForm.from) }}
             {% if app.session.get('from') != null %}
@@ -32,45 +36,55 @@
                 {{ form_widget(listeForm.to) }}
             {% endif %}
             {{ form_errors(listeForm.to) }}
-
         </div>
 
-        {{ form_label(listeForm.isOrganisateur) }}
-        {% if isOrganisateur %}
-            {{ form_widget(listeForm.isOrganisateur, {'attr': {'checked': 'checked'}}) }}
-        {% else %}
-            {{ form_widget(listeForm.isOrganisateur)}}
-        {% endif %}
-        {{ form_errors(listeForm.isOrganisateur) }}
+        <div class="app-form">
+            <div class="app-form-checkbox">
+                {% if isOrganisateur %}
+                    {{ form_widget(listeForm.isOrganisateur, {'attr': {'checked': 'checked'}}) }}
+                {% else %}
+                    {{ form_widget(listeForm.isOrganisateur)}}
+                {% endif %}
+                {{ form_label(listeForm.isOrganisateur) }}
+                {{ form_errors(listeForm.isOrganisateur) }}
+            </div>
 
-        {{ form_label(listeForm.isInscrit) }}
-        {% if isInscrit %}
-            {{ form_widget(listeForm.isInscrit, {'attr': {'checked': 'checked'}}) }}
-        {% else %}
-            {{ form_widget(listeForm.isInscrit) }}
-        {% endif %}
-        {{ form_errors(listeForm.isInscrit) }}
+            <div class="app-form-checkbox">
+                {% if isInscrit %}
+                    {{ form_widget(listeForm.isInscrit, {'attr': {'checked': 'checked'}}) }}
+                {% else %}
+                    {{ form_widget(listeForm.isInscrit) }}
+                {% endif %}
+                {{ form_label(listeForm.isInscrit) }}
+                {{ form_errors(listeForm.isInscrit) }}
+            </div>
 
-        {{ form_label(listeForm.isNotInscrit) }}
-        {% if isNotInscrit %}
-            {{ form_widget(listeForm.isNotInscrit, {'attr': {'checked': 'checked'}}) }}
-        {% else %}
-            {{ form_widget(listeForm.isNotInscrit) }}
-        {% endif %}
-        {{ form_errors(listeForm.isNotInscrit) }}
+            <div class="app-form-checkbox">
+                {% if isNotInscrit %}
+                    {{ form_widget(listeForm.isNotInscrit, {'attr': {'checked': 'checked'}}) }}
+                {% else %}
+                    {{ form_widget(listeForm.isNotInscrit) }}
+                {% endif %}
+                {{ form_label(listeForm.isNotInscrit) }}
+                {{ form_errors(listeForm.isNotInscrit) }}
+            </div>
 
-        {{ form_label(listeForm.isDone) }}
-        {% if isDone %}
-            {{ form_widget(listeForm.isDone, {'attr': {'checked': 'checked'}}) }}
-        {% else %}
-            {{ form_widget(listeForm.isDone) }}
-        {% endif %}
-        {{ form_errors(listeForm.isDone) }}
+            <div class="app-form-checkbox">
+                {% if isDone %}
+                    {{ form_widget(listeForm.isDone, {'attr': {'checked': 'checked'}}) }}
+                {% else %}
+                    {{ form_widget(listeForm.isDone) }}
+                {% endif %}
+                {{ form_label(listeForm.isDone) }}
+                {{ form_errors(listeForm.isDone) }}
+            </div>
+        </div>
 
         <button type="submit" class="btn btn-dark" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
     {{form_end(listeForm)}}
 
      <div>
+         <h4>Résultats</h4>
          {# Events starting before this limitDate cannot be displayed #}
          {# this limitDate is used in each loop below #}
         {% set limitDate = 'now' | date_modify('- 1 month') %}
