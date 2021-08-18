@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints\Date;
 
 class SortieController extends AbstractController
 {
-    #[Route('/sortie/creer', name: 'sortie_create')]
+    #[Route('/sortie/create', name: 'sortie_create')]
     public function create(Request $request, EntityManagerInterface $entityManager,EtatRepository $etatRepository,VilleRepository $villeRepository,SortieRepository $sortieRepository): Response
     {
         $sortie = new Sortie();
@@ -66,7 +66,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('', name: 'sortie_list')]
+    #[Route('/sortie/list', name: 'sortie_list')]
     public function list(SortieRepository $sortieRepository,
                             Request $request,
                             SortieStateUpdater $sortieStateUpdater,
@@ -99,7 +99,6 @@ class SortieController extends AbstractController
         ]);
         $listeForm->handleRequest($request);
 
-
         if($listeForm->isSubmitted() && $listeForm->isValid()) {
 
             $nom = $listeForm['nom']->getData();
@@ -127,6 +126,15 @@ class SortieController extends AbstractController
             $session->set('isNotInscrit', $isNotInscrit);
             $session->set('isDone', $isDone);
 
+        } else {    //default values if first loading of the page
+            $nom = null;
+            $campus = $listeForm['campus']->getData();     //to change with campus of the logged participant
+            $from = null;
+            $to = null;
+            $isOrganisateur = true;
+            $isInscrit = true;
+            $isNotInscrit = true;
+            $isDone = false;
         }
 
         $participant = $this->getUser();
@@ -151,9 +159,12 @@ class SortieController extends AbstractController
     }
 
 
-    #[Route('/sortie/modifier/{id}', name: 'sortie_update')]
+    #[Route('/sortie/update/{id}', name: 'sortie_update')]
     public function update(Request $request,SortieRepository $sortieRepository, int $id,EntityManagerInterface $entityManager,LieuRepository $lieuRepository): Response
     {
+
+
+
         $sortie=$sortieRepository->find($id);
 
         //Only events with state "Créée" can be modified
@@ -188,7 +199,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/inscription/{idSortie}', name: 'sortie_register', methods: ["GET"])]
+    #[Route('/sortie/{idSortie}/inscription', name: 'sortie_register', methods: ["GET"])]
     public function register(int $idSortie,
                             SortieRepository $sortieRepository,
                             EtatRepository $etatRepository,
@@ -237,7 +248,7 @@ class SortieController extends AbstractController
         return$this->redirectToRoute('sortie_list');
     }
 
-    #[Route('/sortie/afficher/{id}', name: 'sortie_display', methods: ["GET"])]
+    #[Route('/sortie/display/{id}', name: 'sortie_display', methods: ["GET"])]
     public function displaySortie(int $id, SortieRepository $sortieRepository) : Response
     {
         $sortie = $sortieRepository->findOneBy(array('id' => $id));
