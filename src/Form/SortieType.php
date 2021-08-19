@@ -8,6 +8,7 @@ use App\Entity\Sortie;
 
 use App\Entity\Ville;
 use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -58,7 +59,8 @@ class SortieType extends AbstractType
                 'choice_label' => 'nom',
                 "query_builder" => function(LieuRepository $lieuRepository) use ($options) {
                     return $lieuRepository->getQueryLieuxParVille($options['ville']);
-                }
+                },
+                'placeholder' => ''
             ])
 
             ->add('ville', EntityType::class, [
@@ -66,8 +68,12 @@ class SortieType extends AbstractType
                 'class' => Ville::class,
                 'choice_label' => function ($ville) {
                     return $ville->getCodePostal().' '.$ville->getNom();
-                }
-
+                },
+                'query_builder' => function (VilleRepository $villeRepository) {
+                    return $villeRepository->createQueryBuilder('v')
+                                ->orderBy('v.codePostal, v.nom', 'ASC');
+                },
+                'placeholder' => ''
             ])
 
             ->add('latitude', NumberType::class, [
@@ -79,27 +85,7 @@ class SortieType extends AbstractType
                 'label' => 'Longitude',
                 'mapped'=>false,
             ])
-
-            ;
-
-
-            /*->add('campus', EntityType::class,[
-                'class'=>Campus::class,
-                'choice_label'=>'nom'
-            ])
-            ->add('etat', EntityType::class,[
-                'class'=>Etat::class,
-                'choice_label'=>'libelle'
-            ])
-            ->add('organisateur', EntityType::class,[
-                'class'=>Participant::class,
-                'choice_label'=>'organisateur-id'
-            ])
-            ->add('participants', EntityType::class,[
-                'class'=>Participant::class,
-                'choice_label'=>'participant-id'
-            ])*/
-
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

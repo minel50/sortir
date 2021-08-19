@@ -33,6 +33,9 @@
         {{form_widget(sortieForm.infosSortie) }}
         {{form_errors(sortieForm.infosSortie) }}
 
+        <label>Campus</label>
+        <span>{{ app.user.campus.nom }}</span>
+
         {{form_label(sortieForm.ville) }}
         {{form_widget(sortieForm.ville) }}
         {{form_errors(sortieForm.ville) }}
@@ -66,4 +69,9 @@
 
     {{form_end(sortieForm)}}
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/select-lieux.js') }}"></script>
 {% endblock %}
