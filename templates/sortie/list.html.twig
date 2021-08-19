@@ -119,7 +119,7 @@
                         X
                     {% endif %}
                 </td>
-                <td class="app-smartphone-hidden">{{ sortie.organisateur.prenom }} {{sortie.organisateur.nom | slice(0,1) | upper}}.</td>
+                <td class="app-smartphone-hidden"><a href="{{ path('participant_display', {'id':sortie.organisateur.id}) }}">{{ sortie.organisateur.prenom }} {{sortie.organisateur.nom | slice(0,1) | upper}}.</a></td>
                 <td class="app-smartphone-hidden">
                     {# Actions #}
                     {%  if app.user %}
