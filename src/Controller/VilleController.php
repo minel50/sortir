@@ -47,7 +47,7 @@ class VilleController extends AbstractController
             'villeForm'=>$villeForm->createView()
         ]);
     }
-    #[Route('/admin/ville/update/{id}', name: 'ville_update')]
+    #[Route('/admin/ville/modifier/{id}', name: 'ville_update')]
     public function update(VilleRepository $villeRepository,int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $ville = $villeRepository->find($id);
