@@ -25,7 +25,6 @@ class SortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $ville = $options['ville'];
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'Nom de la sortie',
@@ -57,9 +56,6 @@ class SortieType extends AbstractType
             ->add('lieu', EntityType::class, [
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
-                "query_builder" => function(LieuRepository $lieuRepository) use ($options) {
-                    return $lieuRepository->getQueryLieuxParVille($options['ville']);
-                },
                 'placeholder' => ''
             ])
 
@@ -81,8 +77,7 @@ class SortieType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Sortie::class,
-            'ville'=>null
+            'data_class' => Sortie::class
         ]);
     }
 }
