@@ -32,6 +32,21 @@
         .container .col2 .btn {
             padding: 0.25rem 0.5rem;
         }
+
+        @media screen and (min-width: 768px) {
+            #maCarte{
+                height: 400px;
+                width: 600px;
+            }
+        }
+
+        @media screen and (min-width: 992px) {
+            #maCarte{
+                height: 400px;
+                width: 800px;
+            }
+        }
+
     </style>
 {% endblock %}
 
@@ -76,7 +91,10 @@
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
                 <button id="create" class="btn btn-dark">Créer le lieu</button>
             <div id="cancel">
-                <button class="btn btn-dark" type="reset">Annuler</button>
+                <button class="btn btn-dark" type="reset">Effacer</button>
+            </div>
+            <div>
+                <a href="{{ path('sortie_create') }}"><button class="btn btn-danger" type="reset">Retour</button></a>
             </div>
 
             {{ form_end(lieuForm) }}
