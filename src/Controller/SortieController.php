@@ -383,7 +383,9 @@ class SortieController extends AbstractController
         $sortie =  $sortieRepository->findOneBy(array('id' => $id));
 
         //$dateActuelle =  date('H:i:s \O\n d/m/Y') > ;
-
+        $dateActuelle = new \DateTime('now');
+        //$endDateTime = clone $sortie->getDateHeureDebut();
+        dd($dateActuelle);
         if($sortie->getEtat()->getId() == 1 or $sortie->getEtat()->getId() == 2){
             $sortie->setEtat($etatAnnule);
         }
