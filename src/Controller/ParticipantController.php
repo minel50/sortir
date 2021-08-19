@@ -207,14 +207,14 @@ class ParticipantController extends AbstractController
         $listeSortiesParticipees = $participant->getSortiesParticipees();
         foreach ($listeSortiesParticipees as $s){
             $s->removeParticipant($participant);
-            $this->addFlash('warning', "Utilisateur désinscrit.");
+            //$this->addFlash('warning', "Utilisateur désinscrit.");
         }
 
         //Supprimer les sorties que l'utilisateur a organisé
         $listeSortiesOrganisees = $sortieRepository->findBy(array('organisateur' => $participant));
         foreach ($listeSortiesOrganisees as $s){
             $em->remove($s);
-            $this->addFlash('warning', "Sortie supprimée.");
+            //$this->addFlash('warning', "Sortie supprimée.");
         }
 
         //Supprimer l'utilisateur'
