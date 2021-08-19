@@ -71,7 +71,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/list', name: 'sortie_list')]
+    #[Route('', name: 'sortie_list')]
     public function list(SortieRepository $sortieRepository,
                             Request $request,
                             SortieStateUpdater $sortieStateUpdater,
@@ -155,7 +155,7 @@ class SortieController extends AbstractController
     }
 
 
-    #[Route('/sortie/update/{id}', name: 'sortie_update')]
+    #[Route('/sortie/modifier/{id}', name: 'sortie_update')]
     public function update(Request $request,SortieRepository $sortieRepository, int $id,EntityManagerInterface $entityManager,LieuRepository $lieuRepository): Response
     {
 
@@ -198,7 +198,7 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sortie/{idSortie}/inscription', name: 'sortie_register', methods: ["GET"])]
+    #[Route('/sortie/inscription/{idSortie}', name: 'sortie_register', methods: ["GET"])]
     public function register(int $idSortie,
                             SortieRepository $sortieRepository,
                             EtatRepository $etatRepository,

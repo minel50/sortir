@@ -48,7 +48,7 @@ class CampusController extends AbstractController
             'campusForm' => $campusForm->createView(),
         ]);
     }
-    #[Route('/admin/campus/update/{id}', name: 'campus_update')]
+    #[Route('/admin/campus/modifier/{id}', name: 'campus_update')]
     public function update(CampusRepository $campusRepository,int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $campus = $campusRepository->find($id);
