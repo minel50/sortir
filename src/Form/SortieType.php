@@ -70,15 +70,7 @@ class SortieType extends AbstractType
 
             ])
 
-            ->add('latitude', NumberType::class, [
-                'label' => 'Latitude',
-                'mapped'=>false,
-            ])
 
-            ->add('longitude', NumberType::class, [
-                'label' => 'Longitude',
-                'mapped'=>false,
-            ])
 
             ;
 

@@ -34,13 +34,56 @@
 
 
     <div>
-        {{ form_start(villeForm) }}
+        {{form_start(villeForm) }}
         {{form_row(villeForm.search) }}
         {{form_row(villeForm.rechercher) }}
 
 
     </div>
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+            <tr>
+
+                <th scope="col">Villes</th>
+                <th scope="col">Code postal</th>
+                <th scope="col">Actions</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for ville in villeListe %}
+                <tr>
+                    <td>{{ ville.nom | upper}}</td>
+                    <td>{{ ville.codePostal }}</td>
+                    <td>
+                        <a href="{{ path('ville_update', {'id': ville.id}) }}">Modifier-Supprimer</a>
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            <tr>
+
+                <td>  {{form_row(villeForm.nom) }}
+                </td>
+                <td>  {{form_row(villeForm.codePostal) }}
+                </td>
+                <td> {{form_row(villeForm.ajouter) }} </td>
+            </tr>
+            {{ form_end(villeForm) }}
+
+
+
+
+
+            </tbody>
+        </table>
+
+    </div>
 
 
 

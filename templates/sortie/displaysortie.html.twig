@@ -1,4 +1,19 @@
 {% extends 'base.html.twig' %}
+{% block title %}{{ parent()}} | sortie{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .my-custom-scrollbar {
+            position:relative;
+            width: 700px;
+            height: 150px;
+            overflow: auto;
+        }
+        .table-wrapper-scroll-y {
+            display: block;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
     <h2>Afficher une sortie</h2>
@@ -31,33 +46,35 @@
     <br><br>
     <h4>Liste des participants inscrits : </h4>
 
-        <div id="table-wrapper">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+        <table class="table table-bordered table-striped mb-0">
 
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Pseudo</th>
-                        <th>Nom</th>
-                    </tr>
-                    </thead>
-                    <div >
-                        <tbody>
-                        {% for p in sortie.participants %}
-                            <tr>
-                                <td>{{ p.pseudo }}</td>
-                                <td>{{ p.prenom~' '}}{{ p.nom }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </div>
-                </table>
 
-        </div>
+            <thead>
+            <tr>
+                <th scope = "col">Pseudo</th>
+                <th scope ="col">Nom</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for p in sortie.participants %}
+                <tr>
+                    <td>{{ p.pseudo }}</td>
+                    <td>{{ p.prenom~' '}}{{ p.nom }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+
 
 
 
     {# A transfrer dans app.css #}
-    <style>
+  {#   <style>
 
         #table-wrapper {
             position:relative;
@@ -96,6 +113,6 @@
 {% endblock %}
 
 {% block title %}
-
+#}
 {% endblock %}
 

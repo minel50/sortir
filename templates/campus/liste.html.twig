@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent()}} | campus{% endblock %}
+
+
 {% block stylesheets %}
     {{ parent() }}
     <style>
@@ -32,9 +34,10 @@
 
 
     <div>
-        {{ form_start(campusForm) }}
-     {{form_row(campusForm.search) }}
-    {{form_row(campusForm.rechercher) }}
+        {{form_start(campusForm) }}
+        {{form_row(campusForm.search) }}
+        {{form_row(campusForm.rechercher) }}
+    </div>
 
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
@@ -77,6 +80,6 @@
         </table>
 
     </div>
-    </div>
+
 
 {% endblock %}
