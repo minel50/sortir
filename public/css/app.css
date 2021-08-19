@@ -193,3 +193,19 @@ form.app-specific-filterform {
     flex-wrap: wrap;
 }
 
+/*----- Elements hidden/displayed for smartphones -----*/
+.app-smartphone-hidden {
+    display: none;
+}
+@media screen and (min-width: 768px) {
+    .app-smartphone-hidden {
+        display: inherit;
+    }
+    .app-only-smartphone {
+        display: none;
+    }
+    .app-smartphone-link {
+        text-decoration: none;
+        color: black;
+    }
+}

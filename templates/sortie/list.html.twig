@@ -8,98 +8,101 @@
         Participant : {{ app.user.prenom }} {{ app.user.nom | slice(0,1) | upper}}.
     </p>
 
-    <h4>Filtrer les sorties</h4>
-    {{form_start(listeForm, {'attr': {'class': 'app-specific-filterform'}})}}
+    <div class="app-smartphone-hidden">
+        <h4>Filtrer les sorties</h4>
+        {{form_start(listeForm, {'attr': {'class': 'app-specific-filterform'}})}}
 
-        <div class="app-form">
-            {{form_label(listeForm.campus) }}
-            {{form_widget(listeForm.campus) }}
-            {{form_errors(listeForm.campus) }}
+            <div class="app-form">
+                {{form_label(listeForm.campus) }}
+                {{form_widget(listeForm.campus) }}
+                {{form_errors(listeForm.campus) }}
 
-            {{ form_label(listeForm.nom) }}
-            {{ form_widget(listeForm.nom, {'attr': {'value': app.session.get('nom')}}) }}
-            {{ form_errors(listeForm.nom) }}
+                {{ form_label(listeForm.nom) }}
+                {{ form_widget(listeForm.nom, {'attr': {'value': app.session.get('nom')}}) }}
+                {{ form_errors(listeForm.nom) }}
 
 
-            {{ form_label(listeForm.from) }}
-            {% if app.session.get('from') != null %}
-                {{ form_widget(listeForm.from, {'attr': {'value': app.session.get('from') | date('Y-m-d')}}) }}
-            {% else %}
-                {{ form_widget(listeForm.from) }}
-            {% endif %}
-            {{ form_errors(listeForm.from) }}
-
-            {{ form_label(listeForm.to) }}
-            {% if app.session.get('to') != null %}
-                {{ form_widget(listeForm.to, {'attr': {'value': app.session.get('to') | date('Y-m-d')}}) }}
-            {% else %}
-                {{ form_widget(listeForm.to) }}
-            {% endif %}
-            {{ form_errors(listeForm.to) }}
-        </div>
-
-        <div class="app-form">
-            <div class="app-form-checkbox">
-                {% if isOrganisateur %}
-                    {{ form_widget(listeForm.isOrganisateur, {'attr': {'checked': 'checked'}}) }}
+                {{ form_label(listeForm.from) }}
+                {% if app.session.get('from') != null %}
+                    {{ form_widget(listeForm.from, {'attr': {'value': app.session.get('from') | date('Y-m-d')}}) }}
                 {% else %}
-                    {{ form_widget(listeForm.isOrganisateur)}}
+                    {{ form_widget(listeForm.from) }}
                 {% endif %}
-                {{ form_label(listeForm.isOrganisateur) }}
-                {{ form_errors(listeForm.isOrganisateur) }}
+                {{ form_errors(listeForm.from) }}
+
+                {{ form_label(listeForm.to) }}
+                {% if app.session.get('to') != null %}
+                    {{ form_widget(listeForm.to, {'attr': {'value': app.session.get('to') | date('Y-m-d')}}) }}
+                {% else %}
+                    {{ form_widget(listeForm.to) }}
+                {% endif %}
+                {{ form_errors(listeForm.to) }}
             </div>
 
-            <div class="app-form-checkbox">
-                {% if isInscrit %}
-                    {{ form_widget(listeForm.isInscrit, {'attr': {'checked': 'checked'}}) }}
-                {% else %}
-                    {{ form_widget(listeForm.isInscrit) }}
-                {% endif %}
-                {{ form_label(listeForm.isInscrit) }}
-                {{ form_errors(listeForm.isInscrit) }}
+            <div class="app-form">
+                <div class="app-form-checkbox">
+                    {% if isOrganisateur %}
+                        {{ form_widget(listeForm.isOrganisateur, {'attr': {'checked': 'checked'}}) }}
+                    {% else %}
+                        {{ form_widget(listeForm.isOrganisateur)}}
+                    {% endif %}
+                    {{ form_label(listeForm.isOrganisateur) }}
+                    {{ form_errors(listeForm.isOrganisateur) }}
+                </div>
+
+                <div class="app-form-checkbox">
+                    {% if isInscrit %}
+                        {{ form_widget(listeForm.isInscrit, {'attr': {'checked': 'checked'}}) }}
+                    {% else %}
+                        {{ form_widget(listeForm.isInscrit) }}
+                    {% endif %}
+                    {{ form_label(listeForm.isInscrit) }}
+                    {{ form_errors(listeForm.isInscrit) }}
+                </div>
+
+                <div class="app-form-checkbox">
+                    {% if isNotInscrit %}
+                        {{ form_widget(listeForm.isNotInscrit, {'attr': {'checked': 'checked'}}) }}
+                    {% else %}
+                        {{ form_widget(listeForm.isNotInscrit) }}
+                    {% endif %}
+                    {{ form_label(listeForm.isNotInscrit) }}
+                    {{ form_errors(listeForm.isNotInscrit) }}
+                </div>
+
+                <div class="app-form-checkbox">
+                    {% if isDone %}
+                        {{ form_widget(listeForm.isDone, {'attr': {'checked': 'checked'}}) }}
+                    {% else %}
+                        {{ form_widget(listeForm.isDone) }}
+                    {% endif %}
+                    {{ form_label(listeForm.isDone) }}
+                    {{ form_errors(listeForm.isDone) }}
+                </div>
             </div>
 
-            <div class="app-form-checkbox">
-                {% if isNotInscrit %}
-                    {{ form_widget(listeForm.isNotInscrit, {'attr': {'checked': 'checked'}}) }}
-                {% else %}
-                    {{ form_widget(listeForm.isNotInscrit) }}
-                {% endif %}
-                {{ form_label(listeForm.isNotInscrit) }}
-                {{ form_errors(listeForm.isNotInscrit) }}
-            </div>
-
-            <div class="app-form-checkbox">
-                {% if isDone %}
-                    {{ form_widget(listeForm.isDone, {'attr': {'checked': 'checked'}}) }}
-                {% else %}
-                    {{ form_widget(listeForm.isDone) }}
-                {% endif %}
-                {{ form_label(listeForm.isDone) }}
-                {{ form_errors(listeForm.isDone) }}
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-dark" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
-    {{form_end(listeForm)}}
+            <button type="submit" class="btn btn-dark" style ="border-radius: 5px;margin-left: 5px; "> Rechercher</button>
+        {{form_end(listeForm)}}
+    </div>
 
      <div>
-         <h4>Résultats</h4>
+         <h4>Sorties</h4>
          {# Events starting before this limitDate cannot be displayed #}
          {# this limitDate is used in each loop below #}
         {% set limitDate = 'now' | date_modify('- 1 month') %}
 
         {% for sortie in sorties %}
             <ul>
-                  <li>Nom de la sortie : {{sortie.nom | upper}}</li>
+                  <li>Nom de la sortie : <a href="{{ path('sortie_display', {'id': sortie.id}) }}" class="app-smartphone-link">{{sortie.nom | upper}}</a></li>
                   <li>Date de la sortie : {{sortie.dateHeureDebut | date('d/m/Y H:i', 'Europe/Paris') }}</li>
-                  <li>Date Limite d'inscription : {{sortie.dateLimiteinscription | date('d/m/Y', 'Europe/Paris') }}</li>
-                   <a href="{{ path('participant_display', {'id': sortie.organisateur.id}) }}" title="page profil">
+                  <span class="app-only-smartphone"><li>Lieu : {{ sortie.lieu.ville.nom }} </li></span>
+                  <span class="app-smartphone-hidden"><li>Date Limite d'inscription : {{sortie.dateLimiteinscription | date('d/m/Y', 'Europe/Paris') }}</li></span>
+                   <a href="{{ path('participant_display', {'id': sortie.organisateur.id}) }}" title="page profil" class="app-smartphone-hidden">
                       <li> Organisateur : {{sortie.organisateur.nom}} {{ sortie.organisateur.prenom }}</li>
                   </a>
-                  <li>Inscrits/places :   {{ sortie.participants.count }}  / {{ sortie.nbInscriptionsMax }}</li>
-                  <li>Etat : {{sortie.etat.libelle  }}</li>
-                  <li>Actions :
+                  <span class="app-smartphone-hidden"><li>Inscrits/places :   {{ sortie.participants.count }}  / {{ sortie.nbInscriptionsMax }}</li></span>
+                  <span class="app-smartphone-hidden"><li>Etat : {{sortie.etat.libelle  }}</li></span>
+                  <span class="app-smartphone-hidden"><li>Actions :
                         {%  if app.user %}
 
                             {# Events can be displayed only one month after their beginning datetime #}
@@ -133,15 +136,17 @@
                             {% endif %}
 
                         {% endif %}
-                  </li>
+                  </li></span>
             </ul>
         {% endfor %}
     </div>
 
     {%  if app.user.actif == 1 %}
-        <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
-            <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
-        </a>
+        <div class="app-smartphone-hidden">
+            <a href ="{{path('sortie_create')}}" title=" Créer une liste" >
+                <button type="submit" class="btn btn-dark" style ="border-radius: 5px; "> Créer une sortie</button>
+            </a>
+        </div>
     {% endif %}
 
 {% endblock %}
