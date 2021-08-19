@@ -6,6 +6,7 @@ use App\Entity\Participant;
 use App\Form\MdpType;
 use App\Form\ProfilType;
 use App\Repository\ParticipantRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,11 +45,16 @@ class ParticipantController extends AbstractController
                     $fileName
                 );
 
-                //modif nom d'image + supprimer image si existante
-                $oldFileName = $participant->getPhoto();
+                //Si il y a déjà une photo associée au participant on la supprime
+                if($participant->getPhoto()){
+                    $oldFileName = $participant->getPhoto();
+                    $filesystem = new Filesystem();
+                    $filesystem->remove($uploads_directory.'/'.$oldFileName);
+                }
+
+                //Associer nom de la nouvelle photo
                 $participant->setPhoto($fileName);
-                $filesystem = new Filesystem();
-                $filesystem->remove($uploads_directory.'/'.$oldFileName);
+
             }
 
             //MAJ BDD
@@ -92,7 +98,6 @@ class ParticipantController extends AbstractController
             {
                 if($validOldMdp)
                 {
-
                     //encoder le nouveau mdp enregistré
                     $participant->setPassword(
                         $encoder->encodePassword(
@@ -104,19 +109,15 @@ class ParticipantController extends AbstractController
                     //MAJ BDD
                     $entityManager->persist($participant);
                     $entityManager->flush();
-
                     $this->addFlash('success', 'Le mot de passe a été modifié.');
-                    return $this->redirectToRoute('participant_gestionProfil');
 
                 }else{
                     $this->addFlash("error", "Mot de passe actuel incorrect.");
-                    return $this->redirectToRoute('participant_gestionProfil');
                 }
             }else{
                 $this->addFlash("error", "La confirmation du mot de passe est obligatoire et doit être valide.");
-                return $this->redirectToRoute('participant_gestionProfil');
             }
-
+            return $this->redirectToRoute('participant_gestionProfil');
         }
 
         return$this->render('participant/profilmdp.html.twig', [
@@ -184,6 +185,43 @@ class ParticipantController extends AbstractController
         $entityManager->persist($participant);
         $entityManager->flush();
 
+        return $this->redirectToRoute('participant_all');
+    }
+
+    /**
+     * @Route("admin/participant/supprimer/{id}", name="participant_supprimer")
+     */
+    public function supprimerParticipant(Participant $participant, SortieRepository $sortieRepository)
+    {
+        //Si l'utilisateur avait uploadé une photo on la supprime
+        if($participant->getPhoto()){
+            $uploads_directory=$this->getParameter('photos_directory'); //dans config/services.yaml
+            $filePhoto = $participant->getPhoto();
+            $filesystem = new Filesystem();
+            $filesystem->remove($uploads_directory.'/'.$filePhoto);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        //Désinscrit l'utilisateur de toutes les sorties où il participe
+        $listeSortiesParticipees = $participant->getSortiesParticipees();
+        foreach ($listeSortiesParticipees as $s){
+            $s->removeParticipant($participant);
+            //$this->addFlash('warning', "Utilisateur désinscrit.");
+        }
+
+        //Supprimer les sorties que l'utilisateur a organisé
+        $listeSortiesOrganisees = $sortieRepository->findBy(array('organisateur' => $participant));
+        foreach ($listeSortiesOrganisees as $s){
+            $em->remove($s);
+            //$this->addFlash('warning', "Sortie supprimée.");
+        }
+
+        //Supprimer l'utilisateur'
+        $em->remove($participant);
+
+        $em->flush();
+        $this->addFlash('warning', "L'utilisateur a été supprimé.");
         return $this->redirectToRoute('participant_all');
     }
 

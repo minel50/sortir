@@ -35,7 +35,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="#">Supprimer</a>
+                            <a id="" href="{{ path('participant_supprimer', {'id': p.id}) }}" onclick="return confirm('Etes-vous certain de vouloir supprimer cet utilisateur ?')">Supprimer</a>
                         </td>
                         {% else %}
                             <td></td>
@@ -52,10 +52,9 @@
     </div>
 
 
-
     {# A transfrer dans app.css #}
     <style>
-
+        /* Section tableau */
         #table-wrapper {
             position:relative;
             width: 800px;
@@ -89,6 +88,16 @@
         }
 
     </style>
+    <script>
+        // Section modal
+        document.getElementById('button').addEventListener("click", function() {
+            document.querySelector('.bg-modal').style.display = "flex";
+        });
+
+        document.querySelector('.close').addEventListener("click", function() {
+            document.querySelector('.bg-modal').style.display = "none";
+        });
+    </script>
 
 {% endblock %}
 
