@@ -6,6 +6,7 @@ use App\Repository\LieuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,6 +18,7 @@ class Lieu
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"liste_lieux"})
      */
     private $id;
 
@@ -25,6 +27,7 @@ class Lieu
      * @Assert\NotBlank(message="La saisie d'un nom de lieu est obligatoire")
      * @Assert\Length(min=2, max=50, minMessage="Veuillez saisir au moins 2 caractères", maxMessage="50 caractères
      * maximum")
+     * @Groups({"liste_lieux"})
      */
     private $nom;
 

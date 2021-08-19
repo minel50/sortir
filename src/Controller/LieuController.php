@@ -9,9 +9,11 @@ use App\Repository\LieuRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class LieuController extends AbstractController
 {
@@ -89,5 +91,26 @@ class LieuController extends AbstractController
         return $this->render('lieu/create.html.twig', [
             'lieuForm' => $lieuForm->createView()
         ]);
+    }
+
+    #[Route('/lieu/lieux-par-ville', name: 'lieu_filter', methods: ['GET'])]
+    public function filter(Request $request,
+                            VilleRepository $villeRepository,
+                            LieuRepository $lieuRepository,
+                            SerializerInterface $serializer
+    ) {
+        //get parameter idVille of javascript fetch request
+        $idVille = $request->get('idVille');
+
+        if ($idVille != null) {
+            $ville = $villeRepository->find($idVille);
+            $lieux = $lieuRepository->findBy(['ville' => $ville]);
+
+            $json = $serializer->serialize($lieux, 'json', ['groups' => "liste_lieux"]);
+
+            return new JsonResponse($json, Response::HTTP_OK, [], true);
+        }
+
+        return new Response("Erreur");
     }
 }
