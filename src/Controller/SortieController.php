@@ -363,4 +363,35 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('sortie_list');
     }
+
+    #[Route('/admin/sortie/list', name: 'admin_sortie_list')]
+    public function adminListSortie(SortieRepository $sortieRepository) : Response
+    {
+
+        $sorties =  $sortieRepository->findAll();
+
+        return $this->render('admin/listsorties.html.twig', [
+            'sorties' => $sorties
+        ]);
+    }
+
+    #[Route('/admin/sortie/list/{id}', name: 'admin_sortie_cancel')]
+    public function adminCancelSortie(int $id,
+                                        EtatRepository $etatRepository,
+                                        SortieRepository $sortieRepository,
+                                        EntityManagerInterface $em
+    ) : Response
+    {
+        $etatAnnule = $etatRepository->findOneBy(array('id' => 6));
+        $sortie =  $sortieRepository->findOneBy(array('id' => $id));
+
+        if($sortie->getEtat()->getId() == 1 or $sortie->getEtat()->getId() == 2){
+            $sortie->setEtat($etatAnnule);
+        }
+
+        $em->persist($sortie);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_sortie_list');
+    }
 }
