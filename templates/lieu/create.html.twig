@@ -202,6 +202,12 @@
                 popupAnchor: [0, -50]
             });
 
+            {% for l in lieux %}
+            L.marker([{{ l.latitude }}, {{ l.longitude }}], {icon: icone}).addTo(carte)
+                .bindPopup('<p>{{ l.nom }}<p>')
+                .openPopup();
+            {% endfor %}
+
             //Affichage du marqueur
             L.marker([48.03942354777604, -1.6923494846592473], {icon: icone}).addTo(carte)
                 .bindPopup('<p>ENI Ecole Informatique<p>')

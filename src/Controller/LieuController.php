@@ -29,6 +29,7 @@ class LieuController extends AbstractController
             return $this->redirectToRoute('sortie_list');
         }
 
+        $lieux = $lieuRepository->findAll();
         $lieuForm = $this->createForm(LieuType::class, null);
         $lieuForm->handleRequest($request);
 
@@ -89,7 +90,8 @@ class LieuController extends AbstractController
         }
 
         return $this->render('lieu/create.html.twig', [
-            'lieuForm' => $lieuForm->createView()
+            'lieuForm' => $lieuForm->createView(),
+            'lieux' => $lieux
         ]);
     }
 
