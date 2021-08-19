@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -70,6 +71,18 @@ class SortieType extends AbstractType
                                 ->orderBy('v.codePostal, v.nom', 'ASC');
                 },
                 'placeholder' => ''
+            ])
+            ->add('create', SubmitType::class, [
+                'label' => 'Créer',
+                'attr' => [
+                    'class' => 'btn btn-dark'
+                ]
+            ])
+            ->add('publish', SubmitType::class, [
+                'label' => 'Publier',
+                'attr' => [
+                    'class' => 'btn btn-dark'
+                ]
             ])
             ;
     }

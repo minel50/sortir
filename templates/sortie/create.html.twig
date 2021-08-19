@@ -50,14 +50,13 @@
 
 
         <div class="app-form-buttons">
-            <a href ="{{ path('sortie_list') }}" title ="Créer une liste">
-                <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Enregistrer</button>
-            </a>
-                <a href ="{{ path('sortie_list') }}" title ="Publier une liste">
-                <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Publier</button>
-                </a>
-            <a href ="{{ path('sortie_list') }}" title ="Annuler une liste">
-                <button type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Annuler</button>
+
+            {{ form_widget(sortieForm.create) }}
+
+            {{ form_widget(sortieForm.publish) }}
+
+            <a href ="{{ path('sortie_list') }}" title ="Annuler la création">
+                <span type="submit" class="btn btn-dark" style ="border-radius: 5px; ">Annuler</span>
             </a>
         </div>
 

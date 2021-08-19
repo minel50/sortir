@@ -46,7 +46,15 @@ class SortieController extends AbstractController
             $sortie->setLieu($sortieForm['lieu']->getData());
             $sortie->setOrganisateur($user);
             $sortie->setCampus($campus);
-            $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Créée']));
+
+            if ($sortieForm->get('create')->isClicked()) {
+                $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Créée']));
+            }
+
+            if ($sortieForm->get('publish')->isClicked()) {
+                $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
+            }
+
             $entityManager->persist($sortie);
             $entityManager->flush();
 
