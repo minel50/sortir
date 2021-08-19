@@ -13,6 +13,10 @@
             <tr>
                 <th>Sortie</th>
                 <th>Organisateur</th>
+                <th>Campus</th>
+                <th>Lieu</th>
+                <th>Ville</th>
+                <th>Etat</th>
                 <th></th>
             </tr>
             </thead>
@@ -23,6 +27,10 @@
                     <tr>
                         <td>{{ s.nom }}</td>
                         <td>{{ s.organisateur.prenom~' '}}{{ s.organisateur.nom }}</td>
+                        <td>{{ s.campus.nom }}</td>
+                        <td>{{ s.lieu.nom }}</td>
+                        <td>{{ s.lieu.ville.nom }}</td>
+                        <td>{{ s.etat.libelle }}</td>
 
                         {# Désactive le bouton d'annulation sur les sorties organisées par les admin #}
                         {% if s.organisateur.admin == 0 %}
@@ -52,7 +60,7 @@
         /* Section tableau */
         #table-wrapper {
             position:relative;
-            width: 800px;
+            width: 1400px;
             height: 400px;
         }
 
