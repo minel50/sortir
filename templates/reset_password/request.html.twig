@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réinitialisation mot de passe{% endblock %}
+{% block title %} {{ parent() }} | Reset mot de passe {% endblock %}
 
 {% block body %}
     {% for flashError in app.flashes('reset_password_error') %}
