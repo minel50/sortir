@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
 }
 header, main, footer {
-    max-width: 1000px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 main {
@@ -139,6 +139,9 @@ form a {
 .app-text-align-right {
     text-align: right;
 }
+table.app-table-list-sortie {
+    font-size: 0.8rem;
+}
 
 /*----- desktop screens -----*/
 @media screen and (min-width: 576px) {
@@ -200,6 +203,9 @@ form.app-specific-filterform {
 @media screen and (min-width: 768px) {
     .app-smartphone-hidden {
         display: inherit;
+    }
+    th.app-smartphone-hidden, td.app-smartphone-hidden {
+        display: table-cell;
     }
     .app-only-smartphone {
         display: none;

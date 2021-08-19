@@ -85,61 +85,81 @@
         {{form_end(listeForm)}}
     </div>
 
-     <div>
-         <h4>Sorties</h4>
-         {# Events starting before this limitDate cannot be displayed #}
-         {# this limitDate is used in each loop below #}
-        {% set limitDate = 'now' | date_modify('- 1 month') %}
+     {# Events starting before this limitDate cannot be displayed #}
+     {# this limitDate is used in each loop below #}
+    {% set limitDate = 'now' | date_modify('- 1 month') %}
 
+    <h4 class="app-only-smartphone">Mes sorties</h4>
+
+    <table class="app-table-list-sortie table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th class="app-only-smartphone">Lieu</th>
+                <th class="app-smartphone-hidden">Clôture</th>
+                <th class="app-smartphone-hidden">Inscrits / Places</th>
+                <th class="app-smartphone-hidden">Etat</th>
+                <th class="app-smartphone-hidden">Inscrit</th>
+                <th class="app-smartphone-hidden">Organisateur</th>
+                <th class="app-smartphone-hidden">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for sortie in sorties %}
-            <ul>
-                  <li>Nom de la sortie : <a href="{{ path('sortie_display', {'id': sortie.id}) }}" class="app-smartphone-link">{{sortie.nom | upper}}</a></li>
-                  <li>Date de la sortie : {{sortie.dateHeureDebut | date('d/m/Y H:i', 'Europe/Paris') }}</li>
-                  <span class="app-only-smartphone"><li>Lieu : {{ sortie.lieu.ville.nom }} </li></span>
-                  <span class="app-smartphone-hidden"><li>Date Limite d'inscription : {{sortie.dateLimiteinscription | date('d/m/Y', 'Europe/Paris') }}</li></span>
-                   <a href="{{ path('participant_display', {'id': sortie.organisateur.id}) }}" title="page profil" class="app-smartphone-hidden">
-                      <li> Organisateur : {{sortie.organisateur.nom}} {{ sortie.organisateur.prenom }}</li>
-                  </a>
-                  <span class="app-smartphone-hidden"><li>Inscrits/places :   {{ sortie.participants.count }}  / {{ sortie.nbInscriptionsMax }}</li></span>
-                  <span class="app-smartphone-hidden"><li>Etat : {{sortie.etat.libelle  }}</li></span>
-                  <span class="app-smartphone-hidden"><li>Actions :
-                        {%  if app.user %}
+            <tr>
+                <td><a href="{{ path('sortie_display', {'id': sortie.id}) }}" class="app-smartphone-link">{{sortie.nom | upper}}</a></td>
+                <td>{{sortie.dateHeureDebut | date('d/m/Y H:i', 'Europe/Paris') }}</td>
+                <td class="app-only-smartphone">{{ sortie.lieu.ville.nom }}</td>
+                <td class="app-smartphone-hidden">{{sortie.dateLimiteinscription | date('d/m/Y', 'Europe/Paris') }}</td>
+                <td class="app-smartphone-hidden">{{ sortie.participants.count }}  / {{ sortie.nbInscriptionsMax }}</td>
+                <td class="app-smartphone-hidden">{{sortie.etat.libelle  }}</td>
+                <td class="app-smartphone-hidden">
+                    {% if app.user in sortie.participants %}
+                        X
+                    {% endif %}
+                </td>
+                <td class="app-smartphone-hidden">{{ sortie.organisateur.prenom }} {{sortie.organisateur.nom | slice(0,1) | upper}}.</td>
+                <td class="app-smartphone-hidden">
+                    {# Actions #}
+                    {%  if app.user %}
 
-                            {# Events can be displayed only one month after their beginning datetime #}
-                            {% if sortie.dateHeureDebut > limitDate %}
-                                <a href="{{ path('sortie_display', {'id': sortie.id}) }}">Afficher</a>
-                            {% endif %}
-
-                            {# Features disabled if user is deactivated by admin #}
-                            {%  if app.user.actif == 1 %}
-                                {% if app.user.id == sortie.organisateur.id %}
-                                    {# Events can be modified only by organisator and if state is "Créée" #}
-                                    {% if sortie.etat.libelle == "Créée" %}
-                                        <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
-                                        <a href ="{{ path('sortie_publish',{'id':sortie.id}) }}">Publier</a>
-                                    {% endif %}
-                                    {# Events can be canceled only by organisator and if state is "Ouverte" or "Clôturée" #}
-                                    {% if sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
-                                        <a href ="{{ path('sortie_cancel',{'id':sortie.id}) }}">Annuler</a>
-                                    {% endif %}
-                                {% endif %}
-
-                                {% if app.user in sortie.participants %}
-                                    {% if sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
-                                        <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
-                                    {% endif %}
-                                {% else %}
-                                    {% if sortie.etat.libelle == "Ouverte" %}
-                                        <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
-                                    {% endif %}
-                                {% endif %}
-                            {% endif %}
-
+                        {# Events can be displayed only one month after their beginning datetime #}
+                        {% if sortie.dateHeureDebut > limitDate %}
+                            <a href="{{ path('sortie_display', {'id': sortie.id}) }}">Afficher</a>
                         {% endif %}
-                  </li></span>
-            </ul>
+
+                        {# Features disabled if user is deactivated by admin #}
+                        {%  if app.user.actif == 1 %}
+                            {% if app.user.id == sortie.organisateur.id %}
+                                {# Events can be modified only by organisator and if state is "Créée" #}
+                                {% if sortie.etat.libelle == "Créée" %}
+                                    <a href ="{{ path('sortie_update',{'id':sortie.id}) }}">Modifier</a>
+                                    <a href ="{{ path('sortie_publish',{'id':sortie.id}) }}">Publier</a>
+                                {% endif %}
+                                {# Events can be canceled only by organisator and if state is "Ouverte" or "Clôturée" #}
+                                {% if sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
+                                    <a href ="{{ path('sortie_cancel',{'id':sortie.id}) }}">Annuler</a>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if app.user in sortie.participants %}
+                                {% if sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
+                                    <a href="{{ path('sortie_unregister', {'idSortie': sortie.id}) }}">Se désister</a>
+                                {% endif %}
+                            {% else %}
+                                {% if sortie.etat.libelle == "Ouverte" %}
+                                    <a href="{{ path('sortie_register', {'idSortie': sortie.id}) }}">S'inscrire</a>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+
+                    {% endif %}
+                </td>
+            </tr>
         {% endfor %}
-    </div>
+        </tbody>
+    </table>
 
     {%  if app.user.actif == 1 %}
         <div class="app-smartphone-hidden">
