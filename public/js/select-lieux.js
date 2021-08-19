@@ -16,7 +16,7 @@ function updateSelectLieu() {
             selectLieu.innerHTML = options;
         })
         .catch(e => {
-            alert("ERREUR");
+            alert("N'oubliez pas de choisir une ville...");
         });
 
 }
