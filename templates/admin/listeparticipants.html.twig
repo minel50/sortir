@@ -2,19 +2,40 @@
 
 {% block body %}
 
+    {% block stylesheets %}
+        {{ parent() }}
+        <style>
+            .my-custom-scrollbar {
+                position:relative;
+                width: 700px;
+                height: 500px;
+                overflow: auto;
+            }
+            .table-wrapper-scroll-y {
+                display: block;
+            }
+            h3{
+                text-align: center;
 
+            }
+            a{
+                text-decoration: none;
+                color:#000000;
+            }
+        </style>
+    {% endblock %}
 
     <h4>Administration des participants </h4>
     <br>
-    <div id="table-wrapper">
+    <div  class="table-wrapper-scroll-y my-custom-scrollbar">
 
-        <table>
+        <table class="table table-bordered table-striped mb-0">
             <thead>
             <tr>
-                <th>Pseudo</th>
-                <th>Nom</th>
-                <th>Statut</th>
-                <th></th>
+                <th scope="col">Pseudo</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Statut</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <div>
@@ -29,13 +50,13 @@
                         {% if p.admin == 0 %}
                         <td>
                             {% if p.actif == 1 %}
-                                <a href="{{ path('participant_desactiver', {'id': p.id}) }}">actif</a>
+                                <a class="btn btn-sm btn-success" href="{{ path('participant_desactiver', {'id': p.id}) }}">actif</a>
                             {% else %}
-                                <a href="{{ path('participant_activer', {'id': p.id}) }}">inactif</a>
+                                <a class="btn btn-sm btn-warning" href="{{ path('participant_activer', {'id': p.id}) }}">inactif</a>
                             {% endif %}
                         </td>
                         <td>
-                            <a id="" href="{{ path('participant_supprimer', {'id': p.id}) }}" onclick="return confirm('Etes-vous certain de vouloir supprimer cet utilisateur ?')">Supprimer</a>
+                            <a class="btn btn-sm btn-danger" href="{{ path('participant_supprimer', {'id': p.id}) }}" onclick="return confirm('Etes-vous certain de vouloir supprimer cet utilisateur ?')">Supprimer</a>
                         </td>
                         {% else %}
                             <td></td>
@@ -52,52 +73,6 @@
     </div>
 
 
-    {# A transfrer dans app.css #}
-    <style>
-        /* Section tableau */
-        #table-wrapper {
-            position:relative;
-            width: 800px;
-            height: 400px;
-        }
-
-        table {
-            display: flex;
-            flex-flow: column;
-            height: 100%;
-            width: 100%;
-        }
-        table thead {
-            /* head takes the height it requires,
-            and it's not scaled when table is resized */
-            flex: 0 0 auto;
-            width: calc(100% - 0.9em);
-        }
-        table tbody {
-            /* body takes all the remaining available space */
-            flex: 1 1 auto;
-            display: block;
-            overflow-y: scroll;
-        }
-        table tbody tr {
-            width: 100%;
-        }
-        table thead, table tbody tr {
-            display: table;
-            table-layout: fixed;
-        }
-
-    </style>
-    <script>
-        // Section modal
-        document.getElementById('button').addEventListener("click", function() {
-            document.querySelector('.bg-modal').style.display = "flex";
-        });
-
-        document.querySelector('.close').addEventListener("click", function() {
-            document.querySelector('.bg-modal').style.display = "none";
-        });
-    </script>
 
 {% endblock %}
 

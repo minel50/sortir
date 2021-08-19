@@ -2,22 +2,44 @@
 
 {% block body %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .my-custom-scrollbar {
+            position:relative;
+            width: 1500px;
+            height: 600px;
+            overflow: auto;
+        }
+        .table-wrapper-scroll-y {
+            display: block;
+        }
+        h3{
+            text-align: center;
+
+        }
+        a{
+            text-decoration: none;
+            color:#000000;
+        }
+    </style>
+{% endblock %}
 
 
     <h4>Administration des sorties </h4>
     <br>
-    <div id="table-wrapper">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
-        <table>
+        <table class="table table-bordered table-striped mb-0">
             <thead>
             <tr>
-                <th>Sortie</th>
-                <th>Organisateur</th>
-                <th>Campus</th>
-                <th>Lieu</th>
-                <th>Ville</th>
-                <th>Etat</th>
-                <th></th>
+                <th scope="col">Sortie</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Campus</th>
+                <th scope="col">Lieu</th>
+                <th scope="col">Ville</th>
+                <th scope="col">Etat</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <div>
@@ -37,7 +59,7 @@
                             <td>
                                 {# {{ path('participant_desactiver', {'id': p.id}) }} #}
                                 {% if s.etat.id == 1 or s.etat.id == 2 %}
-                                    <a href="{{ path('admin_sortie_cancel', {'id': s.id}) }}" onclick="return confirm('Etes-vous certain de vouloir annuler cette sortie ?')">Annuler</a>
+                                    <a class="btn btn-sm btn-danger" href="{{ path('admin_sortie_cancel', {'id': s.id}) }}" onclick="return confirm('Etes-vous certain de vouloir annuler cette sortie ?')">Annuler</a>
                                 {% endif %}
                             </td>
 
@@ -54,53 +76,6 @@
 
     </div>
 
-
-    {# A transfrer dans app.css #}
-    <style>
-        /* Section tableau */
-        #table-wrapper {
-            position:relative;
-            width: 1400px;
-            height: 400px;
-        }
-
-        table {
-            display: flex;
-            flex-flow: column;
-            height: 100%;
-            width: 100%;
-        }
-        table thead {
-            /* head takes the height it requires,
-            and it's not scaled when table is resized */
-            flex: 0 0 auto;
-            width: calc(100% - 0.9em);
-        }
-        table tbody {
-            /* body takes all the remaining available space */
-            flex: 1 1 auto;
-            display: block;
-            overflow-y: scroll;
-        }
-        table tbody tr {
-            width: 100%;
-        }
-        table thead, table tbody tr {
-            display: table;
-            table-layout: fixed;
-        }
-
-    </style>
-    <script>
-        // Section modal
-        document.getElementById('button').addEventListener("click", function() {
-            document.querySelector('.bg-modal').style.display = "flex";
-        });
-
-        document.querySelector('.close').addEventListener("click", function() {
-            document.querySelector('.bg-modal').style.display = "none";
-        });
-    </script>
 
 {% endblock %}
 
