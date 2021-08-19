@@ -36,9 +36,7 @@ class SortieController extends AbstractController
 
         $sortie = new Sortie();
 
-       // $sortie = $sortieRepository->find(1);
         $ville = $villeRepository->find(1);
-
 
         $user = $this->getUser();
         $campus=$user->getCampus();
@@ -48,7 +46,7 @@ class SortieController extends AbstractController
         $sortieForm->handleRequest($request);
         if($sortieForm->isSubmitted() && $sortieForm->isValid())
         {
-
+            $sortie->setLieu($sortieForm['lieu']->getData());
             $sortie->setOrganisateur($user);
             $sortie->setCampus($campus);
             $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Créée']));
