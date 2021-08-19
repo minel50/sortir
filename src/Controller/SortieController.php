@@ -131,15 +131,6 @@ class SortieController extends AbstractController
             $session->set('isNotInscrit', $isNotInscrit);
             $session->set('isDone', $isDone);
 
-        } else {    //default values if first loading of the page
-            $nom = null;
-            $campus = $listeForm['campus']->getData();     //to change with campus of the logged participant
-            $from = null;
-            $to = null;
-            $isOrganisateur = true;
-            $isInscrit = true;
-            $isNotInscrit = true;
-            $isDone = false;
         }
 
         $participant = $this->getUser();
