@@ -181,17 +181,20 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('sortie_list');
         }
 
-        $updateForm = $this->createForm(UpdateSortieType::class,$sortie);
+        $updateForm = $this->createForm(UpdateSortieType::class, $sortie, [
+            'ville' => $sortie->getLieu()->getVille(),
+            'lieu' => $sortie->getLieu()
+        ]);
         $updateForm->handleRequest($request);
 
         if ($updateForm->isSubmitted() && $updateForm->isValid()) {
 
+            $sortie->setLieu($updateForm['lieu']->getData());
+
             $entityManager->persist($sortie);
             $entityManager->flush();
 
-
             return $this->redirectToRoute('sortie_list');
-
         }
 
         return $this->render('sortie/update.html.twig', [

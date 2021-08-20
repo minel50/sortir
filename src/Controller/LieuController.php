@@ -6,6 +6,7 @@ use App\Entity\Lieu;
 use App\Entity\Ville;
 use App\Form\LieuType;
 use App\Repository\LieuRepository;
+use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -107,6 +108,24 @@ class LieuController extends AbstractController
             $lieux = $lieuRepository->findBy(['ville' => $ville]);
 
             $json = $serializer->serialize($lieux, 'json', ['groups' => "liste_lieux"]);
+
+            return new JsonResponse($json, Response::HTTP_OK, [], true);
+        }
+
+        return new Response("Erreur");
+    }
+
+    #[Route('/lieu/lieu-sortie/{idSortie}', name: 'lieu_get', methods: ['GET'])]
+    public function getLieuBySortie(Request $request,
+                           SortieRepository $sortieRepository,
+                           SerializerInterface $serializer,
+                            int $idSortie
+    ) {
+        if ($idSortie != null) {
+            $sortie = $sortieRepository->find($idSortie);
+            $lieu = $sortie->getLieu();
+
+            $json = $serializer->serialize($lieu, 'json', ['groups' => "liste_lieux"]);
 
             return new JsonResponse($json, Response::HTTP_OK, [], true);
         }
