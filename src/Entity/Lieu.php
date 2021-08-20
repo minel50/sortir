@@ -6,11 +6,15 @@ use App\Repository\LieuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LieuRepository::class)
+ * @UniqueEntity(fields={"nom"}, message="Ce nom de lieu est déjà utilisé")
+ * @UniqueEntity(fields={"rue"}, message="Ce nom de rue est déjà utilisé")
+ * @UniqueEntity(fields={"latitude", "longitude"}, message="Ces coordonnées sont déjà utilisées")
  */
 class Lieu
 {
@@ -23,16 +27,15 @@ class Lieu
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50, unique=true)
+     * @ORM\Column(type="string", length=50, unique=true, name="nom")
      * @Assert\NotBlank(message="La saisie d'un nom de lieu est obligatoire")
-     * @Assert\Length(min=2, max=50, minMessage="Veuillez saisir au moins 2 caractères", maxMessage="50 caractères
-     * maximum")
+     * @Assert\Length(min=2, max=50, minMessage="Veuillez saisir au moins 2 caractères", maxMessage="50 caractères maximum")
      * @Groups({"liste_lieux"})
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, name="rue")
      * @Assert\NotBlank(message="La saisie d'un nom de rue est obligatoire")
      * @Assert\Length(min=2, max=50, minMessage="Veuillez saisir au moins 2 caractères", maxMessage="50 caractères
      * maximum")
@@ -42,14 +45,14 @@ class Lieu
     /**
      * @Assert\NotBlank(message="La saisie de la latitute est obligatoire")
      * @Assert\Range(min=-90, max=90, notInRangeMessage="Vous devez renseigner une latitude entre -90° et +90°")
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", name="latitude")
      */
     private $latitude;
 
     /**
      * @Assert\NotBlank(message="La saisie de la longitude est obligatoire")
      * @Assert\Range(min=-180, max=180, notInRangeMessage="Vous devez renseigner une longitude entre -180° et +180°")
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", name="longitude")
      */
     private $longitude;
 

@@ -23,6 +23,12 @@
           text-decoration: none;
           color:#000000;
       }
+
+      td div ul li{
+          color: red;
+          list-style:none;
+      }
+
     </style>
 {% endblock %}
 
@@ -37,6 +43,9 @@
         {{form_start(campusForm) }}
         {{form_row(campusForm.search) }}
         {{form_row(campusForm.rechercher) }}
+        <div style="color: red;">
+            {{ form_errors(campusForm.nom) }}
+        </div>
     </div>
 
     <div class="table-wrapper-scroll-y my-custom-scrollbar">
@@ -68,17 +77,15 @@
 
                     <td>  {{form_row(campusForm.nom) }}
                     </td>
-                    <td> {{form_row(campusForm.ajouter) }} </td>
+                    <td> {{form_row(campusForm.ajouter) }}
+
+                    </td>
                 </tr>
-                {{ form_end(campusForm) }}
-
-
-
 
 
             </tbody>
         </table>
-
+        {{ form_end(campusForm) }}
     </div>
 
 
