@@ -5,7 +5,9 @@ namespace App\Form;
 use App\Entity\Campus;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -21,9 +23,6 @@ class UpdateSortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-
-
         $builder
             ->add('nom', TextType::class, [
                 'label' => 'Nom de la sortie',
@@ -53,31 +52,27 @@ class UpdateSortieType extends AbstractType
             ->add('lieu', EntityType::class, [
                 'class' => Lieu::class,
                 'choice_label' => 'nom',
-
-
-
+                'mapped' => false,
+                /*'query_builder' => function (LieuRepository $lieuRepository) use ($options) {
+                    return $lieuRepository->createQueryBuilder('l')
+                        ->where('l.ville = :ville')
+                        ->setParameter('ville', $options['ville']);
+                },*/
+                'data' => $options['lieu']
             ])
-
-
-
-            ->add('latitude', NumberType::class, [
-                'label' => 'Latitude',
-                'mapped'=>false,
+            ->add('ville', EntityType::class, [
+                'mapped' => false,
+                'class' => Ville::class,
+                'choice_label' => function ($ville) {
+                    return $ville->getCodePostal().' '.$ville->getNom();
+                },
+                'query_builder' => function (VilleRepository $villeRepository) {
+                    return $villeRepository->createQueryBuilder('v')
+                        ->orderBy('v.codePostal, v.nom', 'ASC');
+                },
+                'data' => $options['ville'],
+                'placeholder' => ''
             ])
-            ->add('longitude', NumberType::class, [
-                'label' => 'Longitude',
-                'mapped'=>false,
-                ])
-
-
-
-
-            ->add('campus', EntityType::class,[
-                'class'=>Campus::class,
-                'choice_label'=>'nom'
-            ])
-
-
         ;
     }
 
@@ -85,9 +80,8 @@ class UpdateSortieType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
-            'latitude'=>null,
-
-
+            'ville' => null,
+            'lieu' => null
         ]);
     }
 }

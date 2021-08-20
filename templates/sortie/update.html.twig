@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}{{ parent()}} | Modifier une sortie{% endblock %}
 
 {% block body %}
@@ -33,24 +32,22 @@
         {{form_widget(updateForm.infosSortie) }}
         {{form_errors(updateForm.infosSortie) }}
 
-        {{form_label(updateForm.campus) }}
-        {{form_widget(updateForm.campus) }}
-        {{form_errors(updateForm.campus) }}
+        <label>Campus</label>
+        <span>{{ app.user.campus.nom }}</span>
+
+        {{form_label(updateForm.ville) }}
+        {{form_widget(updateForm.ville) }}
+        {{form_errors(updateForm.ville) }}
+
+        <input type="hidden" id="idSortie" value="{{ sortie.id }}">
 
         {{form_label(updateForm.lieu) }}
+
         <div>
             {{form_widget(updateForm.lieu) }}
             <a href = "{{ path('lieu_create') }}" title="signe"><img src="{{ asset('img/signe plus.png') }}"></a>
         </div>
         {{form_errors(updateForm.lieu) }}
-
-        {{form_label(updateForm.latitude) }}
-        {{form_widget(updateForm.latitude) }}
-        {{form_errors(updateForm.latitude) }}
-
-        {{form_label(updateForm.longitude) }}
-        {{form_widget(updateForm.longitude) }}
-        {{form_errors(updateForm.longitude) }}
 
         <div class="app-form-buttons">
             <a href ="{{ path('sortie_list') }}" title ="Enregistrer les modifications">
@@ -69,4 +66,9 @@
 
     {{form_end(updateForm)}}
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/select-lieux-update-sortie.js') }}"></script>
 {% endblock %}
