@@ -55,11 +55,17 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('campus', $campus);
 
         }
-        if($from!=null && $to!=null){
+        if ($from) {
             $queryBuilder
-                ->andWhere('s.dateHeureDebut BETWEEN :from AND :to')
-                ->setparameter('from',$from)
-                ->setParameter('to',$to->modify('+24hours'));
+                ->andWhere('s.dateHeureDebut >= :from')
+                ->setParameter('from', $from);
+        }
+        if ($to) {
+            $toCopy = clone $to;
+            $toCopy->modify('+24hours');
+            $queryBuilder
+                ->andWhere('s.dateHeureDebut <= :to')
+                ->setParameter('to', $toCopy);
         }
 
         //Part of the query : Organisator OR participant OR not participant
