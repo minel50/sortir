@@ -169,6 +169,11 @@ class SortieController extends AbstractController
 
         $sortie=$sortieRepository->find($id);
 
+        if (!$sortie) {
+            throw $this->createNotFoundException('La sortie n\'existe pas');
+        }
+
+        //Voters à la place des tests pour Controller et twig
         //Only events with state "Créée" can be modified
         if ($sortie->getEtat()->getLibelle() != "Créée") {
             $this->addFlash('error', 'Cette sortie ne peut plus être modifiée');
