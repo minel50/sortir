@@ -52,7 +52,8 @@ class SortieType extends AbstractType
                 ])
 
             ->add('infosSortie', TextareaType::class, [
-                'label' => 'Description et infos'])
+                'label' => 'Description et infos',
+                'required' => false])
 
             ->add('lieu', EntityType::class, [
                 'class' => Lieu::class,

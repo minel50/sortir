@@ -6,6 +6,7 @@ use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -21,26 +22,36 @@ class Sortie
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Length(max=50, maxMessage="50 caractères maximum")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank(message="Merci de renseigner une date et heure de début")
      */
     private $dateHeureDebut;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Merci de renseigner une durée")
+     * @Assert\Positive(message="Merci de renseigner une durée positive")
      */
     private $duree;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\LessThan(propertyPath="dateHeureDebut", message="Les inscriptions doivent être clôturées avant le
+     début de la sortie")
+     * @Assert\NotBlank(message="Merci de renseigner une date limite d'inscription")
      */
     private $dateLimiteInscription;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Merci de renseigner un nombre de participants")
+     * @Assert\Positive(message="Il faut au moins un participant")
+     *
      */
     private $nbInscriptionsMax;
 
