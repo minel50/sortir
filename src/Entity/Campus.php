@@ -6,6 +6,7 @@ use App\Repository\CampusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CampusRepository::class)
@@ -21,6 +22,8 @@ class Campus
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="La saisie d'un nom de campus est obligatoire")
+     * @Assert\Length(min=2, max=30, minMessage="Veuillez saisir au moins 2 caractères", maxMessage="30 caractères maximum !")
      */
     private $nom;
 

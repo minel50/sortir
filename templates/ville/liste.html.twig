@@ -23,6 +23,11 @@
             text-decoration: none;
             color:#000000;
         }
+
+        td div ul li{
+            color: red;
+            list-style:none;
+        }
     </style>
 {% endblock %}
 
@@ -37,6 +42,10 @@
         {{form_start(villeForm) }}
         {{form_row(villeForm.search) }}
         {{form_row(villeForm.rechercher) }}
+        <div style="color: red;">
+            {{ form_errors(villeForm.nom) }}
+            {{ form_errors(villeForm.codePostal) }}
+        </div>
 
 
     </div>
