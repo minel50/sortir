@@ -25,14 +25,14 @@ class Ville
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\Length(min=5, max=50, minMessage="Veuillez saisir au moins 5 caractères", maxMessage="50 caractères maximum !")
-     * @Assert\NotBlank(message="La saisie d'un nom est obligatoire")
+
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=5)
      * @Assert\Length(min=5, max=5, minMessage="Veuillez saisir au moins 5 caractères", maxMessage="5 caractères maximum !")
-     * @Assert\NotBlank(message="La saisie d'un code postal est obligatoire")
+
      */
     private $codePostal;
 
